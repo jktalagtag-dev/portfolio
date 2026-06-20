@@ -6,11 +6,14 @@ export default function HeroContainer({
     <div
       className={`
         w-full
-        px-2
-        md:px-5
-        lg:px-7
-        xl:px-8
-        2xl:px-10
+
+        px-5
+        sm:px-6
+        md:px-8
+        lg:px-10
+        xl:px-12
+        2xl:px-16
+
         ${className}
       `}
     >

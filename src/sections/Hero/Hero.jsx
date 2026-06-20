@@ -12,7 +12,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center overflow-hidden"
+      className="min-h-screen overflow-hidden"
       onMouseMove={(e) => {
         const { innerWidth, innerHeight } = window;
 
@@ -25,15 +25,55 @@ export default function Hero() {
       <HeroContainer>
         <div
           className="
+            relative
             grid
             grid-cols-1
             lg:grid-cols-12
-            min-h-[calc(100vh-100px)]
+
+            min-h-screen
+
             items-center
-            pt-24
+
+            pt-28
             lg:pt-20
           "
         >
+          {/* Mobile Background JK */}
+          {/* <div
+            className="
+              lg:hidden
+              absolute
+              inset-0
+              overflow-hidden
+              pointer-events-none
+              select-none
+            "
+          >
+            <span
+              className="
+                absolute
+                left-1/2
+                top-[52%]
+
+                -translate-x-1/2
+                -translate-y-1/2
+
+                text-[28rem]
+
+                font-extralight
+                leading-none
+                tracking-[-0.32em]
+
+                text-transparent
+                opacity-80
+
+                [-webkit-text-stroke:1px_rgb(225_225_225)]
+              "
+            >
+              JK
+            </span>
+          </div> */}
+
           {/* Vertical Label */}
           <div
             className="
@@ -83,23 +123,30 @@ export default function Hero() {
               col-span-12
               lg:col-span-4
               lg:pl-8
+
+              relative
               z-10
+
               max-w-xl
+
+              flex
+              flex-col
+              justify-center
             "
           >
             {/* Stats */}
             <div
               className="
                 flex
-                gap-8
+                gap-10
                 sm:gap-14
-                mb-8
+                mb-10
               "
             >
               <div>
                 <p
                   className="
-                    text-[2rem]
+                    text-[2.5rem]
                     sm:text-[3rem]
                     leading-none
                     font-light
@@ -117,7 +164,7 @@ export default function Hero() {
               <div>
                 <p
                   className="
-                    text-[2rem]
+                    text-[2.5rem]
                     sm:text-[3rem]
                     leading-none
                     font-light
@@ -140,9 +187,11 @@ export default function Hero() {
                 sm:text-[6rem]
                 md:text-[7rem]
                 xl:text-[9rem]
+
                 leading-[0.85]
                 tracking-[-0.09em]
                 font-extralight
+
                 -ml-1
               "
             >
@@ -152,31 +201,40 @@ export default function Hero() {
             {/* Subtitle */}
             <p
               className="
-                mt-3
+                mt-4
+                max-w-[320px]
+
                 text-base
                 sm:text-lg
+
+                leading-relaxed
                 text-neutral-500
-                max-w-md
               "
             >
-              — John Karlo · React & Laravel Full-Stack Developer
+              — I am John Karlo · React & Laravel Full-Stack Developer
             </p>
 
             {/* Scroll */}
             <div
               className="
-                hidden
-                lg:block
-                mt-24
+                mt-14
+                lg:mt-24
+
                 text-sm
                 text-neutral-500
               "
             >
-              Scroll down ↓
+              <span className="lg:hidden">
+                Explore ↓
+              </span>
+
+              <span className="hidden lg:inline">
+                Scroll down ↓
+              </span>
             </div>
           </div>
 
-          {/* Hero Visual */}
+          {/* Desktop Hero Visual */}
           <div
             className="
               hidden
@@ -210,10 +268,13 @@ export default function Hero() {
                   font-extralight
                   leading-none
                   tracking-[-0.15em]
+
                   text-[42rem]
                   xl:text-[52rem]
+
                   text-transparent
                   opacity-40
+
                   [-webkit-text-stroke:1px_rgb(225_225_225)]
                 "
               >
