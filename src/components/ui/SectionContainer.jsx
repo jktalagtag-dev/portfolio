@@ -1,7 +1,12 @@
-export default function SectionContainer({ children }) {
+import Container from "./Container";
+
+export default function SectionContainer({
+  children,
+  className = "",
+}) {
   return (
-    <div className="w-full px-6 md:px-10 lg:px-14 xl:px-16 2xl:px-20">
+    <Container className={className}>
       {children}
-    </div>
+    </Container>
   );
 }
