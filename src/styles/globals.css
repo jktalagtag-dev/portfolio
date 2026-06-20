@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  /* Colors */
+  --color-text: #222222;
+  --color-muted: #7B7B7B;
+  --color-bg: #F8F8F8;
+  --color-white: #FFFFFF;
+  --color-border: #E5E5E5;
+  --color-accent: #4F46E5;
+
+  /* Typography */
+  --font-sans: "Geist", sans-serif;
+
+  /* Radius */
+  --radius: 4px;
+
+  /* Container */
+  --container: 1440px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
