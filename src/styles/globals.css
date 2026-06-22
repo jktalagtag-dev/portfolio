@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+html,
+body,
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 :root {
   /* Colors */
   --color-text: #222222;

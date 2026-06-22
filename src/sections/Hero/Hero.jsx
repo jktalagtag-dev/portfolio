@@ -30,11 +30,11 @@ export default function Hero() {
             grid-cols-1
             lg:grid-cols-12
 
-            min-h-[85svh]
+            min-h-[75svh]
 
             items-center
 
-            pt-28
+            pt-20
             lg:pt-20
           "
         >

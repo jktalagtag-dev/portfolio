@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
@@ -11,7 +13,18 @@ import Currently from "../sections/Currently/Currently";
 
 export default function Home() {
   return (
-    <>
+    <motion.div
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.8,
+      }}
+      className="overflow-x-hidden"
+    >
       <Navbar />
 
       <main>
@@ -25,6 +38,6 @@ export default function Home() {
       </main>
 
       <Footer />
-    </>
+    </motion.div>
   );
 }
