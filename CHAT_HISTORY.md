@@ -1,347 +1,482 @@
-# HERO_REFINEMENT.md
+# Portfolio Development Log
 
-# Portfolio Website - Hero Refinement Log
+## Project Overview
 
-Date: June 2026
+Personal portfolio website for:
 
----
+**John Karlo Talagtag**
+React & Laravel Full-Stack Developer
 
-## Current Development Stage
+Design direction:
 
-Completed:
-
-- Project setup
-- React + Vite
-- Tailwind CSS v4
-- Folder structure
-- Navbar v1
-- Hero v1
-- Hero refinements
-
-Current focus:
-
-- Desktop-first development
-
----
-
-# Development Strategy
-
-Decision:
-
-Build desktop first before mobile responsiveness.
-
-Reason:
-
-The portfolio design is heavily editorial and desktop-oriented.
-
-Responsive design will be implemented after all sections are complete.
-
-Workflow:
-
-1. Desktop Layout
-2. Complete Sections
-3. Animations
-4. Responsive Design
-5. Polish
-6. Deployment
-
----
-
-# Hero Design Inspiration
-
-Primary inspiration:
-
-Swiss editorial portfolios.
-
-Characteristics:
-
-- Large typography
-- Minimal color palette
-- Asymmetrical composition
-- Strong whitespace
-- Large portrait imagery
-- Vertical labels
-
-Reference traits:
-
-- Portrait dominates the right side
-- Hero text occupies left side
-- Minimal navigation
-- Transparent navbar
-- Optical alignment over mathematical alignment
-
----
-
-# Hero Layout
-
-Grid system:
-
-```text
-1 | 4 | 7
-```
-
-Columns:
-
-```text
-1 column  -> Vertical Label
-4 columns -> Hero Content
-7 columns -> Portrait
-```
-
----
-
-# Hero Structure
-
-```text
----------------------------------------------------
-Navbar
----------------------------------------------------
-
-Vertical Label
-
-+02      React
-Projects Laravel
-
-Hello
-— React & Laravel Full-Stack Developer
-
-Scroll down ↓
-
-                           Portrait
-                           Portrait
-                           Portrait
----------------------------------------------------
-```
-
----
-
-# Hero Container
-
-Decision:
-
-Use a dedicated HeroContainer.
-
-Reason:
-
-The Hero should span the full viewport width.
-
-Implementation:
-
-```jsx
-w-full
-px-6
-md:px-10
-lg:px-14
-xl:px-16
-2xl:px-20
-```
-
-No:
-
-- max-width
-- mx-auto
-
----
-
-# Typography
-
-Hero title:
-
-```text
-Hello
-```
-
-Classes:
-
-```jsx
-text-[7rem]
-md:text-[8rem]
-xl:text-[10rem]
-leading-[0.82]
-tracking-[-0.11em]
-font-extralight
-```
-
-Design principle:
-
-Large typography creates visual hierarchy.
-
----
-
-# Vertical Label
-
-Content:
-
-```text
-Full Stack Developer
-2026
-```
-
-Implementation:
-
-```css
-writing-mode: vertical-rl;
-rotate: 180deg;
-```
-
-Divider:
-
-```jsx
-h-[320px]
-w-px
-bg-neutral-200
-```
-
----
-
-# Stats
-
-Avoid fake statistics.
-
-Current values:
-
-```text
-02+ Projects Built
-React / Laravel
-```
-
-Future updates:
-
-Replace with actual project count.
-
----
-
-# Portrait
-
-Current state:
-
-Gray placeholder.
-
-Future:
-
-- Transparent PNG
-- Grayscale image
-- No border
-- No shadow
-- No card background
-
-Target size:
-
-```jsx
-h-[82vh]
-w-[92%]
-```
-
----
-
-# Navbar Decisions
-
-Navbar:
-
-- Fixed position
-- Transparent background
-- No blur
-
-Reason:
-
-Blur covered the vertical label.
-
-Logo:
-
-```text
-JK
-```
-
-Navigation:
-
-- About
-- Projects
-- Experience
-- Contact
-
-CTA:
-
-```text
-Resume ↗
-```
-
-Interactions:
-
-```css
-hover:text-neutral-900
-hover:translate-x-1
-transition-all duration-300
-```
-
----
-
-# Responsive Strategy
-
-Decision:
-
-Responsive design postponed until all desktop sections are complete.
-
-Future mobile layout:
-
-Desktop:
-
-```text
-Label | Text | Portrait
-```
-
-Mobile:
-
-```text
-Hello
-
-Developer subtitle
-
-Portrait
-
-Stats
-
-Scroll ↓
-```
+* Minimalist
+* Swiss / Editorial
+* Typography-first
+* Apple / Linear / Vercel inspired
+* Monochrome palette
+* Large typography
+* Strong whitespace
+* Subtle motion
 
 ---
 
 # Current Progress
 
-Completed:
+## Completed
 
-✅ Navbar
+### Navigation
 
-✅ Hero Layout
+Implemented:
 
-✅ Hero Refinement
+* Fixed navbar
+* Blur effect retained
+* Semi-transparent background
+* Mobile menu
+* Logo integration (`JKT.png`)
+* Underline hover animations
+* Responsive navigation
 
-⏳ About Section
+Current navbar style:
 
-⏳ Projects Section
-
-⏳ Experience Section
-
-⏳ Contact Section
-
-⏳ Footer
-
-⏳ Animations
-
-⏳ Responsive Design
-
-⏳ Deployment
+* `backdrop-blur-xl`
+* `bg-white/60`
+* Minimal text navigation
+* Mobile "Menu / Close" button
 
 ---
 
-# Next Step
+## Hero Section
 
-Build the About section.
+### Desktop
 
-Goal:
+Current direction:
 
-Introduce:
+* Large "Hello."
+* Giant outlined JK initials
+* Mouse parallax effect
+* Editorial layout
+* Vertical developer label
+* Stats block
 
-- BSIT background
-- React and Laravel expertise
-- Career goals
-- Open-to-work status
+Content:
+
+* 02+ Years Learning
+* 10+ Projects Built
+
+Subtitle:
+
+> I am John Karlo · React & Laravel Full-Stack Developer
+
+---
+
+### Mobile Hero
+
+Several iterations tested:
+
+#### Rejected
+
+* Hidden JK
+* Small centered JK
+* Apple multilingual "Hello" intro
+
+Reason:
+
+* Felt unnecessary
+* Distracted from portfolio
+
+#### Current Direction
+
+Keep giant outlined JK in background.
+
+Goals:
+
+* Similar feeling to desktop
+* Text remains centered
+* Maintain readability
+* Avoid excessive empty space
+
+Known issues:
+
+* JK visibility varies across devices
+* Hero positioning differs between browsers
+* Need additional mobile testing
+
+---
+
+## About Section
+
+Updated structure:
+
+### Heading
+
+Possible options:
+
+* Building thoughtful digital products.
+* Creating experiences through code.
+* Turning ideas into digital experiences.
+
+Current preference:
+
+> Building thoughtful digital products.
+
+### Content
+
+Focus:
+
+* Full-stack development
+* React
+* Laravel
+* Practical problem solving
+* Professional growth
+
+### Information Row
+
+* Location
+* Focus
+* Status
+
+Mobile optimized:
+
+* 1 column mobile
+* 3 columns desktop
+
+---
+
+## Skills Section
+
+Implemented:
+
+### Frontend
+
+* React
+* JavaScript
+* Tailwind CSS
+
+### Backend
+
+* Laravel
+* PHP
+* MySQL
+
+### Workflow
+
+* Git
+* GitHub
+* Figma
+* VS Code
+
+Future improvement:
+
+* Add proficiency indicators
+* Improve visual hierarchy
+
+---
+
+## Experience Section
+
+Current content includes:
+
+### OJT
+
+MAMS LT&G Franchising Corp.
+
+Responsibilities:
+
+* Hardware support
+* Printer troubleshooting
+* Creative design
+* Branch support
+* System assistance
+* Internal system development support
+
+---
+
+## Contact Section
+
+Current direction:
+
+Large editorial CTA.
+
+Headline:
+
+> Let's build something meaningful.
+
+Includes:
+
+* Email
+* LinkedIn
+* GitHub
+* Resume
+
+Status:
+
+Good overall.
+
+---
+
+# Layout System Review
+
+## Current Problem
+
+Three different container systems exist.
+
+### HeroContainer
+
+Uses:
+
+px-5
+sm:px-6
+md:px-8
+lg:px-10
+xl:px-12
+2xl:px-16
+
+### SectionContainer
+
+Uses:
+
+px-6
+md:px-10
+lg:px-14
+xl:px-16
+2xl:px-20
+
+### Container
+
+Uses:
+
+max-w-[1900px]
+mx-auto
+
+Different paddings.
+
+Result:
+
+* Sections shift alignment
+* Layout feels inconsistent
+* Premium feel reduced
+
+---
+
+## Planned Fix
+
+Use a single container system.
+
+Recommended base:
+
+```jsx
+export default function Container({
+  children,
+  className = "",
+}) {
+  return (
+    <div
+      className={`
+        max-w-[1900px]
+        mx-auto
+
+        px-6
+        md:px-10
+        lg:px-14
+        xl:px-16
+        2xl:px-20
+
+        ${className}
+      `}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+Then:
+
+* HeroContainer wraps Container
+* SectionContainer wraps Container
+
+Single source of truth.
+
+---
+
+# Currently Section Review
+
+Issues identified:
+
+### Too Tall
+
+Current:
+
+```jsx
+min-h-[80vh]
+py-40
+```
+
+Creates excessive page height.
+
+### Recommendation
+
+Use:
+
+```jsx
+py-24 lg:py-32
+```
+
+Remove:
+
+```jsx
+min-h-[80vh]
+```
+
+---
+
+## Bigger Question
+
+Potentially remove section entirely.
+
+Current structure:
+
+Hero
+About
+Skills
+Projects
+Experience
+Currently
+Contact
+
+Possible simplification:
+
+Hero
+About
+Skills
+Projects
+Experience
+Contact
+
+Move:
+
+* Open to Work
+* Availability
+* Location
+
+into Contact section.
+
+---
+
+# Mobile Optimization Status
+
+## Completed
+
+* Responsive navbar
+* Responsive hero typography
+* Responsive spacing
+* Mobile menu
+
+## Remaining
+
+### Hero
+
+* Finalize JK positioning
+* Improve first-screen impact
+* Ensure consistency across devices
+
+### About
+
+* Verify mobile spacing
+
+### Skills
+
+* Optimize mobile layout
+
+### Projects
+
+* Complete redesign
+
+### Experience
+
+* Improve mobile presentation
+
+### Contact
+
+* Verify spacing
+
+---
+
+# Recruiter Feedback Discussion
+
+Concern:
+
+> Will recruiters skip the portfolio because it lacks visuals and color?
+
+Conclusion:
+
+No.
+
+Typography-first portfolios are acceptable when:
+
+* Typography is strong
+* Layout is intentional
+* Projects are excellent
+
+Recruiters care most about:
+
+1. Projects
+2. Experience
+3. Resume
+
+Not background colors.
+
+---
+
+# Next Priority
+
+## Projects Section
+
+Reason:
+
+Recruiters spend most time here.
+
+Planned improvements:
+
+### Desktop
+
+* Large screenshots
+* Case-study style layout
+* Better hierarchy
+
+### Mobile
+
+* Optimized cards
+* Better project presentation
+
+### Future
+
+* Live Demo buttons
+* GitHub buttons
+* Project detail pages
+
+---
+
+# Current Portfolio Rating
+
+Navbar: 8.5/10
+
+Hero: 8/10
+
+About: 8/10
+
+Contact: 8/10
+
+Container System: 6.5/10
+
+Overall: 8/10
+
+---
+
+# Immediate Next Task
+
+1. Unify container system.
+2. Review Projects section.
+3. Optimize Projects for mobile.
+4. Refine Experience section.
+5. Final mobile QA before job applications.

@@ -11,11 +11,15 @@ export default function About() {
   return (
     <section
       id="about"
-      className="min-h-screen flex items-center"
+      className="
+        min-h-screen
+        flex
+        items-center
+        overflow-hidden
+      "
     >
       <SectionContainer>
-        <div className="py-40">
-
+        <div className="py-24 lg:py-40">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -24,9 +28,13 @@ export default function About() {
               once: true,
               amount: 0.25,
             }}
-            className="grid grid-cols-12 gap-8"
+            className="
+              grid
+              grid-cols-1
+              lg:grid-cols-12
+              gap-8
+            "
           >
-
             {/* Vertical Label */}
             <div
               className="
@@ -62,11 +70,15 @@ export default function About() {
               <motion.h2
                 variants={fadeUp}
                 className="
-                  text-5xl
+                  text-4xl
+                  sm:text-5xl
                   xl:text-[5rem]
+
                   font-light
                   leading-[0.92]
                   tracking-[-0.07em]
+
+                  break-words
                 "
               >
                 Crafting digital
@@ -77,14 +89,20 @@ export default function About() {
 
             {/* Content */}
             <div className="col-span-12 lg:col-span-5 lg:pt-6">
-
               <motion.div
                 variants={staggerContainer}
                 className="max-w-lg"
               >
-
-                <div className="space-y-8 text-lg leading-relaxed text-neutral-600">
-
+                <div
+                  className="
+                    space-y-8
+                    text-base
+                    sm:text-lg
+                    leading-relaxed
+                    text-neutral-600
+                    break-words
+                  "
+                >
                   <motion.p variants={fadeUp}>
                     I am a BSIT graduate passionate about building
                     modern web applications using React and Laravel.
@@ -101,19 +119,23 @@ export default function About() {
                     seeking opportunities to grow as a full-stack
                     developer.
                   </motion.p>
-
                 </div>
 
                 {/* Info Row */}
                 <motion.div
                   variants={fadeUp}
                   className="
-                    mt-20
+                    mt-16
+                    lg:mt-20
+
                     pt-8
                     border-t
                     border-neutral-200
+
                     grid
-                    grid-cols-3
+                    grid-cols-1
+                    sm:grid-cols-3
+
                     gap-8
                   "
                 >
@@ -168,13 +190,9 @@ export default function About() {
                     </p>
                   </div>
                 </motion.div>
-
               </motion.div>
-
             </div>
-
           </motion.div>
-
         </div>
       </SectionContainer>
     </section>

@@ -6,13 +6,14 @@ import {
   staggerContainer,
   lineGrow,
 } from "../../utils/animations";
+
 import skills from "../../data/skills";
 
 export default function Skills() {
   return (
     <section
       id="skills"
-      className="min-h-screen py-40"
+      className="min-h-screen py-24 lg:py-40 overflow-hidden"
     >
       <SectionContainer>
         <motion.div
@@ -23,43 +24,45 @@ export default function Skills() {
             once: true,
             amount: 0.2,
           }}
-          className="grid grid-cols-12 gap-8"
+          className="
+            grid
+            grid-cols-1
+            lg:grid-cols-12
+            gap-8
+          "
         >
-
           {/* Vertical Label */}
-        <div
+          <div
+            className="
+              hidden
+              lg:flex
+              col-span-2
+              items-center
+              gap-6
+            "
+          >
+            <motion.div
+              variants={lineGrow}
+              className="w-px bg-neutral-200"
+            />
+
+            <motion.span
+              variants={fadeUp}
               className="
-                hidden
-                lg:flex
-                col-span-2
-                items-center
-                gap-6
+                text-[11px]
+                uppercase
+                tracking-[0.25em]
+                text-neutral-400
+                [writing-mode:vertical-rl]
+                rotate-180
               "
             >
-              <motion.div
-                variants={lineGrow}
-                className="w-px bg-neutral-200"
-              />
-
-              <motion.span
-                variants={fadeUp}
-                className="
-                  text-[11px]
-                  uppercase
-                  tracking-[0.25em]
-                  text-neutral-400
-                  [writing-mode:vertical-rl]
-                  rotate-180
-                "
-              >
-                SKILLS  · 2026
-              </motion.span>
-            </div>
-
+              SKILLS · 2026
+            </motion.span>
+          </div>
 
           {/* Content */}
           <div className="col-span-12 lg:col-span-10">
-
             {/* Section Heading */}
             <motion.div
               variants={fadeUp}
@@ -67,8 +70,10 @@ export default function Skills() {
             >
               <h2
                 className="
-                  text-5xl
+                  text-4xl
+                  sm:text-5xl
                   xl:text-[6rem]
+
                   font-light
                   leading-[0.9]
                   tracking-[-0.08em]
@@ -83,7 +88,7 @@ export default function Skills() {
             {/* Skills List */}
             <motion.div
               variants={staggerContainer}
-              className="mt-32"
+              className="mt-20 lg:mt-32"
             >
               {skills.map((skill) => (
                 <motion.div
@@ -93,23 +98,34 @@ export default function Skills() {
                     group
                     border-t
                     border-neutral-200
-                    py-16
+                    py-12
+                    lg:py-16
                   "
                 >
-                  <div className="grid grid-cols-12 gap-8">
-
-                    {/* Huge Number */}
+                  <div
+                    className="
+                      grid
+                      grid-cols-1
+                      md:grid-cols-12
+                      gap-8
+                    "
+                  >
+                    {/* Number */}
                     <div className="col-span-12 md:col-span-2">
                       <span
                         className="
-                          text-[6rem]
+                          text-[4rem]
+                          sm:text-[5rem]
                           xl:text-[8rem]
+
                           leading-none
                           font-extralight
                           tracking-[-0.08em]
+
                           text-neutral-200
                           transition-all
                           duration-500
+
                           group-hover:text-neutral-800
                         "
                       >
@@ -119,11 +135,12 @@ export default function Skills() {
 
                     {/* Skill Content */}
                     <div className="col-span-12 md:col-span-10">
-
                       <h3
                         className="
-                          text-3xl
+                          text-2xl
+                          sm:text-3xl
                           xl:text-4xl
+
                           font-light
                           tracking-tight
                         "
@@ -135,9 +152,13 @@ export default function Skills() {
                         className="
                           mt-6
                           max-w-2xl
-                          text-lg
+
+                          text-base
+                          sm:text-lg
+
                           leading-relaxed
                           text-neutral-600
+                          break-words
                         "
                       >
                         {skill.description}
@@ -146,24 +167,24 @@ export default function Skills() {
                       <p
                         className="
                           mt-8
+
                           text-xs
                           uppercase
-                          tracking-[0.3em]
+                          tracking-[0.2em]
+                          sm:tracking-[0.3em]
+
                           text-neutral-400
+                          break-words
                         "
                       >
                         {skill.tech}
                       </p>
-
                     </div>
-
                   </div>
                 </motion.div>
               ))}
             </motion.div>
-
           </div>
-
         </motion.div>
       </SectionContainer>
     </section>

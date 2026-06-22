@@ -12,7 +12,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="min-h-screen overflow-hidden"
+      className="overflow-hidden"
       onMouseMove={(e) => {
         const { innerWidth, innerHeight } = window;
 
@@ -30,7 +30,7 @@ export default function Hero() {
             grid-cols-1
             lg:grid-cols-12
 
-            min-h-screen
+            min-h-[85svh]
 
             items-center
 

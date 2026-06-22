@@ -11,10 +11,13 @@ export default function Currently() {
   return (
     <section
       id="currently"
-      className="min-h-[80vh] py-40"
+      className="
+        py-24
+        lg:py-32
+        overflow-hidden
+      "
     >
       <SectionContainer>
-
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -23,9 +26,13 @@ export default function Currently() {
             once: true,
             amount: 0.2,
           }}
-          className="grid grid-cols-12 gap-8"
+          className="
+            grid
+            grid-cols-1
+            lg:grid-cols-12
+            gap-8
+          "
         >
-
           {/* Vertical Label */}
           <div
             className="
@@ -59,7 +66,6 @@ export default function Currently() {
 
           {/* Content */}
           <div className="col-span-12 lg:col-span-10">
-
             {/* Heading */}
             <motion.div
               variants={fadeUp}
@@ -67,7 +73,8 @@ export default function Currently() {
             >
               <h2
                 className="
-                  text-5xl
+                  text-4xl
+                  sm:text-5xl
                   xl:text-[6rem]
                   font-light
                   leading-[0.9]
@@ -79,8 +86,19 @@ export default function Currently() {
             </motion.div>
 
             {/* Main Content */}
-            <div className="mt-24 grid grid-cols-12 gap-12">
+            <div
+              className="
+                mt-16
+                lg:mt-24
 
+                grid
+                grid-cols-1
+                lg:grid-cols-12
+
+                gap-10
+                lg:gap-12
+              "
+            >
               {/* Left */}
               <motion.div
                 variants={fadeUp}
@@ -88,8 +106,10 @@ export default function Currently() {
               >
                 <p
                   className="
-                    text-3xl
+                    text-2xl
+                    sm:text-3xl
                     xl:text-4xl
+
                     font-light
                     leading-[1.15]
                     tracking-tight
@@ -112,11 +132,11 @@ export default function Currently() {
                   className="
                     border-t
                     border-neutral-200
+
                     pt-8
                     space-y-10
                   "
                 >
-
                   <div>
                     <p
                       className="
@@ -129,7 +149,7 @@ export default function Currently() {
                       Status
                     </p>
 
-                    <p className="mt-3 text-xl">
+                    <p className="mt-3 text-lg sm:text-xl">
                       Open to Work
                     </p>
                   </div>
@@ -146,7 +166,7 @@ export default function Currently() {
                       Focus
                     </p>
 
-                    <p className="mt-3 text-xl">
+                    <p className="mt-3 text-lg sm:text-xl">
                       React · Laravel · UI/UX
                     </p>
                   </div>
@@ -163,7 +183,7 @@ export default function Currently() {
                       Location
                     </p>
 
-                    <p className="mt-3 text-xl">
+                    <p className="mt-3 text-lg sm:text-xl">
                       Philippines
                     </p>
                   </div>
@@ -180,20 +200,15 @@ export default function Currently() {
                       Availability
                     </p>
 
-                    <p className="mt-3 text-xl">
+                    <p className="mt-3 text-lg sm:text-xl">
                       Immediate
                     </p>
                   </div>
-
                 </div>
               </motion.div>
-
             </div>
-
           </div>
-
         </motion.div>
-
       </SectionContainer>
     </section>
   );
