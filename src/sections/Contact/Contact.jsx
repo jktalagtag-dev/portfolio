@@ -10,22 +10,22 @@ import {
 const links = [
   {
     label: "Email",
-    value: "johnkarlo@example.com",
-    href: "mailto:johnkarlo@example.com",
+    value: "Let's talk",
+    href: "mailto:your-email@example.com",
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/johnkarlo",
+    value: "Connect with me",
     href: "#",
   },
   {
     label: "GitHub",
-    value: "github.com/jktalagtag-dev",
+    value: "View my work",
     href: "#",
   },
   {
     label: "Resume",
-    value: "Download CV",
+    value: "Download Resume",
     href: "#",
   },
 ];
@@ -34,7 +34,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="min-h-screen py-40"
+      className="py-24 lg:py-40"
     >
       <SectionContainer>
         <motion.div
@@ -45,22 +45,25 @@ export default function Contact() {
             once: true,
             amount: 0.2,
           }}
-          className="grid grid-cols-12 gap-8"
+          className="
+            grid
+            grid-cols-1
+            lg:grid-cols-12
+            gap-8
+          "
         >
-          {/* Vertical Label */}
           <div
             className="
               hidden
               lg:flex
               col-span-2
               items-start
-              pt-8
               gap-6
             "
           >
             <motion.div
               variants={lineGrow}
-              className="w-px h-[360px] bg-neutral-200"
+              className="w-px h-[300px] bg-neutral-200"
             />
 
             <motion.span
@@ -78,24 +81,23 @@ export default function Contact() {
             </motion.span>
           </div>
 
-          {/* Content */}
           <div className="col-span-12 lg:col-span-10">
-
-            {/* Heading */}
             <motion.div
               variants={fadeUp}
               className="max-w-5xl"
             >
               <h2
                 className="
-                  text-5xl
+                  text-[3rem]
+                  sm:text-6xl
                   xl:text-[7rem]
+
                   font-light
                   leading-[0.9]
                   tracking-[-0.08em]
                 "
               >
-                Let's build
+                Let's create
                 <br />
                 something
                 <br />
@@ -104,22 +106,30 @@ export default function Contact() {
 
               <p
                 className="
-                  mt-10
+                  mt-8
                   max-w-xl
-                  text-lg
+
+                  text-base
+                  sm:text-lg
+
                   leading-relaxed
                   text-neutral-500
                 "
               >
-                Currently open to full-time opportunities,
-                freelance projects, and collaborations.
+                I'm currently open to frontend development
+                opportunities, freelance projects, and
+                collaborations where design and technology
+                come together.
               </p>
             </motion.div>
 
-            {/* Contact Links */}
             <motion.div
               variants={staggerContainer}
-              className="mt-32 border-t border-neutral-200"
+              className="
+                mt-20
+                border-t
+                border-neutral-200
+              "
             >
               {links.map((link) => (
                 <motion.a
@@ -130,10 +140,13 @@ export default function Contact() {
                   rel="noreferrer"
                   className="
                     group
+
                     flex
                     items-center
                     justify-between
-                    py-10
+
+                    py-8
+
                     border-b
                     border-neutral-200
                   "
@@ -141,7 +154,7 @@ export default function Contact() {
                   <div>
                     <p
                       className="
-                        text-xs
+                        text-[11px]
                         uppercase
                         tracking-[0.25em]
                         text-neutral-400
@@ -153,12 +166,17 @@ export default function Contact() {
                     <p
                       className="
                         mt-2
-                        text-2xl
+
+                        text-xl
+                        sm:text-2xl
                         xl:text-3xl
+
                         font-light
+
                         transition-all
                         duration-300
-                        group-hover:translate-x-4
+
+                        group-hover:translate-x-3
                       "
                     >
                       {link.value}
@@ -169,8 +187,10 @@ export default function Contact() {
                     className="
                       text-neutral-400
                       text-2xl
+
                       transition-all
                       duration-300
+
                       group-hover:translate-x-2
                       group-hover:text-black
                     "
@@ -180,7 +200,6 @@ export default function Contact() {
                 </motion.a>
               ))}
             </motion.div>
-
           </div>
         </motion.div>
       </SectionContainer>

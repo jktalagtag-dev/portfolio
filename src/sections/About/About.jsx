@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
 import SectionContainer from "../../components/ui/SectionContainer";
 
 import {
@@ -10,16 +12,11 @@ import {
 export default function About() {
   return (
     <section
-      id="about"
-      className="
-        min-h-screen
-        flex
-        items-center
-        overflow-hidden
-      "
+      id="about-preview"
+      className="overflow-hidden"
     >
       <SectionContainer>
-        <div className="py-24 lg:py-40">
+        <div className="py-20 lg:py-40">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -32,7 +29,7 @@ export default function About() {
               grid
               grid-cols-1
               lg:grid-cols-12
-              gap-8
+              gap-10
             "
           >
             {/* Vertical Label */}
@@ -61,29 +58,30 @@ export default function About() {
                   rotate-180
                 "
               >
-                ABOUT · 2026
+                ABOUT · PREVIEW
               </motion.span>
             </div>
 
             {/* Heading */}
-            <div className="col-span-12 lg:col-span-5 lg:pt-2">
+            <div className="col-span-12 lg:col-span-5">
               <motion.h2
                 variants={fadeUp}
                 className="
-                  text-4xl
+                  max-w-[300px]
+                  sm:max-w-none
+
+                  text-[2.5rem]
                   sm:text-5xl
                   xl:text-[5rem]
 
                   font-light
                   leading-[0.92]
                   tracking-[-0.07em]
-
-                  break-words
                 "
               >
-                Crafting digital
+                A little
                 <br />
-                experiences.
+                about me.
               </motion.h2>
             </div>
 
@@ -91,104 +89,70 @@ export default function About() {
             <div className="col-span-12 lg:col-span-5 lg:pt-6">
               <motion.div
                 variants={staggerContainer}
-                className="max-w-lg"
+                className="max-w-xl"
               >
                 <div
                   className="
-                    space-y-8
+                    space-y-6
+
                     text-base
                     sm:text-lg
+
                     leading-relaxed
                     text-neutral-600
-                    break-words
                   "
                 >
                   <motion.p variants={fadeUp}>
-                    I am a BSIT graduate passionate about building
-                    modern web applications using React and Laravel.
+                    I'm John Karlo, a Frontend Developer who enjoys
+                    turning ideas into clean and intuitive digital
+                    experiences.
                   </motion.p>
 
                   <motion.p variants={fadeUp}>
-                    I enjoy creating clean interfaces and scalable
-                    backend systems while continuously improving my
-                    skills as a developer.
+                    My focus is building responsive interfaces with
+                    React while bringing a full-stack understanding
+                    from working with Laravel, PHP, and databases.
                   </motion.p>
 
                   <motion.p variants={fadeUp}>
-                    Currently building portfolio projects and actively
-                    seeking opportunities to grow as a full-stack
-                    developer.
+                    I enjoy the intersection of design and
+                    development—where thoughtful user experiences
+                    meet solid implementation.
                   </motion.p>
                 </div>
 
-                {/* Info Row */}
                 <motion.div
                   variants={fadeUp}
                   className="
-                    mt-16
-                    lg:mt-20
+                    mt-12
 
                     pt-8
+
                     border-t
                     border-neutral-200
-
-                    grid
-                    grid-cols-1
-                    sm:grid-cols-3
-
-                    gap-8
                   "
                 >
-                  <div>
-                    <p
-                      className="
-                        text-xs
-                        uppercase
-                        tracking-[0.2em]
-                        text-neutral-400
-                      "
-                    >
-                      Location
-                    </p>
+                  <Link
+                    to="/about"
+                    className="
+                      inline-flex
+                      items-center
+                      gap-3
 
-                    <p className="mt-2 text-neutral-700">
-                      Philippines
-                    </p>
-                  </div>
+                      text-sm
+                      uppercase
+                      tracking-[0.18em]
 
-                  <div>
-                    <p
-                      className="
-                        text-xs
-                        uppercase
-                        tracking-[0.2em]
-                        text-neutral-400
-                      "
-                    >
-                      Focus
-                    </p>
+                      text-neutral-500
 
-                    <p className="mt-2 text-neutral-700">
-                      React / Laravel
-                    </p>
-                  </div>
+                      transition-colors
+                      duration-300
 
-                  <div>
-                    <p
-                      className="
-                        text-xs
-                        uppercase
-                        tracking-[0.2em]
-                        text-neutral-400
-                      "
-                    >
-                      Status
-                    </p>
-
-                    <p className="mt-2 text-neutral-700">
-                      Open to Work
-                    </p>
-                  </div>
+                      hover:text-black
+                    "
+                  >
+                    Learn More →
+                  </Link>
                 </motion.div>
               </motion.div>
             </div>

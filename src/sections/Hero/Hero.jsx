@@ -30,7 +30,7 @@ export default function Hero() {
             grid-cols-1
             lg:grid-cols-12
 
-            min-h-[75svh]
+            min-h-[80svh]
 
             items-center
 
@@ -38,42 +38,6 @@ export default function Hero() {
             lg:pt-20
           "
         >
-          {/* Mobile Background JK */}
-          {/* <div
-            className="
-              lg:hidden
-              absolute
-              inset-0
-              overflow-hidden
-              pointer-events-none
-              select-none
-            "
-          >
-            <span
-              className="
-                absolute
-                left-1/2
-                top-[52%]
-
-                -translate-x-1/2
-                -translate-y-1/2
-
-                text-[28rem]
-
-                font-extralight
-                leading-none
-                tracking-[-0.32em]
-
-                text-transparent
-                opacity-80
-
-                [-webkit-text-stroke:1px_rgb(225_225_225)]
-              "
-            >
-              JK
-            </span>
-          </div> */}
-
           {/* Vertical Label */}
           <div
             className="
@@ -100,7 +64,7 @@ export default function Hero() {
                 rotate-180
               "
             >
-              Full Stack Developer
+              Frontend Developer
             </span>
 
             <div className="h-[320px] w-px bg-neutral-200" />
@@ -198,11 +162,32 @@ export default function Hero() {
               Hello.
             </h1>
 
-            {/* Subtitle */}
+            {/* Main Intro */}
             <p
               className="
-                mt-4
-                max-w-[320px]
+                mt-6
+
+                max-w-[520px]
+
+                text-lg
+                sm:text-xl
+
+                leading-relaxed
+
+                text-neutral-700
+              "
+            >
+              I'm John Karlo, a Frontend Developer who enjoys
+              turning ideas into clean and intuitive digital
+              experiences.
+            </p>
+
+            {/* Supporting Copy */}
+            <p
+              className="
+                mt-6
+
+                max-w-[520px]
 
                 text-base
                 sm:text-lg
@@ -211,7 +196,9 @@ export default function Hero() {
                 text-neutral-500
               "
             >
-              — I am John Karlo · React & Laravel Full-Stack Developer
+              Focused on building responsive interfaces with
+              React while bringing a full-stack understanding
+              from working with Laravel, PHP, and databases.
             </p>
 
             {/* Scroll */}
@@ -225,11 +212,11 @@ export default function Hero() {
               "
             >
               <span className="lg:hidden">
-                Explore ↓
+                View Work ↓
               </span>
 
               <span className="hidden lg:inline">
-                Scroll down ↓
+                Selected Work ↓
               </span>
             </div>
           </div>

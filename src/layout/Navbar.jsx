@@ -1,23 +1,21 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import HeroContainer from "../components/ui/HeroContainer";
 import logo from "../assets/img/JKT.png";
 
 const navItems = [
   {
-    label: "About",
-    href: "#about",
-  },
-  {
     label: "Work",
-    href: "#projects",
+    href: "/work",
   },
   {
-    label: "Experience",
-    href: "#experience",
+    label: "About",
+    href: "/about",
   },
   {
     label: "Contact",
-    href: "#contact",
+    href: "/contact",
   },
 ];
 
@@ -48,8 +46,8 @@ export default function Navbar() {
           "
         >
           {/* Logo */}
-          <a
-            href="#hero"
+          <Link
+            to="/"
             className="
               select-none
               transition-opacity
@@ -68,7 +66,7 @@ export default function Navbar() {
               "
               draggable="false"
             />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <ul
@@ -81,8 +79,8 @@ export default function Navbar() {
           >
             {navItems.map((item) => (
               <li key={item.label}>
-                <a
-                  href={item.href}
+                <Link
+                  to={item.href}
                   className="
                     relative
                     text-sm
@@ -104,22 +102,26 @@ export default function Navbar() {
                   "
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
 
-          {/* Desktop Resume */}
+          {/* Resume */}
           <a
             href="#"
             className="
               hidden
               md:block
+
               relative
+
               text-sm
               text-neutral-500
+
               transition-colors
               duration-300
+
               hover:text-neutral-900
 
               after:absolute
@@ -190,15 +192,17 @@ export default function Navbar() {
               flex
               flex-col
               gap-6
+
               border-t
               border-neutral-200
+
               pt-8
             "
           >
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to={item.href}
                 onClick={() => setIsOpen(false)}
                 className="
                   text-2xl
@@ -208,7 +212,7 @@ export default function Navbar() {
                 "
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
 
             <a

@@ -21,13 +21,11 @@ export default function ProjectCaseStudy() {
 
   return (
     <main className="min-h-screen">
-
       {/* Hero */}
       <section className="pt-40 pb-24">
         <div className="max-w-7xl mx-auto px-6">
-
           <Link
-            to="/"
+            to="/work"
             className="
               text-sm
               uppercase
@@ -36,7 +34,7 @@ export default function ProjectCaseStudy() {
               hover:text-black
             "
           >
-            ← Back
+            ← All Projects
           </Link>
 
           <p
@@ -54,8 +52,10 @@ export default function ProjectCaseStudy() {
           <h1
             className="
               mt-6
-              text-6xl
+              text-5xl
+              sm:text-6xl
               xl:text-[8rem]
+
               leading-[0.9]
               tracking-[-0.08em]
               font-light
@@ -68,21 +68,71 @@ export default function ProjectCaseStudy() {
             className="
               mt-10
               max-w-2xl
-              text-xl
+
+              text-lg
+              sm:text-xl
+
               leading-relaxed
               text-neutral-600
             "
           >
             {project.description}
           </p>
-
         </div>
       </section>
 
-      {/* Image */}
+      {/* Project Meta */}
+      <section className="pb-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="border-t border-neutral-200 pt-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-neutral-400">
+                  Role
+                </p>
+
+                <p className="mt-3">
+                  {project.role}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-neutral-400">
+                  Timeline
+                </p>
+
+                <p className="mt-3">
+                  {project.timeline}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-neutral-400">
+                  Year
+                </p>
+
+                <p className="mt-3">
+                  {project.year}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-neutral-400">
+                  Focus
+                </p>
+
+                <p className="mt-3">
+                  Frontend Development
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Hero Image */}
       <section className="pb-32">
         <div className="max-w-7xl mx-auto px-6">
-
           <img
             src={project.image}
             alt={project.title}
@@ -92,14 +142,12 @@ export default function ProjectCaseStudy() {
               object-cover
             "
           />
-
         </div>
       </section>
 
       {/* Content */}
       <section className="pb-40">
         <div className="max-w-5xl mx-auto px-6">
-
           <div className="border-t border-neutral-200 py-16">
             <h2 className="text-3xl font-light">
               Overview
@@ -108,6 +156,38 @@ export default function ProjectCaseStudy() {
             <p className="mt-8 text-lg leading-relaxed text-neutral-600">
               {project.overview}
             </p>
+          </div>
+
+          <div className="border-t border-neutral-200 py-16">
+            <h2 className="text-3xl font-light">
+              Process
+            </h2>
+
+            <p className="mt-8 text-lg leading-relaxed text-neutral-600">
+              {project.process}
+            </p>
+          </div>
+
+          <div className="border-t border-neutral-200 py-16">
+            <h2 className="text-3xl font-light">
+              Responsibilities
+            </h2>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              {project.responsibilities?.map((item) => (
+                <span
+                  key={item}
+                  className="
+                    border
+                    border-neutral-200
+                    px-4
+                    py-2
+                  "
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
           </div>
 
           <div className="border-t border-neutral-200 py-16">
@@ -152,13 +232,38 @@ export default function ProjectCaseStudy() {
             </p>
           </div>
 
-          <div className="border-t border-b border-neutral-200 py-16 flex gap-6">
+          <div className="border-t border-neutral-200 py-16">
+            <h2 className="text-3xl font-light">
+              Key Learnings
+            </h2>
 
+            <p className="mt-8 text-lg leading-relaxed text-neutral-600">
+              {project.learnings}
+            </p>
+          </div>
+
+          <div
+            className="
+              border-t
+              border-b
+              border-neutral-200
+
+              py-16
+
+              flex
+              flex-wrap
+              gap-6
+            "
+          >
             <a
               href={project.live}
               target="_blank"
               rel="noreferrer"
-              className="text-sm uppercase tracking-[0.15em]"
+              className="
+                text-sm
+                uppercase
+                tracking-[0.15em]
+              "
             >
               Live Demo ↗
             </a>
@@ -167,16 +272,17 @@ export default function ProjectCaseStudy() {
               href={project.github}
               target="_blank"
               rel="noreferrer"
-              className="text-sm uppercase tracking-[0.15em]"
+              className="
+                text-sm
+                uppercase
+                tracking-[0.15em]
+              "
             >
               GitHub ↗
             </a>
-
           </div>
-
         </div>
       </section>
-
     </main>
   );
 }

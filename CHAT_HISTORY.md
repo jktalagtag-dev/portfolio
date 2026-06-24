@@ -1,482 +1,299 @@
-# Portfolio Development Log
+# PORTFOLIO 2.0 — REBRAND & SITE ARCHITECTURE
 
-## Project Overview
+## Vision
 
-Personal portfolio website for:
+Reposition the portfolio from a generic Full-Stack Developer portfolio into a Frontend Developer portfolio that highlights design awareness, interface implementation, and user experience thinking.
 
-**John Karlo Talagtag**
-React & Laravel Full-Stack Developer
+### Personal Brand
 
-Design direction:
+**Frontend Developer who enjoys turning ideas into clean and intuitive digital experiences.**
 
-* Minimalist
-* Swiss / Editorial
-* Typography-first
-* Apple / Linear / Vercel inspired
-* Monochrome palette
-* Large typography
-* Strong whitespace
-* Subtle motion
+### Supporting Statement
+
+Design-focused frontend development with full-stack understanding.
 
 ---
 
-# Current Progress
+# Core Principles
 
-## Completed
+The portfolio should communicate:
 
-### Navigation
+* Frontend Development
+* UI Implementation
+* Design Awareness
+* Problem Solving
+* Professional Presentation
 
-Implemented:
+The portfolio should NOT feel like:
 
-* Fixed navbar
-* Blur effect retained
-* Semi-transparent background
-* Mobile menu
-* Logo integration (`JKT.png`)
-* Underline hover animations
-* Responsive navigation
+* A resume website
+* A technology showcase
+* A developer template
 
-Current navbar style:
-
-* `backdrop-blur-xl`
-* `bg-white/60`
-* Minimal text navigation
-* Mobile "Menu / Close" button
+The work should always come before the skills.
 
 ---
 
-## Hero Section
+# Site Architecture
 
-### Desktop
+## Home
 
-Current direction:
+Route:
 
-* Large "Hello."
-* Giant outlined JK initials
-* Mouse parallax effect
-* Editorial layout
-* Vertical developer label
-* Stats block
+```txt
+/
+```
 
-Content:
+Purpose:
 
-* 02+ Years Learning
-* 10+ Projects Built
+Introduce who I am and immediately showcase my best work.
 
-Subtitle:
+### Sections
 
-> I am John Karlo · React & Laravel Full-Stack Developer
-
----
-
-### Mobile Hero
-
-Several iterations tested:
-
-#### Rejected
-
-* Hidden JK
-* Small centered JK
-* Apple multilingual "Hello" intro
-
-Reason:
-
-* Felt unnecessary
-* Distracted from portfolio
-
-#### Current Direction
-
-Keep giant outlined JK in background.
-
-Goals:
-
-* Similar feeling to desktop
-* Text remains centered
-* Maintain readability
-* Avoid excessive empty space
-
-Known issues:
-
-* JK visibility varies across devices
-* Hero positioning differs between browsers
-* Need additional mobile testing
+1. Hero
+2. Featured Work
+3. About Preview
+4. Contact CTA
 
 ---
 
-## About Section
+## Work
 
-Updated structure:
+Route:
 
-### Heading
+```txt
+/work
+```
 
-Possible options:
+Purpose:
 
-* Building thoughtful digital products.
-* Creating experiences through code.
-* Turning ideas into digital experiences.
+Showcase all projects.
 
-Current preference:
+### Sections
 
-> Building thoughtful digital products.
-
-### Content
-
-Focus:
-
-* Full-stack development
-* React
-* Laravel
-* Practical problem solving
-* Professional growth
-
-### Information Row
-
-* Location
-* Focus
-* Status
-
-Mobile optimized:
-
-* 1 column mobile
-* 3 columns desktop
+1. Featured Projects
+2. Additional Projects
+3. Project Links
 
 ---
 
-## Skills Section
+## Individual Project Pages
 
-Implemented:
+Routes:
 
-### Frontend
+```txt
+/work/guidance-management-system
 
-* React
-* JavaScript
-* Tailwind CSS
+/work/project-name
+```
 
-### Backend
+Purpose:
 
-* Laravel
-* PHP
-* MySQL
+Present detailed case studies.
 
-### Workflow
+### Structure
 
-* Git
-* GitHub
-* Figma
-* VS Code
-
-Future improvement:
-
-* Add proficiency indicators
-* Improve visual hierarchy
+1. Overview
+2. Problem
+3. Solution
+4. Role
+5. Technologies
+6. Key Features
+7. Challenges
+8. Outcome
 
 ---
 
-## Experience Section
+## About
 
-Current content includes:
+Route:
 
-### OJT
+```txt
+/about
+```
 
-MAMS LT&G Franchising Corp.
+Purpose:
 
-Responsibilities:
+Tell my story and explain how I work.
 
-* Hardware support
-* Printer troubleshooting
-* Creative design
-* Branch support
-* System assistance
-* Internal system development support
+### Sections
+
+1. Introduction
+2. Experience
+3. Skills
+4. Technologies
+5. Resume
+
+### Content Migration
+
+Move the following existing sections here:
+
+* About
+* Skills
+* Experience
+* Currently
 
 ---
 
-## Contact Section
+## Contact
 
-Current direction:
+Route:
 
-Large editorial CTA.
+```txt
+/contact
+```
+
+Purpose:
+
+Provide a simple way to connect.
+
+### Sections
+
+1. Contact Message
+2. Email
+3. LinkedIn
+4. GitHub
+5. Resume
+
+---
+
+# Navigation
+
+```txt
+JK
+
+Work
+About
+Contact
+Resume
+```
+
+Notes:
+
+* No Home link.
+* Clicking the logo returns to Home.
+* Work becomes the primary navigation item.
+
+---
+
+# Homepage Structure
+
+## Hero
 
 Headline:
 
-> Let's build something meaningful.
+Hello.
 
-Includes:
+Subheadline:
 
-* Email
-* LinkedIn
-* GitHub
+I'm John Karlo,
+a Frontend Developer who enjoys turning ideas into clean and intuitive digital experiences.
+
+Supporting Copy:
+
+Based in the Philippines. Focused on building responsive interfaces with React while bringing a full-stack understanding to every project.
+
+CTA:
+
+* View Work
 * Resume
 
-Status:
+---
 
-Good overall.
+## Featured Work
+
+This section appears immediately after Hero.
+
+Projects should be presented before:
+
+* Skills
+* Experience
+* Technologies
+
+The work becomes the centerpiece of the portfolio.
 
 ---
 
-# Layout System Review
+## About Preview
 
-## Current Problem
+Short introduction.
 
-Three different container systems exist.
+Example CTA:
 
-### HeroContainer
+Learn More →
 
-Uses:
+Links to:
 
-px-5
-sm:px-6
-md:px-8
-lg:px-10
-xl:px-12
-2xl:px-16
-
-### SectionContainer
-
-Uses:
-
-px-6
-md:px-10
-lg:px-14
-xl:px-16
-2xl:px-20
-
-### Container
-
-Uses:
-
-max-w-[1900px]
-mx-auto
-
-Different paddings.
-
-Result:
-
-* Sections shift alignment
-* Layout feels inconsistent
-* Premium feel reduced
-
----
-
-## Planned Fix
-
-Use a single container system.
-
-Recommended base:
-
-```jsx
-export default function Container({
-  children,
-  className = "",
-}) {
-  return (
-    <div
-      className={`
-        max-w-[1900px]
-        mx-auto
-
-        px-6
-        md:px-10
-        lg:px-14
-        xl:px-16
-        2xl:px-20
-
-        ${className}
-      `}
-    >
-      {children}
-    </div>
-  );
-}
-```
-
-Then:
-
-* HeroContainer wraps Container
-* SectionContainer wraps Container
-
-Single source of truth.
-
----
-
-# Currently Section Review
-
-Issues identified:
-
-### Too Tall
-
-Current:
-
-```jsx
-min-h-[80vh]
-py-40
-```
-
-Creates excessive page height.
-
-### Recommendation
-
-Use:
-
-```jsx
-py-24 lg:py-32
-```
-
-Remove:
-
-```jsx
-min-h-[80vh]
+```txt
+/about
 ```
 
 ---
 
-## Bigger Question
+## Contact CTA
 
-Potentially remove section entirely.
-
-Current structure:
-
-Hero
-About
-Skills
-Projects
-Experience
-Currently
-Contact
-
-Possible simplification:
-
-Hero
-About
-Skills
-Projects
-Experience
-Contact
-
-Move:
-
-* Open to Work
-* Availability
-* Location
-
-into Contact section.
+Simple closing section encouraging collaboration and opportunities.
 
 ---
 
-# Mobile Optimization Status
+# Design Direction
 
-## Completed
+Keep:
 
-* Responsive navbar
-* Responsive hero typography
-* Responsive spacing
-* Mobile menu
+* Swiss Design influence
+* Editorial layouts
+* Large typography
+* Generous whitespace
+* Minimal aesthetic
+* Framer Motion animations
+* JK branding
 
-## Remaining
+Avoid:
 
-### Hero
-
-* Finalize JK positioning
-* Improve first-screen impact
-* Ensure consistency across devices
-
-### About
-
-* Verify mobile spacing
-
-### Skills
-
-* Optimize mobile layout
-
-### Projects
-
-* Complete redesign
-
-### Experience
-
-* Improve mobile presentation
-
-### Contact
-
-* Verify spacing
+* Excessive visual clutter
+* Large skill grids on the homepage
+* Resume-first layouts
+* Generic developer portfolio patterns
 
 ---
 
-# Recruiter Feedback Discussion
+# Mobile Optimization
 
-Concern:
+Mobile optimization will begin AFTER:
 
-> Will recruiters skip the portfolio because it lacks visuals and color?
+1. Site architecture is completed
+2. Routing is completed
+3. Content updates are completed
 
-Conclusion:
-
-No.
-
-Typography-first portfolios are acceptable when:
-
-* Typography is strong
-* Layout is intentional
-* Projects are excellent
-
-Recruiters care most about:
-
-1. Projects
-2. Experience
-3. Resume
-
-Not background colors.
+Mobile optimization is Phase 2.
 
 ---
 
-# Next Priority
+# Development Order
 
-## Projects Section
+Phase 1
 
-Reason:
+1. Routing Setup
+2. Home Page
+3. Work Page
+4. About Page
+5. Contact Page
 
-Recruiters spend most time here.
+Phase 2
 
-Planned improvements:
-
-### Desktop
-
-* Large screenshots
-* Case-study style layout
-* Better hierarchy
-
-### Mobile
-
-* Optimized cards
-* Better project presentation
-
-### Future
-
-* Live Demo buttons
-* GitHub buttons
-* Project detail pages
+6. Individual Project Pages
+7. Mobile Optimization
+8. Final Polish
+9. Deployment
 
 ---
 
-# Current Portfolio Rating
+# Final Goal
 
-Navbar: 8.5/10
+When someone visits the portfolio, they should immediately think:
 
-Hero: 8/10
+"This person builds thoughtful and polished user experiences."
 
-About: 8/10
+The work should speak first.
 
-Contact: 8/10
-
-Container System: 6.5/10
-
-Overall: 8/10
-
----
-
-# Immediate Next Task
-
-1. Unify container system.
-2. Review Projects section.
-3. Optimize Projects for mobile.
-4. Refine Experience section.
-5. Final mobile QA before job applications.
+Everything else should support it.
