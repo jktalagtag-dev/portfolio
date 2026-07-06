@@ -121,7 +121,7 @@ export default function Hero() {
                 </p>
 
                 <p className="text-sm text-neutral-500">
-                  Years Learning
+                  Years Building
                 </p>
               </div>
 
@@ -139,7 +139,7 @@ export default function Hero() {
                 </p>
 
                 <p className="text-sm text-neutral-500">
-                  Projects Built
+                  Projects
                 </p>
               </div>
             </div>
@@ -159,46 +159,27 @@ export default function Hero() {
                 -ml-1
               "
             >
-              Hello.
+              Frontend
+              <br />
+              Developer.
             </h1>
 
             {/* Main Intro */}
             <p
               className="
-                mt-6
+                mt-8
 
-                max-w-[520px]
+                max-w-[480px]
 
                 text-lg
                 sm:text-xl
 
                 leading-relaxed
-
-                text-neutral-700
+                text-neutral-600
               "
             >
-              I'm John Karlo, a Frontend Developer who enjoys
-              turning ideas into clean and intuitive digital
-              experiences.
-            </p>
-
-            {/* Supporting Copy */}
-            <p
-              className="
-                mt-6
-
-                max-w-[520px]
-
-                text-base
-                sm:text-lg
-
-                leading-relaxed
-                text-neutral-500
-              "
-            >
-              Focused on building responsive interfaces with
-              React while bringing a full-stack understanding
-              from working with Laravel, PHP, and databases.
+              Design-minded frontend development
+              for modern digital experiences.
             </p>
 
             {/* Scroll */}

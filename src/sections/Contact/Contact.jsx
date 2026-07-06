@@ -10,17 +10,17 @@ import {
 const links = [
   {
     label: "Email",
-    value: "Let's talk",
+    value: "Let's Talk",
     href: "mailto:your-email@example.com",
   },
   {
     label: "LinkedIn",
-    value: "Connect with me",
+    value: "Connect",
     href: "#",
   },
   {
     label: "GitHub",
-    value: "View my work",
+    value: "View Work",
     href: "#",
   },
   {
@@ -97,11 +97,9 @@ export default function Contact() {
                   tracking-[-0.08em]
                 "
               >
-                Let's create
+                Currently
                 <br />
-                something
-                <br />
-                meaningful.
+                available.
               </h2>
 
               <p
@@ -116,10 +114,9 @@ export default function Contact() {
                   text-neutral-500
                 "
               >
-                I'm currently open to frontend development
-                opportunities, freelance projects, and
-                collaborations where design and technology
-                come together.
+                Frontend development roles,
+                freelance projects,
+                and collaborations.
               </p>
             </motion.div>
 
