@@ -34,3 +34,16 @@ export const lineGrow = {
     },
   },
 };
+
+export const drawLine = {
+  hidden: {
+    scaleY: 0,
+  },
+  show: {
+    scaleY: 1,
+    transition: {
+      duration: 1,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
