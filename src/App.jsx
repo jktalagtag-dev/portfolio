@@ -3,6 +3,9 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import Loader from "./components/ui/Loader";
+import ScrollToTop from "./components/ui/ScrollToTop";
+
+import useSmoothScroll from "./utils/useSmoothScroll";
 
 import Home from "./pages/Home";
 import Work from "./pages/Work";
@@ -12,6 +15,8 @@ import ProjectCaseStudy from "./sections/Projects/PortfolioCaseStudy";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+
+  useSmoothScroll();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,19 +35,23 @@ export default function App() {
   }
 
   return (
-    <Routes>
-     <Route path="/" element={<Home />} />
+    <>
+      <ScrollToTop />
 
-<Route path="/work" element={<Work />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-<Route
-  path="/work/:slug"
-  element={<ProjectCaseStudy />}
-/>
+        <Route path="/work" element={<Work />} />
 
-<Route path="/about" element={<AboutPage />} />
+        <Route
+          path="/work/:slug"
+          element={<ProjectCaseStudy />}
+        />
 
-<Route path="/contact" element={<Contact />} />
-    </Routes>
+        <Route path="/about" element={<AboutPage />} />
+
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </>
   );
 }

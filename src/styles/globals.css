@@ -8,11 +8,17 @@
   font-display: swap;
 }
 
+/*
+ * overflow-x: clip (not hidden) — hidden turns these into
+ * scroll containers, which silently disables position: sticky
+ * for every descendant. clip prevents horizontal overflow
+ * without breaking sticky.
+ */
 html,
 body,
 #root {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 :root {
@@ -24,15 +30,16 @@ body,
   --font-sans: "Geist", sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/*
+ * No CSS scroll-behavior: smooth — Lenis drives smooth
+ * scrolling (see useSmoothScroll.js); the two fight if both
+ * are active.
+ */
 
 body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  overflow-x: hidden;
 }
 
 * {

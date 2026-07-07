@@ -1,3 +1,6 @@
+// Premium ease-out — used across hero reveals.
+export const easeOutExpo = [0.16, 1, 0.3, 1];
+
 export const fadeUp = {
   hidden: {
     opacity: 0,

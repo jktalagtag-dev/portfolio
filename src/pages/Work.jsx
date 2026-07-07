@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
+import HeroContainer from "../components/ui/HeroContainer";
 import Projects from "../sections/Projects/Projects";
 
 export default function Work() {
@@ -11,12 +12,12 @@ export default function Work() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="overflow-x-hidden"
+      className="overflow-x-clip"
     >
       <Navbar />
 
       <main className="pt-32 lg:pt-40">
-        <section className="px-8 lg:px-16 pb-20">
+        <HeroContainer className="pb-20">
           <div className="max-w-5xl">
             <p
               className="
@@ -48,7 +49,7 @@ export default function Work() {
               studies.
             </h1>
           </div>
-        </section>
+        </HeroContainer>
 
         <Projects variant="archive" />
       </main>

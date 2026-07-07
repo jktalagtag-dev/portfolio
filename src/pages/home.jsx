@@ -4,7 +4,7 @@ import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
 import Hero from "../sections/Hero/Hero";
-import Projects from "../sections/Projects/Projects";
+import ProjectShowcase from "../sections/Projects/ProjectShowcase";
 
 export default function Home() {
   return (
@@ -18,17 +18,30 @@ export default function Home() {
       transition={{
         duration: 0.8,
       }}
-      className="overflow-x-hidden"
     >
       <Navbar />
 
       <main>
         <Hero />
 
-        <Projects variant="featured" />
-      </main>
+        {/*
+          Curtain — everything after the hero sits on an
+          opaque layer that scrolls up and covers the
+          pinned hero.
+        */}
+        <div
+          className="
+            relative
+            z-10
 
-      <Footer />
+            bg-[#F8F8F8]
+          "
+        >
+          <ProjectShowcase />
+
+          <Footer />
+        </div>
+      </main>
     </motion.div>
   );
 }

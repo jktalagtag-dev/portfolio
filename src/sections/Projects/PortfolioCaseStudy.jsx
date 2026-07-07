@@ -1,6 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { projects } from "../../data/projects";
+
+import Navbar from "../../layout/Navbar";
+import Footer from "../../layout/Footer";
 
 import HeroContainer from "../../components/ui/HeroContainer";
 
@@ -9,495 +13,415 @@ import ProjectHero from "../../components/case-study/ProjectHero";
 import ChallengeGrid from "../../components/case-study/ChallengeGrid";
 import Objectives from "../../components/case-study/Objectives";
 import ProcessTimeline from "../../components/case-study/ProcessTimeline";
+import DesignShowcase from "../../components/case-study/DesignShowcase";
+import DevelopmentArchitecture from "../../components/case-study/DevelopmentArchitecture";
+import ChallengeSolution from "../../components/case-study/ChallengeSolution";
+import OutcomeGrid from "../../components/case-study/OutcomeGrid";
+import Reflection from "../../components/case-study/Reflection";
+import NextProject from "../../components/case-study/NextProject";
 
 export default function ProjectCaseStudy() {
   const { slug } = useParams();
 
-  const project = projects.find(
+  const projectIndex = projects.findIndex(
     (project) => project.slug === slug
   );
 
+  const project = projects[projectIndex];
+
   if (!project) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <h1 className="text-2xl font-light">
+      <main
+        className="
+          min-h-screen
+
+          flex
+          flex-col
+          items-center
+          justify-center
+
+          gap-6
+
+          px-5
+          text-center
+        "
+      >
+        <h1
+          className="
+            text-3xl
+            sm:text-4xl
+
+            font-light
+            tracking-[-0.04em]
+          "
+        >
           Project not found.
         </h1>
+
+        <Link
+          to="/work"
+          className="
+            text-sm
+            uppercase
+            tracking-[0.2em]
+            text-neutral-500
+
+            transition-colors
+            duration-300
+
+            hover:text-black
+          "
+        >
+          ← Back to Work
+        </Link>
       </main>
     );
   }
 
+  const nextProject =
+    projects[(projectIndex + 1) % projects.length];
+
+  const hasLinks =
+    project.live !== "#" || project.github !== "#";
+
   return (
-    <main className="min-h-screen bg-white">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className="overflow-x-clip"
+    >
+      <Navbar />
 
-      <ProjectHero project={project} />
+      <main className="min-h-screen">
 
-      {/* ====================================================== */}
-      {/* CONTENT */}
-      {/* ====================================================== */}
+        <ProjectHero project={project} />
 
-      <HeroContainer>
+        {/* ====================================================== */}
+        {/* CONTENT */}
+        {/* ====================================================== */}
 
-        {/* ================================================== */}
-        {/* OVERVIEW */}
-        {/* ================================================== */}
+        <HeroContainer>
 
-        <CaseStudySection label="Overview">
+          {/* ================================================== */}
+          {/* OVERVIEW */}
+          {/* ================================================== */}
 
-          <div className="max-w-3xl">
+          <CaseStudySection label="Overview">
 
-            <h2
-              className="
-                text-4xl
-                lg:text-5xl
+            <div className="max-w-3xl">
 
-                font-light
-                tracking-[-0.05em]
-              "
-            >
-              Building a better digital experience for
-              students and guidance counselors.
-            </h2>
-
-            <p
-              className="
-                mt-10
-
-                text-lg
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              {project.overview}
-            </p>
-
-          </div>
-
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* CHALLENGE */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="The Challenge">
-          <ChallengeGrid challenges={project.challengeList} />
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* OBJECTIVES */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Objectives">
-          <Objectives objectives={project.objectives} />
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* MY ROLE */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="My Role">
-
-          <div className="max-w-4xl">
-
-            <h2
-              className="
-                text-4xl
-                lg:text-5xl
-
-                font-light
-                tracking-[-0.05em]
-              "
-            >
-              Turning requirements into
-              thoughtful interfaces.
-            </h2>
-
-            <p
-              className="
-                mt-10
-
-                text-lg
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              As the Frontend Developer and UI Designer,
-              I translated project requirements into
-              responsive interfaces, collaborated with the
-              team to integrate frontend and backend
-              functionality, and helped create a consistent
-              user experience throughout the system.
-            </p>
-
-            <div
-              className="
-                mt-12
-
-                flex
-                flex-wrap
-                gap-4
-              "
-            >
-              {project.responsibilities.map((item) => (
-
-                <span
-                  key={item}
-                  className="
-                    border
-                    border-neutral-200
-
-                    px-5
-                    py-3
-
-                    text-sm
-                  "
-                >
-                  {item}
-                </span>
-
-              ))}
-            </div>
-
-          </div>
-
-        </CaseStudySection>
-                {/* ================================================== */}
-        {/* PROCESS */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Process">
-          <div className="max-w-4xl">
-            <h2
-              className="
-                text-4xl
-                lg:text-5xl
-
-                font-light
-                tracking-[-0.05em]
-              "
-            >
-              From research to deployment.
-            </h2>
-
-            <div className="mt-16">
-              <ProcessTimeline steps={project.processSteps} />
-            </div>
-          </div>
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* DEVELOPMENT */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Development">
-          <div className="max-w-5xl">
-            <h2
-              className="
-                text-4xl
-                lg:text-5xl
-                font-light
-                tracking-[-0.05em]
-              "
-            >
-              A modern web application powered by
-              React and Laravel.
-            </h2>
-
-            <div
-              className="
-                mt-20
-
-                grid
-                md:grid-cols-3
-
-                gap-8
-              "
-            >
-              {project.tech.map((tech, index) => (
-                <div
-                  key={tech}
-                  className="
-                    border
-                    border-neutral-200
-
-                    p-10
-
-                    text-center
-                  "
-                >
-                  <p
-                    className="
-                      text-3xl
-                      font-light
-                    "
-                  >
-                    {tech}
-                  </p>
-
-                  {index !== project.tech.length - 1 && (
-                    <div
-                      className="
-                        hidden
-                        md:block
-
-                        mt-8
-
-                        text-neutral-300
-                        text-2xl
-                      "
-                    >
-                      ↓
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* CHALLENGES & SOLUTIONS */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Challenges">
-          <div className="space-y-10">
-            {[
-              {
-                challenge:
-                  "Maintaining a consistent interface across multiple modules.",
-                solution:
-                  "Built reusable UI patterns and standardized spacing, typography, and layouts.",
-              },
-              {
-                challenge:
-                  "Integrating frontend forms with backend validation.",
-                solution:
-                  "Worked closely with backend implementation to create a smoother validation flow and better user feedback.",
-              },
-            ].map((item) => (
-              <div
-                key={item.challenge}
+              <h2
                 className="
-                  border
-                  border-neutral-200
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
 
-                  p-10
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
                 "
               >
-                <p
-                  className="
-                    text-xs
-                    uppercase
-                    tracking-[0.25em]
-                    text-neutral-400
-                  "
-                >
-                  Challenge
-                </p>
+                {project.overviewHeadline}
+              </h2>
 
-                <h3
-                  className="
-                    mt-3
+              <p
+                className="
+                  mt-10
 
-                    text-2xl
-                    font-light
-                  "
-                >
-                  {item.challenge}
-                </h3>
+                  text-lg
+                  leading-relaxed
+                  text-neutral-600
+                "
+              >
+                {project.overview}
+              </p>
 
-                <p
-                  className="
-                    mt-8
-
-                    text-xs
-                    uppercase
-                    tracking-[0.25em]
-                    text-neutral-400
-                  "
-                >
-                  Solution
-                </p>
-
-                <p
-                  className="
-                    mt-3
-
-                    text-neutral-600
-                    leading-relaxed
-                  "
-                >
-                  {item.solution}
-                </p>
-              </div>
-            ))}
-          </div>
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* OUTCOME */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Outcome">
-          <div>
-            <h2
-              className="
-                text-4xl
-                lg:text-5xl
-                font-light
-                tracking-[-0.05em]
-              "
-            >
-              A successful capstone project with
-              real-world impact.
-            </h2>
-
-            <p
-              className="
-                mt-10
-
-                max-w-3xl
-
-                text-lg
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              {project.outcome}
-            </p>
-
-            <div
-              className="
-                mt-16
-
-                flex
-                flex-wrap
-                gap-4
-              "
-            >
-              {[
-                "Responsive",
-                "Student Records",
-                "Appointments",
-                "Role-based Access",
-                "Chatbot",
-                "Reports",
-              ].map((item) => (
-                <span
-                  key={item}
-                  className="
-                    border
-                    border-neutral-200
-
-                    px-5
-                    py-3
-                  "
-                >
-                  {item}
-                </span>
-              ))}
             </div>
-          </div>
-        </CaseStudySection>
 
-        {/* ================================================== */}
-        {/* REFLECTION */}
-        {/* ================================================== */}
+          </CaseStudySection>
 
-        <CaseStudySection label="Reflection">
-          <div className="max-w-4xl">
-            <h2
-              className="
-                text-4xl
-                lg:text-5xl
+          {/* ================================================== */}
+          {/* CHALLENGE */}
+          {/* ================================================== */}
 
-                font-light
-                tracking-[-0.05em]
-              "
-            >
-              Every project is an opportunity to
-              become a better developer.
-            </h2>
+          <CaseStudySection label="The Challenge">
+            <ChallengeGrid challenges={project.challengeList} />
+          </CaseStudySection>
 
-            <p
-              className="
-                mt-10
+          {/* ================================================== */}
+          {/* OBJECTIVES */}
+          {/* ================================================== */}
 
-                text-xl
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              {project.learnings}
-            </p>
+          <CaseStudySection label="Objectives">
+            <Objectives objectives={project.objectives} />
+          </CaseStudySection>
 
-            <p
-              className="
-                mt-8
+          {/* ================================================== */}
+          {/* MY ROLE */}
+          {/* ================================================== */}
 
-                text-lg
-                leading-relaxed
-                text-neutral-500
-              "
-            >
-              Looking back, I would improve this project by
-              introducing a more scalable component architecture,
-              strengthening accessibility, and refining state
-              management. Revisiting and rebuilding this system is
-              one of my goals as I continue growing as a frontend
-              developer.
-            </p>
-          </div>
-        </CaseStudySection>
+          <CaseStudySection label="My Role">
 
-        {/* ================================================== */}
-        {/* LINKS */}
-        {/* ================================================== */}
+            <div className="max-w-4xl">
 
-        <CaseStudySection label="Explore">
-          <div
-            className="
-              flex
-              flex-wrap
-              gap-8
-            "
-          >
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noreferrer"
-              className="
-                text-sm
-                uppercase
-                tracking-[0.2em]
+              <h2
+                className="
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
 
-                transition-colors
-                hover:text-neutral-500
-              "
-            >
-              Live Demo ↗
-            </a>
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
+                "
+              >
+                {project.roleHeadline}
+              </h2>
 
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="
-                text-sm
-                uppercase
-                tracking-[0.2em]
+              <p
+                className="
+                  mt-10
 
-                transition-colors
-                hover:text-neutral-500
-              "
-            >
-              GitHub ↗
-            </a>
-          </div>
-        </CaseStudySection>
+                  text-lg
+                  leading-relaxed
+                  text-neutral-600
+                "
+              >
+                {project.roleDescription}
+              </p>
 
-      </HeroContainer>
+              <div
+                className="
+                  mt-12
 
-    </main>
+                  flex
+                  flex-wrap
+                  gap-3
+                  sm:gap-4
+                "
+              >
+                {project.responsibilities.map((item) => (
+
+                  <span
+                    key={item}
+                    className="
+                      border
+                      border-neutral-200
+
+                      px-4
+                      py-2.5
+                      sm:px-5
+                      sm:py-3
+
+                      text-sm
+                    "
+                  >
+                    {item}
+                  </span>
+
+                ))}
+              </div>
+
+            </div>
+
+          </CaseStudySection>
+
+          {/* ================================================== */}
+          {/* PROCESS */}
+          {/* ================================================== */}
+
+          <CaseStudySection label="Process">
+            <div className="max-w-4xl">
+              <h2
+                className="
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
+
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
+                "
+              >
+                From research to deployment.
+              </h2>
+
+              <div className="mt-16">
+                <ProcessTimeline steps={project.processSteps} />
+              </div>
+            </div>
+          </CaseStudySection>
+
+          {/* ================================================== */}
+          {/* DESIGN */}
+          {/* ================================================== */}
+
+          {project.gallery?.length > 0 && (
+            <CaseStudySection label="Design">
+              <DesignShowcase images={project.gallery} />
+            </CaseStudySection>
+          )}
+
+          {/* ================================================== */}
+          {/* DEVELOPMENT */}
+          {/* ================================================== */}
+
+          <CaseStudySection label="Development">
+            <div>
+              <h2
+                className="
+                  max-w-4xl
+
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
+
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
+                "
+              >
+                {project.developmentHeadline}
+              </h2>
+
+              <div className="mt-16">
+                <DevelopmentArchitecture
+                  layers={project.architecture}
+                />
+              </div>
+            </div>
+          </CaseStudySection>
+
+          {/* ================================================== */}
+          {/* CHALLENGES & SOLUTIONS */}
+          {/* ================================================== */}
+
+          <CaseStudySection label="Challenges">
+            <ChallengeSolution
+              items={project.challengeSolutions}
+            />
+          </CaseStudySection>
+
+          {/* ================================================== */}
+          {/* OUTCOME */}
+          {/* ================================================== */}
+
+          <CaseStudySection label="Outcome">
+            <div>
+              <h2
+                className="
+                  max-w-4xl
+
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
+
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
+                "
+              >
+                {project.outcomeHeadline}
+              </h2>
+
+              <p
+                className="
+                  mt-10
+
+                  max-w-3xl
+
+                  text-lg
+                  leading-relaxed
+                  text-neutral-600
+                "
+              >
+                {project.outcome}
+              </p>
+
+              <div className="mt-16">
+                <OutcomeGrid
+                  highlights={project.outcomeHighlights}
+                />
+              </div>
+            </div>
+          </CaseStudySection>
+
+          {/* ================================================== */}
+          {/* REFLECTION */}
+          {/* ================================================== */}
+
+          <CaseStudySection label="Reflection">
+            <Reflection
+              headline={project.reflectionHeadline}
+              learnings={project.learnings}
+              note={project.reflectionNote}
+            />
+          </CaseStudySection>
+
+          {/* ================================================== */}
+          {/* LINKS */}
+          {/* ================================================== */}
+
+          {hasLinks && (
+            <CaseStudySection label="Explore">
+              <div
+                className="
+                  flex
+                  flex-wrap
+                  gap-8
+                "
+              >
+                {project.live !== "#" && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="
+                      text-sm
+                      uppercase
+                      tracking-[0.2em]
+
+                      transition-colors
+                      hover:text-neutral-500
+                    "
+                  >
+                    Live Demo ↗
+                  </a>
+                )}
+
+                {project.github !== "#" && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="
+                      text-sm
+                      uppercase
+                      tracking-[0.2em]
+
+                      transition-colors
+                      hover:text-neutral-500
+                    "
+                  >
+                    GitHub ↗
+                  </a>
+                )}
+              </div>
+            </CaseStudySection>
+          )}
+
+        </HeroContainer>
+
+        {/* ====================================================== */}
+        {/* NEXT PROJECT */}
+        {/* ====================================================== */}
+
+        <NextProject project={nextProject} />
+
+      </main>
+
+      <Footer />
+    </motion.div>
   );
 }

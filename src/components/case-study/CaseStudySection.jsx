@@ -22,7 +22,7 @@ export default function CaseStudySection({
         border-t
         border-neutral-200
 
-        py-24
+        py-20
         lg:py-32
 
         ${className}

@@ -1,257 +1,165 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  easeIn,
+  easeOut,
+} from "framer-motion";
 
 import HeroContainer from "../../components/ui/HeroContainer";
 
+import CursorEffect from "./CursorEffect";
+import HeroBackground from "./HeroBackground";
+import HeroContent from "./HeroContent";
+import FloatingCards from "./FloatingCards";
+
 export default function Hero() {
-  const [position, setPosition] = useState({
-    x: 0,
-    y: 0,
-  });
+  const sectionRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  /*
+   * Curtain exit — the hero is pinned (sticky) while the
+   * showcase scrolls up and covers it. While being covered,
+   * the hero recedes: scales down, drifts up, and fades.
+   * The content and the floating cards exit at different
+   * speeds for depth. The cover distance equals the hero's
+   * own height.
+   */
+  const [coverDistance, setCoverDistance] = useState(800);
+
+  useEffect(() => {
+    const measure = () => {
+      if (sectionRef.current) {
+        setCoverDistance(sectionRef.current.offsetHeight);
+      }
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const { scrollY } = useScroll();
+
+  // Starts gently, commits as the curtain closes.
+  const scale = useTransform(
+    scrollY,
+    [0, coverDistance],
+    [1, 0.94],
+    { ease: easeIn }
+  );
+
+  const y = useTransform(
+    scrollY,
+    [0, coverDistance],
+    [0, -50],
+    { ease: easeIn }
+  );
+
+  const opacity = useTransform(
+    scrollY,
+    [coverDistance * 0.35, coverDistance],
+    [1, 0]
+  );
+
+  // Depth: the foreground cards leave faster than the copy.
+  const contentY = useTransform(
+    scrollY,
+    [0, coverDistance],
+    [0, -50],
+    { ease: easeOut }
+  );
+
+  const cardsY = useTransform(
+    scrollY,
+    [0, coverDistance],
+    [0, -140],
+    { ease: easeOut }
+  );
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
-      className="overflow-hidden"
-      onMouseMove={(e) => {
-        const { innerWidth, innerHeight } = window;
-
-        const x = (e.clientX - innerWidth / 2) * 0.01;
-        const y = (e.clientY - innerHeight / 2) * 0.01;
-
-        setPosition({ x, y });
-      }}
+      className="
+        sticky
+        top-0
+        z-0
+      "
     >
-      <HeroContainer>
-        <div
+      <CursorEffect className="relative overflow-hidden">
+        <motion.div
+          style={
+            shouldReduceMotion
+              ? undefined
+              : { scale, y, opacity }
+          }
           className="
-            relative
-            grid
-            grid-cols-1
-            lg:grid-cols-12
+            origin-top
 
-            min-h-[80svh]
-
-            items-center
-
-            pt-20
-            lg:pt-20
+            will-change-transform
           "
         >
-          {/* Vertical Label */}
-          <div
-            className="
-              hidden
-              lg:flex
-              col-span-1
-              h-full
-              flex-col
-              items-center
-              justify-between
-              pr-6
-              pt-20
-              pb-4
-              gap-6
-            "
-          >
-            <span
-              className="
-                text-[11px]
-                uppercase
-                tracking-[0.25em]
-                text-neutral-400
-                [writing-mode:vertical-rl]
-                rotate-180
-              "
-            >
-              Frontend Developer
-            </span>
 
-            <div className="h-[320px] w-px bg-neutral-200" />
+          <HeroBackground />
 
-            <span
-              className="
-                text-[11px]
-                text-neutral-400
-                [writing-mode:vertical-rl]
-                rotate-180
-              "
-            >
-              2026
-            </span>
-          </div>
-
-          {/* Content */}
-          <div
-            className="
-              col-span-12
-              lg:col-span-4
-              lg:pl-8
-
-              relative
-              z-10
-
-              max-w-xl
-
-              flex
-              flex-col
-              justify-center
-            "
-          >
-            {/* Stats */}
+          <HeroContainer className="relative z-10">
             <div
               className="
-                flex
-                gap-10
-                sm:gap-14
-                mb-10
+                grid
+                grid-cols-1
+                lg:grid-cols-12
+
+                items-center
+
+                gap-12
+                lg:gap-8
+
+                min-h-[88svh]
+
+                pt-32
+                pb-16
+                lg:pt-24
+                lg:pb-8
               "
             >
-              <div>
-                <p
-                  className="
-                    text-[2.5rem]
-                    sm:text-[3rem]
-                    leading-none
-                    font-light
-                    tracking-[-0.05em]
-                  "
-                >
-                  02+
-                </p>
+              {/* Left — content */}
+              <motion.div
+                style={
+                  shouldReduceMotion
+                    ? undefined
+                    : { y: contentY }
+                }
+                className="lg:col-span-7 will-change-transform"
+              >
+                <HeroContent />
+              </motion.div>
 
-                <p className="text-sm text-neutral-500">
-                  Years Building
-                </p>
-              </div>
-
-              <div>
-                <p
-                  className="
-                    text-[2.5rem]
-                    sm:text-[3rem]
-                    leading-none
-                    font-light
-                    tracking-[-0.05em]
-                  "
-                >
-                  10+
-                </p>
-
-                <p className="text-sm text-neutral-500">
-                  Projects
-                </p>
-              </div>
-            </div>
-
-            {/* Hero Title */}
-            <h1
-              className="
-                text-[4.5rem]
-                sm:text-[6rem]
-                md:text-[7rem]
-                xl:text-[9rem]
-
-                leading-[0.85]
-                tracking-[-0.09em]
-                font-extralight
-
-                -ml-1
-              "
-            >
-              Frontend
-              <br />
-              Developer.
-            </h1>
-
-            {/* Main Intro */}
-            <p
-              className="
-                mt-8
-
-                max-w-[480px]
-
-                text-lg
-                sm:text-xl
-
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              Design-minded frontend development
-              for modern digital experiences.
-            </p>
-
-            {/* Scroll */}
-            <div
-              className="
-                mt-14
-                lg:mt-24
-
-                text-sm
-                text-neutral-500
-              "
-            >
-              <span className="lg:hidden">
-                View Work ↓
-              </span>
-
-              <span className="hidden lg:inline">
-                Selected Work ↓
-              </span>
-            </div>
-          </div>
-
-          {/* Desktop Hero Visual */}
-          <div
-            className="
-              hidden
-              lg:block
-              col-span-7
-              relative
-              h-full
-            "
-          >
-            <motion.div
-              animate={{
-                x: position.x,
-                y: position.y,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 30,
-                damping: 25,
-              }}
-              className="
-                absolute
-                right-[-18%]
-                top-1/2
-                -translate-y-1/2
-                pointer-events-none
-                select-none
-              "
-            >
-              <span
+              {/* Right — floating composition */}
+              <motion.div
+                style={
+                  shouldReduceMotion
+                    ? undefined
+                    : { y: cardsY }
+                }
                 className="
-                  font-extralight
-                  leading-none
-                  tracking-[-0.15em]
+                  hidden
+                  lg:block
+                  lg:col-span-5
 
-                  text-[42rem]
-                  xl:text-[52rem]
-
-                  text-transparent
-                  opacity-40
-
-                  [-webkit-text-stroke:1px_rgb(225_225_225)]
+                  will-change-transform
                 "
               >
-                JK
-              </span>
-            </motion.div>
-          </div>
-        </div>
-      </HeroContainer>
+                <FloatingCards />
+              </motion.div>
+            </div>
+          </HeroContainer>
+
+        </motion.div>
+      </CursorEffect>
     </section>
   );
 }
