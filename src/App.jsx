@@ -7,7 +7,7 @@ import ScrollToTop from "./components/ui/ScrollToTop";
 
 import useSmoothScroll from "./utils/useSmoothScroll";
 
-import Home from "./pages/Home";
+import Home from "./pages/home";
 import Work from "./pages/Work";
 import AboutPage from "./pages/About";
 import Contact from "./pages/Contact";
