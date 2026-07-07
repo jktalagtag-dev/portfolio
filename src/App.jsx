@@ -11,7 +11,7 @@ import useSmoothScroll from "./utils/useSmoothScroll";
  * Route-level code splitting — each page ships as its own
  * chunk, so the first paint only loads what it needs.
  */
-const Home = lazy(() => import("./pages/Home"));
+const Home = lazy(() => import("/pages/home"));
 const Work = lazy(() => import("./pages/Work"));
 const AboutPage = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
