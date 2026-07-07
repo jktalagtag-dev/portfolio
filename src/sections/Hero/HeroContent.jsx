@@ -1,193 +1,174 @@
 import { motion } from "framer-motion";
 
 import { easeOutExpo } from "../../utils/animations";
-
-import AnimatedHeading from "./AnimatedHeading";
 import RevealText from "./RevealText";
-import CTAButtons from "./CTAButtons";
 
 export default function HeroContent() {
   return (
-    <div className="max-w-2xl">
-
-      {/* Availability — mobile only, the glass card covers desktop */}
-      <RevealText
-        delay={0.1}
-        className="mb-8 lg:hidden"
-      >
-        <span
+    <div className="w-full">
+      {/* Hero Title */}
+      <RevealText delay={0.15}>
+        <motion.h1
+          initial={{
+            opacity: 0,
+            y: 50,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 1,
+            ease: easeOutExpo,
+          }}
           className="
-            inline-flex
-            items-center
-            gap-2.5
+            select-none
 
-            rounded-full
+            text-[clamp(5rem,18vw,17rem)]
 
-            border
-            border-neutral-200
+            leading-[0.82]
+            tracking-[-0.09em]
 
-            bg-white/60
-            backdrop-blur
+            text-neutral-900
 
-            px-4
-            py-2
-
-            text-[10px]
-            uppercase
-            tracking-[0.2em]
-            text-neutral-600
+            pt-10
+            md:pt-12
+            lg:pt-16
           "
+          style={{
+            fontVariationSettings: '"wght" 420',
+          }}
         >
-          <span className="relative flex h-1.5 w-1.5">
-            <span
-              className="
-                absolute
-                inline-flex
-
-                h-full
-                w-full
-
-                animate-ping
-                rounded-full
-
-                bg-emerald-400
-                opacity-60
-              "
-            />
-            <span
-              className="
-                relative
-                inline-flex
-
-                h-1.5
-                w-1.5
-
-                rounded-full
-                bg-emerald-500
-              "
-            />
-          </span>
-          Available for work
-        </span>
+          PORTFOLIO.
+        </motion.h1>
       </RevealText>
 
-      {/* Greeting */}
-      <RevealText
-        delay={0.15}
-        y={16}
-        className="
-          flex
-          items-center
-          gap-4
-        "
-      >
-        <span className="h-px w-10 bg-neutral-300" />
-        <span
-          className="
-            text-[11px]
-            uppercase
-            tracking-[0.3em]
-            text-neutral-400
-          "
-        >
-          Hello, I&rsquo;m
-        </span>
-      </RevealText>
-
-      {/* Name */}
-      <AnimatedHeading
-        lines={["John Karlo", "Talagtag."]}
-        delay={0.25}
-        className="
-          mt-6
-
-          text-[3.4rem]
-          sm:text-[5rem]
-          md:text-[6rem]
-          lg:text-[5.25rem]
-          xl:text-[6.5rem]
-          2xl:text-[7.5rem]
-
-          leading-[0.92]
-          tracking-[-0.06em]
-
-          text-neutral-900
-        "
-        style={{
-          fontVariationSettings: '"wght" 380',
-        }}
-      />
-
-      {/* Role */}
-      <RevealText
-        delay={0.85}
-        className="
-          mt-8
-
-          text-xl
-          sm:text-2xl
-
-          font-light
-          tracking-[-0.02em]
-          text-neutral-500
-        "
-      >
-        Frontend Developer&ensp;·&ensp;UI Engineer&ensp;·&ensp;React
-      </RevealText>
-
-      {/* Description */}
-      <RevealText
-        delay={1}
-        className="
-          mt-6
-
-          max-w-[460px]
-
-          text-base
-          sm:text-lg
-
-          leading-relaxed
-          text-neutral-600
-        "
-      >
-        I build modern, high-performance web experiences
-        with a strong focus on design, motion, and
-        usability.
-      </RevealText>
-
-      {/* CTAs */}
-      <div className="mt-12">
-        <CTAButtons delay={1.15} />
-      </div>
-
-      {/* Scroll cue */}
+      {/* Metadata */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{
+          opacity: 0,
+          y: 25,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
         transition={{
-          duration: 1,
+          delay: 0.45,
+          duration: 0.8,
           ease: easeOutExpo,
-          delay: 1.8,
         }}
         className="
-          mt-16
-          lg:mt-24
+          mt-4
+
+          flex
+          flex-col
+          gap-8
+
+          md:flex-row
+          md:items-end
+          md:justify-between
+        "
+      >
+        <div>
+          <h2
+            className="
+              text-[clamp(1.6rem,4vw,2.6rem)]
+
+              font-normal
+
+              tracking-[-0.04em]
+
+              text-neutral-900
+            "
+          >
+            John Karlo Talagtag
+          </h2>
+
+          <p
+            className="
+              mt-2
+
+              text-sm
+              md:text-base
+
+              tracking-[-0.02em]
+
+              text-neutral-500
+            "
+          >
+            Frontend Developer · UI Engineer · React
+          </p>
+        </div>
+
+        <div
+          className="
+            self-start
+            md:self-auto
+
+            md:text-right
+
+            shrink-0
+          "
+        >
+          <p
+            className="
+              text-[2.25rem]
+              sm:text-[2.75rem]
+              lg:text-[4rem]
+
+              font-light
+
+              tracking-[-0.05em]
+
+              text-neutral-900
+            "
+          >
+            2026
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Scroll */}
+      <motion.div
+        initial={{
+          opacity: 0,
+        }}
+        animate={{
+          opacity: 1,
+        }}
+        transition={{
+          delay: 1.1,
+          duration: 0.8,
+        }}
+        className="
+          mt-14
+          md:mt-16
 
           flex
           items-center
+          justify-center
+          md:justify-start
+
           gap-3
 
           text-[11px]
+
           uppercase
-          tracking-[0.25em]
+
+          tracking-[0.28em]
+
           text-neutral-400
         "
       >
-        Scroll to explore
+        Scroll to Explore
+
         <motion.span
-          animate={{ y: [0, 5, 0] }}
+          animate={{
+            y: [0, 5, 0],
+          }}
           transition={{
-            duration: 2.2,
+            duration: 2,
             repeat: Infinity,
             ease: "easeInOut",
           }}
