@@ -4,14 +4,13 @@ import { lazy, Suspense, useEffect, useState } from "react";
 
 import Loader from "./components/ui/Loader";
 import ScrollToTop from "./components/ui/ScrollToTop";
-
 import useSmoothScroll from "./utils/useSmoothScroll";
 
 /*
  * Route-level code splitting — each page ships as its own
  * chunk, so the first paint only loads what it needs.
  */
-const Home = lazy(() => import("/pages/home"));
+const Home = lazy(() => import("./pages/Home"));
 const Work = lazy(() => import("./pages/Work"));
 const AboutPage = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
