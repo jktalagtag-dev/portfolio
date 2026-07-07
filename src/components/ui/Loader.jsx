@@ -21,7 +21,7 @@ export default function Loader() {
         items-center
         justify-center
 
-        bg-[#f5f5f3]
+        bg-[#F8F8F8]
       "
     >
       <div
@@ -131,7 +131,7 @@ export default function Loader() {
             text-neutral-400
           "
         >
-          React & Laravel Full-Stack Developer
+          Frontend Developer & UI Engineer
         </motion.p>
       </div>
     </motion.div>

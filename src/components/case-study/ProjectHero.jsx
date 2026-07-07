@@ -162,6 +162,8 @@ export default function ProjectHero({ project }) {
             <img
               src={project.image}
               alt={project.title}
+              fetchPriority="high"
+              decoding="async"
               className="
                 w-full
                 aspect-[16/9]
