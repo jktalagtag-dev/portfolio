@@ -99,12 +99,11 @@ Existing
 CaseStudySection.jsx
 SectionLabel.jsx
 MetadataCard.jsx
-Planned
 ProjectHero.jsx
 ChallengeGrid.jsx
 Objectives.jsx
 ProcessTimeline.jsx
-DesignShowcase.jsx
+DesignShowcase.jsx (renders only when project.gallery has images)
 DevelopmentArchitecture.jsx
 ChallengeSolution.jsx
 OutcomeGrid.jsx
@@ -191,11 +190,19 @@ Completed
 ✔ CaseStudySection
 ✔ SectionLabel
 ✔ MetadataCard
+✔ ProjectHero
+✔ ChallengeGrid
+✔ Objectives
+✔ ProcessTimeline
+✔ DesignShowcase
+✔ DevelopmentArchitecture
+✔ ChallengeSolution
+✔ OutcomeGrid
+✔ Reflection
+✔ NextProject
+✔ Full Case Study System (data-driven, all projects)
 In Progress
-ProjectHero
-ChallengeGrid
-Objectives
-ProcessTimeline
+Phase 2 — Assets (case study imagery for DesignShowcase)
 ---
 17. FUTURE ROADMAP
 Phase 1

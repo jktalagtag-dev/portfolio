@@ -8,6 +8,8 @@ export const projects = [
         "A web-based guidance management platform developed for Forbes College, featuring appointment scheduling, student records management, and a safe-response chatbot.",
         overview:
         "Developed as our BSIT capstone project, the system was created to modernize guidance office operations and provide students with easier access to support services through a centralized digital platform.",
+        overviewHeadline:
+        "Building a better digital experience for students and guidance counselors.",
         process:
         "The project started with identifying common challenges faced by students and guidance staff. After gathering requirements, wireframes and user flows were created before developing the interface and integrating backend functionality using React and Laravel.",
         processSteps: [
@@ -56,10 +58,64 @@ export const projects = [
         "Reduce Administrative Work",
         "Provide Chatbot Support",
         ],
+        roleHeadline:
+        "Turning requirements into thoughtful interfaces.",
+        roleDescription:
+        "As the Frontend Developer and UI Designer, I translated project requirements into responsive interfaces, collaborated with the team to integrate frontend and backend functionality, and helped create a consistent user experience throughout the system.",
+        developmentHeadline:
+        "A modern web application powered by React and Laravel.",
+        architecture: [
+        {
+            label: "Frontend",
+            title: "React",
+            description:
+            "Reusable components, client-side routing, and responsive layouts for students, counselors, and administrators.",
+        },
+        {
+            label: "Backend",
+            title: "Laravel",
+            description:
+            "REST APIs, authentication, role-based access control, and the safe-response chatbot logic.",
+        },
+        {
+            label: "Database",
+            title: "MySQL",
+            description:
+            "Structured storage for student records, appointments, and guidance office reports.",
+        },
+        ],
+        challengeSolutions: [
+        {
+            challenge:
+            "Maintaining a consistent interface across multiple modules.",
+            solution:
+            "Built reusable UI patterns and standardized spacing, typography, and layouts.",
+        },
+        {
+            challenge:
+            "Integrating frontend forms with backend validation.",
+            solution:
+            "Worked closely with backend implementation to create a smoother validation flow and better user feedback.",
+        },
+        ],
         outcome:
         "Successfully completed and defended as a capstone project, delivering a centralized solution that improved accessibility and organization of guidance-related services.",
+        outcomeHeadline:
+        "A successful capstone project with real-world impact.",
+        outcomeHighlights: [
+        "Responsive",
+        "Student Records",
+        "Appointments",
+        "Role-based Access",
+        "Chatbot",
+        "Reports",
+        ],
         learnings:
         "This project strengthened my understanding of full-stack development, user-centered design, database management, and collaborating within a development team to deliver a real-world solution.",
+        reflectionHeadline:
+        "Every project is an opportunity to become a better developer.",
+        reflectionNote:
+        "Looking back, I would improve this project by introducing a more scalable component architecture, strengthening accessibility, and refining state management. Revisiting and rebuilding this system is one of my goals as I continue growing as a frontend developer.",
         role: "Frontend Developer & UI Designer",
         timeline: "3 Months",
         responsibilities: [
@@ -76,7 +132,7 @@ export const projects = [
         ],
         image: "/projects/project-1.png",
         github: "#",
-        live: "portfolio-eohibl4gy-juankt08.vercel.app",
+        live: "https://portfolio-eohibl4gy-juankt08.vercel.app",
     },
 
     {
@@ -89,6 +145,8 @@ export const projects = [
 
         overview:
         "Created to present projects, experience, and technical capabilities through a clean, modern, and intentional user experience inspired by editorial and Swiss design principles.",
+        overviewHeadline:
+        "An editorial portfolio designed and built as a product.",
 
         process:
         "The project began with defining a personal brand direction focused on frontend development and UI implementation. Layout exploration, typography systems, motion design, and responsive behavior were refined through multiple iterations before development.",
@@ -139,12 +197,66 @@ export const projects = [
         "Purposeful Motion Design",
         "Showcase Real Work",
         ],
+        roleHeadline:
+        "Designer, developer, and product owner in one.",
+        roleDescription:
+        "I owned the entire project — from defining the brand direction and typography system to building the reusable component library, motion system, and responsive layouts that power every page.",
+        developmentHeadline:
+        "A component-driven system built with React and Tailwind CSS.",
+        architecture: [
+        {
+            label: "Framework",
+            title: "React + Vite",
+            description:
+            "Component-driven pages with client-side routing and a fast development workflow.",
+        },
+        {
+            label: "Styling",
+            title: "Tailwind CSS",
+            description:
+            "A consistent editorial design language — typography scale, spacing rhythm, and a 12-column grid.",
+        },
+        {
+            label: "Motion",
+            title: "Framer Motion",
+            description:
+            "Shared animation variants for reveals, staggers, and timeline draws that support the story.",
+        },
+        ],
+        challengeSolutions: [
+        {
+            challenge:
+            "Keeping editorial minimalism from hurting usability.",
+            solution:
+            "Every element earns its place — strong hierarchy, generous whitespace, and clear calls to action guide the reader through the story.",
+        },
+        {
+            challenge:
+            "Maintaining consistency as the site grows.",
+            solution:
+            "Built a reusable case study component system driven by a single data model, so every project tells its story with the same structure and rhythm.",
+        },
+        ],
 
         outcome:
         "An evolving portfolio platform that serves as a professional showcase for projects, skills, and design-focused frontend development work.",
+        outcomeHeadline:
+        "A living product that grows with every project.",
+        outcomeHighlights: [
+        "Editorial Design",
+        "Component Library",
+        "Responsive",
+        "Motion System",
+        "Case Study System",
+        "Fast Performance",
+        ],
 
         learnings:
         "This project improved my understanding of visual hierarchy, responsive design systems, motion design, accessibility considerations, and building reusable frontend components.",
+        reflectionHeadline:
+        "Designing for yourself is the hardest brief.",
+        reflectionNote:
+        "The portfolio is never finished — each iteration sharpens the typography, the motion, and the story. Next steps include richer case study imagery, accessibility passes, and performance refinements.",
 
         role: "Frontend Developer & UI Implementer",
         timeline: "Ongoing",
@@ -175,6 +287,8 @@ export const projects = [
 
         overview:
         "This upcoming project will focus on solving a real-world problem while exploring stronger UI systems, interaction design, and frontend architecture.",
+        overviewHeadline:
+        "A new problem worth solving, currently taking shape.",
 
         process:
         "Currently in the research and planning phase. User needs, design direction, and technical requirements are being explored before implementation begins.",
@@ -225,12 +339,50 @@ export const projects = [
         "Strengthen Architecture",
         "Ship a Real Solution",
         ],
+        roleHeadline:
+        "Research and planning before a single line of code.",
+        roleDescription:
+        "I am currently leading the research and planning phase — exploring the problem space, defining scope, and shaping the design direction before development begins.",
+        developmentHeadline:
+        "Architecture decisions are being explored.",
+        architecture: [
+        {
+            label: "Frontend",
+            title: "React",
+            description:
+            "The foundation is set — component architecture and UI systems are being planned.",
+        },
+        {
+            label: "Direction",
+            title: "To Be Announced",
+            description:
+            "The full stack will be chosen to fit the problem, not the other way around.",
+        },
+        ],
+        challengeSolutions: [
+        {
+            challenge:
+            "Choosing the right problem to solve.",
+            solution:
+            "Researching real user needs first, so the project demonstrates product thinking — not just technical skill.",
+        },
+        ],
 
         outcome:
         "Coming soon.",
+        outcomeHeadline:
+        "The story is still being written.",
+        outcomeHighlights: [
+        "In Research",
+        "UI Systems",
+        "Frontend Architecture",
+        ],
 
         learnings:
         "This project will be an opportunity to further strengthen frontend development, UI implementation, and product-thinking skills.",
+        reflectionHeadline:
+        "The best projects start with a clear question.",
+        reflectionNote: "",
         role: "Frontend Developer",
         timeline: "In Progress",
         responsibilities: [
@@ -242,7 +394,7 @@ export const projects = [
         "React",
         "UI Design",
         ],
-        image: "/projects/project-placeholder.png",
+        image: "/projects/project-3.jpg",
         github: "#",
         live: "#",
     },

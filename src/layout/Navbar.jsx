@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import HeroContainer from "../components/ui/HeroContainer";
+import Magnetic from "../components/ui/Magnetic";
 import logo from "../assets/img/JKT.png";
 
 const navItems = [
@@ -24,15 +25,22 @@ export default function Navbar() {
 
   return (
     <header
-      className="
+      className={`
         fixed
         top-0
         left-0
         w-full
         z-50
-        backdrop-blur-md
-        bg-white/40
-      "
+
+        transition-colors
+        duration-300
+
+        ${
+          isOpen
+            ? "bg-[#F8F8F8]"
+            : "backdrop-blur-md bg-white/40"
+        }
+      `}
     >
       <HeroContainer>
         <nav
@@ -79,65 +87,72 @@ export default function Navbar() {
           >
             {navItems.map((item) => (
               <li key={item.label}>
-                <Link
-                  to={item.href}
-                  className="
-                    relative
-                    text-sm
-                    text-neutral-500
-                    transition-colors
-                    duration-300
-                    hover:text-neutral-900
-
-                    after:absolute
-                    after:left-0
-                    after:-bottom-1
-                    after:h-px
-                    after:w-0
-                    after:bg-neutral-900
-                    after:transition-all
-                    after:duration-300
-
-                    hover:after:w-full
-                  "
+                <Magnetic
+                  strength={0.25}
+                  className="p-2 -m-2"
                 >
-                  {item.label}
-                </Link>
+                  <Link
+                    to={item.href}
+                    className="
+                      relative
+                      text-sm
+                      text-neutral-500
+                      transition-colors
+                      duration-300
+                      hover:text-neutral-900
+
+                      after:absolute
+                      after:left-0
+                      after:-bottom-1
+                      after:h-px
+                      after:w-0
+                      after:bg-neutral-900
+                      after:transition-all
+                      after:duration-300
+
+                      hover:after:w-full
+                    "
+                  >
+                    {item.label}
+                  </Link>
+                </Magnetic>
               </li>
             ))}
           </ul>
 
           {/* Resume */}
-          <a
-            href="#"
-            className="
-              hidden
-              md:block
-
-              relative
-
-              text-sm
-              text-neutral-500
-
-              transition-colors
-              duration-300
-
-              hover:text-neutral-900
-
-              after:absolute
-              after:left-0
-              after:-bottom-1
-              after:h-px
-              after:w-0
-              after:bg-neutral-900
-              after:transition-all
-              after:duration-300
-
-              hover:after:w-full
-            "
+          <Magnetic
+            strength={0.25}
+            className="hidden md:block p-2 -m-2"
           >
-            Resume ↗
-          </a>
+            <a
+              href="#"
+              className="
+                relative
+
+                text-sm
+                text-neutral-500
+
+                transition-colors
+                duration-300
+
+                hover:text-neutral-900
+
+                after:absolute
+                after:left-0
+                after:-bottom-1
+                after:h-px
+                after:w-0
+                after:bg-neutral-900
+                after:transition-all
+                after:duration-300
+
+                hover:after:w-full
+              "
+            >
+              Resume ↗
+            </a>
+          </Magnetic>
 
           {/* Mobile Menu Button */}
           <button
@@ -182,7 +197,7 @@ export default function Navbar() {
 
             ${
               isOpen
-                ? "max-h-[500px] py-8"
+                ? "max-h-[500px] py-8 border-b border-neutral-200"
                 : "max-h-0"
             }
           `}

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
+import HeroContainer from "../components/ui/HeroContainer";
 import About from "../sections/About/About";
 import Skills from "../sections/Skills/Skills";
 import Experience from "../sections/Experience/Experience";
@@ -14,12 +15,12 @@ export default function AboutPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="overflow-x-hidden"
+      className="overflow-x-clip"
     >
       <Navbar />
 
       <main className="pt-32 lg:pt-40">
-        <section className="px-8 lg:px-16 pb-20">
+        <HeroContainer className="pb-20">
           <div className="max-w-5xl">
             <p
               className="
@@ -53,7 +54,7 @@ export default function AboutPage() {
               digital experiences.
             </h1>
           </div>
-        </section>
+        </HeroContainer>
 
         <About />
         <Skills />

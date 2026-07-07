@@ -2,8 +2,8 @@ export default function SectionLabel({ label }) {
   return (
     <div
       className="
-        sticky
-        top-28
+        lg:sticky
+        lg:top-28
 
         flex
         items-center
