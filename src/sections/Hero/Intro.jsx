@@ -14,13 +14,31 @@ export default function Intro() {
   const sectionRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
-  const [coverDistance, setCoverDistance] = useState(700);
+  /*
+   * The section pins (sticky) once its top reaches the
+   * viewport top — at scrollY = offsetTop — and is covered
+   * over the next sectionHeight of scrolling. The exit
+   * transforms must map that window, not [0, height]:
+   * measured from page top they would finish before the
+   * section is even reached.
+   */
+  const [range, setRange] = useState({
+    start: 0,
+    end: 1,
+  });
 
   useEffect(() => {
     const measure = () => {
-      if (sectionRef.current) {
-        setCoverDistance(sectionRef.current.offsetHeight);
-      }
+      const el = sectionRef.current;
+
+      if (!el) return;
+
+      // offsetTop is the flow position — sticky offsets are
+      // visual only, so this stays stable while pinned.
+      setRange({
+        start: el.offsetTop,
+        end: el.offsetTop + el.offsetHeight,
+      });
     };
 
     measure();
@@ -35,8 +53,8 @@ export default function Intro() {
 
   const scale = useTransform(
     scrollY,
-    [0, coverDistance],
-    [1, 0.98],
+    [range.start, range.end],
+    [1, 0.96],
     {
       ease: easeIn,
     }
@@ -44,8 +62,8 @@ export default function Intro() {
 
   const y = useTransform(
     scrollY,
-    [0, coverDistance],
-    [0, -30],
+    [range.start, range.end],
+    [0, -40],
     {
       ease: easeOut,
     }
@@ -53,7 +71,10 @@ export default function Intro() {
 
   const opacity = useTransform(
     scrollY,
-    [coverDistance * 0.35, coverDistance],
+    [
+      range.start + (range.end - range.start) * 0.35,
+      range.end,
+    ],
     [1, 0]
   );
 
@@ -79,8 +100,10 @@ export default function Intro() {
           <div
             className="
               flex
-              min-h-screen
+              min-h-svh
               items-center
+
+              py-24
             "
           >
             <div

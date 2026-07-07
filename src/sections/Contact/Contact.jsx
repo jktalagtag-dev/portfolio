@@ -11,7 +11,7 @@ const links = [
   {
     label: "Email",
     value: "Let's Talk",
-    href: "mailto:your-email@example.com",
+    href: "mailto:talagtagjohnkarlo4@gmail.com",
   },
   {
     label: "LinkedIn",
@@ -29,6 +29,10 @@ const links = [
     href: "#",
   },
 ];
+
+// Only real external URLs should open a new tab —
+// mailto and placeholder links behave badly with _blank.
+const isExternal = (href) => href.startsWith("http");
 
 export default function Contact() {
   return (
@@ -133,8 +137,16 @@ export default function Contact() {
                   key={link.label}
                   variants={fadeUp}
                   href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  target={
+                    isExternal(link.href)
+                      ? "_blank"
+                      : undefined
+                  }
+                  rel={
+                    isExternal(link.href)
+                      ? "noreferrer"
+                      : undefined
+                  }
                   className="
                     group
 

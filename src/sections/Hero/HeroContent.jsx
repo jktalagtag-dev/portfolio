@@ -24,7 +24,7 @@ export default function HeroContent() {
           className="
             select-none
 
-            text-[clamp(5rem,18vw,17rem)]
+            text-[clamp(2.75rem,18vw,17.7rem)]
 
             leading-[0.82]
             tracking-[-0.09em]
@@ -36,7 +36,7 @@ export default function HeroContent() {
             lg:pt-16
           "
           style={{
-            fontVariationSettings: '"wght" 420',
+            fontVariationSettings: '"wght" 490',
           }}
         >
           PORTFOLIO.
@@ -113,11 +113,11 @@ export default function HeroContent() {
         >
           <p
             className="
-              text-[2.25rem]
+              text-[clamp(1.6rem,4vw,2.6rem)]
               sm:text-[2.75rem]
               lg:text-[4rem]
 
-              font-light
+              font-normal
 
               tracking-[-0.05em]
 
