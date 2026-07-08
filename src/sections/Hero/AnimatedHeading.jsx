@@ -7,6 +7,12 @@ import { easeOutExpo } from "../../utils/animations";
  * overflow-hidden line, staggered left to right. The wrapper
  * keeps a little vertical padding so descenders (g, y, j)
  * are not clipped by the mask.
+ *
+ * `inView` defers the reveal until the heading scrolls into
+ * view (for below-the-fold uses like the footer wordmark).
+ * The word wrappers carry data-fit-ink and the root carries
+ * data-fit-sized so useFitText can measure the real glyph
+ * width.
  */
 
 const line = {
@@ -39,15 +45,32 @@ export default function AnimatedHeading({
   delay = 0,
   className = "",
   style,
+  as: Tag = "h1",
+  inView = false,
 }) {
+  const reveal = inView
+    ? {
+        initial: "hidden",
+        whileInView: "show",
+        viewport: { once: true, amount: 0.5 },
+      }
+    : {
+        initial: "hidden",
+        animate: "show",
+      };
+
   return (
-    <h1 className={className} style={style} aria-label={lines.join(" ")}>
+    <Tag
+      className={className}
+      style={style}
+      aria-label={lines.join(" ")}
+      data-fit-sized
+    >
       {lines.map((text, lineIndex) => (
         <motion.span
           key={text}
           variants={line}
-          initial="hidden"
-          animate="show"
+          {...reveal}
           custom={delay + lineIndex * 0.18}
           aria-hidden="true"
           className="block"
@@ -55,6 +78,7 @@ export default function AnimatedHeading({
           {text.split(" ").map((word, wordIndex) => (
             <span
               key={`${word}-${wordIndex}`}
+              data-fit-ink
               className="
                 inline-block
                 overflow-hidden
@@ -83,6 +107,6 @@ export default function AnimatedHeading({
           ))}
         </motion.span>
       ))}
-    </h1>
+    </Tag>
   );
 }

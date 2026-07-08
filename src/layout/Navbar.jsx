@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { Link, NavLink } from "react-router-dom";
 
 import HeroContainer from "../components/ui/HeroContainer";
 import Magnetic from "../components/ui/Magnetic";
-
 import logo from "../assets/img/JKT.png";
 
 const navItems = [
@@ -22,302 +20,271 @@ const navItems = [
   },
 ];
 
+// Underline slides in on hover and stays put on the
+// active page.
+const desktopLink = ({ isActive }) => `
+  relative
+  text-sm
+
+  transition-colors
+  duration-300
+
+  hover:text-neutral-900
+
+  after:absolute
+  after:left-0
+  after:-bottom-1
+  after:h-px
+  after:bg-neutral-900
+  after:transition-all
+  after:duration-300
+
+  hover:after:w-full
+
+  ${
+    isActive
+      ? "text-neutral-900 after:w-full"
+      : "text-neutral-500 after:w-0"
+  }
+`;
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
+  // Lock page scroll behind the open menu; close on Escape.
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 60);
+    document.body.style.overflow = isOpen ? "hidden" : "";
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setIsOpen(false);
     };
 
-    onScroll();
+    window.addEventListener("keydown", onKeyDown);
 
-    window.addEventListener("scroll", onScroll);
-
-    return () =>
-      window.removeEventListener("scroll", onScroll);
-  }, []);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isOpen]);
 
   return (
-    <>
-      <motion.header
-        initial={{
-          y: -30,
-          opacity: 0,
-        }}
-        animate={{
-          y: 0,
-          opacity: 1,
-        }}
-        transition={{
-          duration: 0.8,
-        }}
-        className={`
-          fixed
-          inset-x-0
-          top-0
+    <header
+      className={`
+        fixed
+        top-0
+        left-0
+        w-full
+        z-50
 
-          z-50
+        transition-colors
+        duration-300
 
-          transition-all
-          duration-500
-
-          ${
-            scrolled
-              ? "bg-[#F8F8F8]/80 backdrop-blur-xl border-b border-neutral-200/70"
-              : "bg-transparent"
-          }
-        `}
-      >
-        <HeroContainer>
-
-          <nav
+        ${
+          isOpen
+            ? "bg-[#F8F8F8]"
+            : "backdrop-blur-md bg-white/40"
+        }
+      `}
+    >
+      <HeroContainer>
+        <nav
+          className="
+            relative
+            flex
+            items-center
+            justify-between
+            py-4
+            md:py-6
+          "
+        >
+          {/* Logo */}
+          <Link
+            to="/"
+            onClick={() => setIsOpen(false)}
+            aria-label="Home"
             className="
-              flex
-              items-center
-              justify-between
-
-              py-5
-              lg:py-7
+              select-none
+              transition-opacity
+              duration-300
+              hover:opacity-70
             "
           >
-
-            {/* Logo */}
-
-            <Link
-              to="/"
+            <img
+              src={logo}
+              alt="JKT logo"
+              width="64"
+              height="64"
               className="
-                shrink-0
+                h-12
+                md:h-16
+                w-auto
+                object-contain
+              "
+              draggable="false"
+            />
+          </Link>
 
-                transition-opacity
+          {/* Desktop Navigation */}
+          <ul
+            className="
+              hidden
+              md:flex
+              items-center
+              gap-12
+            "
+          >
+            {navItems.map((item) => (
+              <li key={item.label}>
+                <Magnetic
+                  strength={0.25}
+                  className="p-2 -m-2"
+                >
+                  <NavLink
+                    to={item.href}
+                    className={desktopLink}
+                  >
+                    {item.label}
+                  </NavLink>
+                </Magnetic>
+              </li>
+            ))}
+          </ul>
+
+          {/* Resume */}
+          <Magnetic
+            strength={0.25}
+            className="hidden md:block p-2 -m-2"
+          >
+            <a
+              href="#"
+              className="
+                relative
+
+                text-sm
+                text-neutral-500
+
+                transition-colors
                 duration-300
 
-                hover:opacity-60
+                hover:text-neutral-900
+
+                after:absolute
+                after:left-0
+                after:-bottom-1
+                after:h-px
+                after:w-0
+                after:bg-neutral-900
+                after:transition-all
+                after:duration-300
+
+                hover:after:w-full
               "
             >
-              <img
-                src={logo}
-                alt="John Karlo"
-                draggable={false}
-                className="
-                  h-11
-                  lg:h-12
+              Resume ↗
+            </a>
+          </Magnetic>
 
-                  w-auto
-                "
-              />
-            </Link>
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            className="
+              md:hidden
 
-            {/* Desktop Navigation */}
+              -m-3
+              p-3
 
-            <ul
-              className="
-                hidden
-                md:flex
+              text-sm
+              uppercase
+              tracking-[0.2em]
+              text-neutral-900
+              transition-opacity
+              duration-300
+              hover:opacity-60
+            "
+          >
+            {isOpen ? "Close" : "Menu"}
+          </button>
 
-                items-center
+          {/* Divider */}
+          <div
+            className="
+              absolute
+              bottom-0
+              left-0
+              w-full
+              h-px
+              bg-gradient-to-r
+              from-transparent
+              via-neutral-200
+              to-transparent
+            "
+          />
+        </nav>
 
-                gap-12
-              "
-            >
-              {navItems.map((item) => (
-                <li key={item.label}>
-                  <Magnetic strength={0.18}>
-                    <Link
-                      to={item.href}
-                      className="
-                        relative
+        {/* Mobile Dropdown */}
+        <div
+          id="mobile-menu"
+          className={`
+            md:hidden
+            overflow-hidden
+            transition-all
+            duration-500
 
-                        text-[12px]
+            ${
+              isOpen
+                ? "max-h-[500px] py-8 border-b border-neutral-200"
+                : "max-h-0"
+            }
+          `}
+        >
+          <div
+            className="
+              flex
+              flex-col
+              gap-6
 
-                        uppercase
+              border-t
+              border-neutral-200
 
-                        tracking-[0.24em]
+              pt-8
+            "
+          >
+            {navItems.map((item) => (
+              <NavLink
+                key={item.label}
+                to={item.href}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) => `
+                  text-2xl
+                  font-light
+                  tracking-[-0.04em]
 
-                        text-neutral-500
-
-                        transition-all
-                        duration-300
-
-                        hover:text-neutral-900
-                        hover:tracking-[0.28em]
-                      "
-                    >
-                      {item.label}
-                    </Link>
-                  </Magnetic>
-                </li>
-              ))}
-            </ul>
-
-            {/* Resume */}
-
-            <Magnetic strength={0.18}>
-              <a
-                href="#"
-                className="
-                  hidden
-                  md:block
-
-                  text-[12px]
-
-                  uppercase
-
-                  tracking-[0.24em]
-
-                  text-neutral-500
-
-                  transition-all
-                  duration-300
-
-                  hover:text-neutral-900
-                  hover:tracking-[0.28em]
-                "
+                  ${
+                    isActive
+                      ? "text-neutral-900"
+                      : "text-neutral-500"
+                  }
+                `}
               >
-                Resume ↗
-              </a>
-            </Magnetic>
+                {item.label}
+              </NavLink>
+            ))}
 
-            {/* Mobile Button */}
-
-            <button
-              onClick={() => setIsOpen((v) => !v)}
+            <a
+              href="#"
+              onClick={() => setIsOpen(false)}
               className="
-                md:hidden
-
-                text-[12px]
-
-                uppercase
-
-                tracking-[0.24em]
-
-                text-neutral-900
+                pt-4
+                text-neutral-500
               "
             >
-              {isOpen ? "Close" : "Menu"}
-            </button>
-
-          </nav>
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  height: 0,
-                }}
-                animate={{
-                  opacity: 1,
-                  height: "auto",
-                }}
-                exit={{
-                  opacity: 0,
-                  height: 0,
-                }}
-                transition={{
-                  duration: 0.4,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="
-                  md:hidden
-
-                  overflow-hidden
-
-                  border-t
-                  border-neutral-200/70
-                "
-              >
-                <div
-                  className="
-                    flex
-                    flex-col
-
-                    gap-8
-
-                    py-10
-                  "
-                >
-                  {navItems.map((item, index) => (
-                    <motion.div
-                      key={item.label}
-                      initial={{
-                        opacity: 0,
-                        x: -20,
-                      }}
-                      animate={{
-                        opacity: 1,
-                        x: 0,
-                      }}
-                      transition={{
-                        delay: index * 0.08,
-                        duration: 0.45,
-                      }}
-                    >
-                      <Link
-                        to={item.href}
-                        onClick={() => setIsOpen(false)}
-                        className="
-                          block
-
-                          text-4xl
-
-                          font-light
-
-                          tracking-[-0.05em]
-
-                          text-neutral-900
-
-                          transition-opacity
-                          duration-300
-
-                          hover:opacity-60
-                        "
-                      >
-                        {item.label}
-                      </Link>
-                    </motion.div>
-                  ))}
-
-                  <motion.a
-                    href="#"
-                    onClick={() => setIsOpen(false)}
-                    initial={{
-                      opacity: 0,
-                      y: 10,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    transition={{
-                      delay: 0.35,
-                    }}
-                    className="
-                      pt-8
-
-                      text-sm
-
-                      uppercase
-
-                      tracking-[0.24em]
-
-                      text-neutral-500
-
-                      transition-colors
-                      duration-300
-
-                      hover:text-neutral-900
-                    "
-                  >
-                    Resume ↗
-                  </motion.a>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-        </HeroContainer>
-      </motion.header>
-    </>
+              Resume ↗
+            </a>
+          </div>
+        </div>
+      </HeroContainer>
+    </header>
   );
 }
