@@ -142,7 +142,7 @@ export default function Contact() {
                     "
                   />
                 </span>
-                Currently Available
+                Available for Work
               </span>
 
               <p

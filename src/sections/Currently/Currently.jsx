@@ -156,7 +156,7 @@ export default function Currently() {
                     </p>
 
                     <p className="mt-3 text-lg sm:text-xl">
-                      Open to Work
+                      Available for Work
                     </p>
                   </div>
 

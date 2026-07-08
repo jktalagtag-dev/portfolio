@@ -131,7 +131,7 @@ export default function Loader() {
             text-neutral-400
           "
         >
-          Frontend Developer & UI Engineer
+          Frontend Developer & UI Implementer
         </motion.p>
       </div>
     </motion.div>
