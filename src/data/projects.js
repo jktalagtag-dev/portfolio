@@ -61,7 +61,7 @@ export const projects = [
         roleHeadline:
         "Turning requirements into thoughtful interfaces.",
         roleDescription:
-        "As the Frontend Developer and UI Designer, I translated project requirements into responsive interfaces, collaborated with the team to integrate frontend and backend functionality, and helped create a consistent user experience throughout the system.",
+        "As the Frontend Developer and UI Implementer, I translated project requirements into responsive interfaces, collaborated with the team to integrate frontend and backend functionality, and helped create a consistent user experience throughout the system.",
         developmentHeadline:
         "A modern web application powered by React and Laravel.",
         architecture: [
@@ -116,7 +116,7 @@ export const projects = [
         "Every project is an opportunity to become a better developer.",
         reflectionNote:
         "Looking back, I would improve this project by introducing a more scalable component architecture, strengthening accessibility, and refining state management. Revisiting and rebuilding this system is one of my goals as I continue growing as a frontend developer.",
-        role: "Frontend Developer & UI Designer",
+        role: "Frontend Developer & UI Implementer",
         timeline: "3 Months",
         responsibilities: [
         "UI Design",
@@ -383,7 +383,7 @@ export const projects = [
         reflectionHeadline:
         "The best projects start with a clear question.",
         reflectionNote: "",
-        role: "Frontend Developer",
+        role: "Frontend Developer & UI Implementer",
         timeline: "In Progress",
         responsibilities: [
         "Research",

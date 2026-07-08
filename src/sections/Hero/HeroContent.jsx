@@ -218,7 +218,7 @@ export default function HeroContent() {
             "
           >
             Frontend Developer&ensp;·&ensp;UI
-            Engineer&ensp;·&ensp;React
+            Implementer&ensp;·&ensp;React
           </p>
         </div>
 

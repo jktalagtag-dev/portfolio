@@ -1,7 +1,8 @@
 export const experience = [
   {
     year: "2025",
-    title: "Full-Stack Developer & UI/UX Designer",
+    featured: true,
+    title: "Frontend Developer & UI/UX Designer",
     company: "Guidance Management System with Safe-Response Chatbot for Forbes College",
     description:
       "Led the design and development of a guidance management platform that provides students, faculty, and staff with accessible guidance services through a safe-response chatbot. Designed the user experience, developed both frontend and backend systems, and collaborated with guidance counselors to ensure all chatbot responses were reviewed and ethically aligned.",

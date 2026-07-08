@@ -110,8 +110,7 @@ export default function Experience() {
                 className="mt-16 lg:mt-24"
               >
                 {experience.map((item, index) => {
-                  const isFeatured =
-                    item.title.includes("Full-Stack");
+                  const isFeatured = item.featured;
 
                   return (
                     <motion.article
