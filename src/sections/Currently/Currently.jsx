@@ -65,7 +65,7 @@ export default function Currently() {
           </div>
 
           {/* Content */}
-          <div className="col-span-12 lg:col-span-10">
+          <div className="lg:col-span-10">
             {/* Heading */}
             <motion.div
               variants={fadeUp}
@@ -102,7 +102,7 @@ export default function Currently() {
               {/* Left */}
               <motion.div
                 variants={fadeUp}
-                className="col-span-12 lg:col-span-6"
+                className="lg:col-span-6"
               >
                 <p
                   className="
@@ -116,17 +116,17 @@ export default function Currently() {
                   "
                 >
                   Building portfolio projects,
-                  refining my React and Laravel
-                  skills, and actively seeking
-                  opportunities to grow as a
-                  full-stack developer.
+                  refining my React and UI
+                  engineering skills, and actively
+                  seeking opportunities to grow as
+                  a frontend developer.
                 </p>
               </motion.div>
 
               {/* Right */}
               <motion.div
                 variants={fadeUp}
-                className="col-span-12 lg:col-span-6"
+                className="lg:col-span-6"
               >
                 <div
                   className="
@@ -134,7 +134,13 @@ export default function Currently() {
                     border-neutral-200
 
                     pt-8
-                    space-y-10
+
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+
+                    gap-8
+                    sm:gap-10
                   "
                 >
                   <div>

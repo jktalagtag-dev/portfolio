@@ -63,7 +63,7 @@ export default function About() {
             </div>
 
             {/* Heading */}
-            <div className="col-span-12 lg:col-span-5">
+            <div className="lg:col-span-5">
               <motion.h2
                 variants={fadeUp}
                 className="
@@ -86,7 +86,7 @@ export default function About() {
             </div>
 
             {/* Content */}
-            <div className="col-span-12 lg:col-span-5 lg:pt-6">
+            <div className="lg:col-span-5 lg:pt-6">
               <motion.div
                 variants={staggerContainer}
                 className="max-w-xl"
@@ -133,7 +133,7 @@ export default function About() {
                   "
                 >
                   <Link
-                    to="/about"
+                    to="/work"
                     className="
                       inline-flex
                       items-center
@@ -151,7 +151,7 @@ export default function About() {
                       hover:text-black
                     "
                   >
-                    Learn More →
+                    View My Work →
                   </Link>
                 </motion.div>
               </motion.div>

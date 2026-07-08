@@ -3,14 +3,16 @@ import { motion } from "framer-motion";
 
 import { projects } from "../../data/projects";
 
+import HeroContainer from "../../components/ui/HeroContainer";
 import CinematicImage from "../../components/ui/CinematicImage";
 
 import { fadeUp, staggerContainer } from "../../utils/animations";
 
 /*
- * Cinematic work showcase (Home) — the featured project and
- * the two that follow, each presented as a full-bleed
- * scroll-expanding image with a centered editorial title.
+ * Selected work (Home) — full-bleed scroll-expanding images
+ * with an editorial baseline row beneath each: number and
+ * year left, stack right, title and description on a
+ * 12-column grid. Echoes the hero's ruler language.
  */
 
 const shownProjects = projects.slice(0, 3);
@@ -29,11 +31,11 @@ function ShowcaseItem({ project, featured }) {
           inset={featured ? 0.88 : 0.92}
           heightClassName={
             featured
-              ? "h-[60svh] lg:h-[85svh]"
-              : "h-[48svh] lg:h-[70svh]"
+              ? "h-[55svh] sm:h-[70svh] lg:h-[85svh]"
+              : "h-[45svh] sm:h-[55svh] lg:h-[70svh]"
           }
         >
-          {/* Hover badge — the video's central play button, ours */}
+          {/* Hover badge */}
           <span
             className="
               pointer-events-none
@@ -77,163 +79,322 @@ function ShowcaseItem({ project, featured }) {
         </CinematicImage>
       </Link>
 
-      {/* Centered meta */}
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="show"
-        viewport={{
-          once: true,
-          amount: 0.4,
-        }}
-        className="
-          px-5
-
-          py-16
-          lg:py-24
-
-          text-center
-        "
-      >
-        <motion.p
-          variants={fadeUp}
-          className="
-            text-[11px]
-            uppercase
-            tracking-[0.3em]
-            text-neutral-400
-          "
-        >
-          {featured
-            ? "Featured Work"
-            : `Project ${project.number}`}
-          &ensp;·&ensp;
-          {project.year}
-        </motion.p>
-
-        <motion.h2
-          variants={fadeUp}
-          className="mt-6"
-        >
-          <Link
-            to={`/work/${project.slug}`}
-            className="
-              inline-block
-
-              text-[2.5rem]
-              sm:text-[4rem]
-              lg:text-[5.5rem]
-
-              font-light
-              leading-[0.95]
-              tracking-[-0.06em]
-
-              transition-colors
-              duration-500
-
-              hover:text-neutral-500
-            "
-          >
-            {project.title}
-          </Link>
-        </motion.h2>
-
-        <motion.p
-          variants={fadeUp}
-          className="
-            mx-auto
-            mt-6
-
-            max-w-xl
-
-            text-base
-            sm:text-lg
-
-            leading-relaxed
-            text-neutral-500
-          "
-        >
-          {project.description}
-        </motion.p>
-
+      {/* Baseline row */}
+      <HeroContainer>
         <motion.div
-          variants={fadeUp}
-          className="mt-8"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{
+            once: true,
+            amount: 0.4,
+          }}
+          className="
+            mt-8
+            lg:mt-12
+          "
         >
-          <Link
-            to={`/work/${project.slug}`}
+          {/* Eyebrow row + ruler */}
+          <motion.div
+            variants={fadeUp}
             className="
-              inline-flex
-              items-center
-              gap-3
+              flex
+              flex-wrap
+              items-baseline
+              justify-between
 
-              text-sm
-              uppercase
-              tracking-[0.18em]
-              text-neutral-500
+              gap-x-6
+              gap-y-2
 
-              transition-colors
-              duration-300
+              border-b
+              border-neutral-200
 
-              hover:text-black
+              pb-4
             "
           >
-            View Case Study →
-          </Link>
+            <p
+              className="
+                text-[11px]
+                uppercase
+                tracking-[0.3em]
+                text-neutral-400
+              "
+            >
+              {project.number}
+              {featured && " — Featured"}
+              &ensp;·&ensp;
+              {project.year}
+            </p>
+
+            <p
+              className="
+                hidden
+                sm:block
+
+                text-[11px]
+                uppercase
+                tracking-[0.3em]
+                text-neutral-400
+              "
+            >
+              {project.tech.join("  ·  ")}
+            </p>
+          </motion.div>
+
+          {/* Title — description */}
+          <div
+            className="
+              mt-6
+              lg:mt-8
+
+              grid
+              grid-cols-1
+              lg:grid-cols-12
+
+              gap-6
+              lg:gap-10
+            "
+          >
+            <motion.h2
+              variants={fadeUp}
+              className="lg:col-span-7"
+            >
+              <Link
+                to={`/work/${project.slug}`}
+                className="
+                  inline-block
+
+                  text-[2rem]
+                  sm:text-[2.75rem]
+                  lg:text-[3.5rem]
+
+                  font-light
+                  leading-[1.02]
+                  tracking-[-0.05em]
+
+                  transition-colors
+                  duration-500
+
+                  hover:text-neutral-500
+                "
+              >
+                {project.title}
+              </Link>
+            </motion.h2>
+
+            <motion.div
+              variants={fadeUp}
+              className="lg:col-span-5"
+            >
+              <p
+                className="
+                  max-w-md
+
+                  text-base
+
+                  leading-relaxed
+                  text-neutral-500
+                "
+              >
+                {project.description}
+              </p>
+
+              <Link
+                to={`/work/${project.slug}`}
+                className="
+                  group/link
+
+                  mt-6
+
+                  inline-flex
+                  items-center
+                  gap-3
+
+                  text-sm
+                  uppercase
+                  tracking-[0.18em]
+                  text-neutral-500
+
+                  transition-colors
+                  duration-300
+
+                  hover:text-black
+                "
+              >
+                View Case Study
+                <span
+                  className="
+                    transition-transform
+                    duration-300
+
+                    group-hover/link:translate-x-1.5
+                  "
+                >
+                  →
+                </span>
+              </Link>
+            </motion.div>
+          </div>
         </motion.div>
-      </motion.div>
+      </HeroContainer>
     </article>
   );
 }
 
 export default function ProjectShowcase() {
   return (
-    <section id="projects">
-      {shownProjects.map((project, index) => (
-        <ShowcaseItem
-          key={project.slug}
-          project={project}
-          featured={index === 0}
-        />
-      ))}
-
-      {/* All work */}
-      <motion.div
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-        className="
-          border-t
-          border-neutral-200
-
-          py-20
-          lg:py-28
-
-          text-center
-        "
-      >
-        <Link
-          to="/work"
+    <section
+      id="projects"
+      className="pt-20 lg:pt-28"
+    >
+      {/* Section masthead */}
+      <HeroContainer>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
           className="
-            inline-flex
-            items-center
-            gap-3
+            flex
+            items-baseline
+            justify-between
 
-            text-sm
-            uppercase
-            tracking-[0.18em]
-            text-neutral-500
+            gap-6
 
-            transition-colors
-            duration-300
+            border-b
+            border-neutral-200
 
-            hover:text-black
+            pb-5
           "
         >
-          View All Work →
-        </Link>
-      </motion.div>
+          <p
+            className="
+              text-[11px]
+              uppercase
+              tracking-[0.3em]
+              text-neutral-400
+            "
+          >
+            Selected Work
+          </p>
+
+          <p
+            className="
+              text-[11px]
+              uppercase
+              tracking-[0.3em]
+              text-neutral-400
+            "
+          >
+            2025 — 2026&ensp;·&ensp;(03)
+          </p>
+        </motion.div>
+      </HeroContainer>
+
+      {/* Projects */}
+      <div
+        className="
+          mt-14
+          lg:mt-20
+
+          space-y-24
+          lg:space-y-36
+        "
+      >
+        {shownProjects.map((project, index) => (
+          <ShowcaseItem
+            key={project.slug}
+            project={project}
+            featured={index === 0}
+          />
+        ))}
+      </div>
+
+      {/* All projects */}
+      <HeroContainer>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="
+            mt-24
+            lg:mt-36
+
+            border-t
+            border-neutral-200
+          "
+        >
+          <Link
+            to="/work"
+            className="
+              group
+
+              flex
+              items-center
+              justify-between
+
+              gap-6
+
+              py-10
+              lg:py-16
+            "
+          >
+            <span
+              className="
+                text-[1.75rem]
+                sm:text-[2.75rem]
+                lg:text-[3.5rem]
+
+                font-light
+                leading-none
+                tracking-[-0.04em]
+
+                transition-colors
+                duration-500
+
+                group-hover:text-neutral-500
+              "
+            >
+              All Projects
+            </span>
+
+            <span
+              className="
+                flex
+                items-center
+                gap-4
+
+                text-sm
+                uppercase
+                tracking-[0.18em]
+                text-neutral-500
+
+                transition-colors
+                duration-300
+
+                group-hover:text-black
+              "
+            >
+              <span className="hidden sm:inline">
+                View All
+              </span>
+              <span
+                className="
+                  transition-transform
+                  duration-300
+
+                  group-hover:translate-x-2
+                "
+              >
+                →
+              </span>
+            </span>
+          </Link>
+        </motion.div>
+      </HeroContainer>
+
+      <div className="pb-10 lg:pb-16" />
     </section>
   );
 }

@@ -58,7 +58,7 @@ className="w-px bg-neutral-200"
         </div>
 
         {/* Content */}
-        <div className="col-span-12 lg:col-span-10">
+        <div className="lg:col-span-10">
           {/* Heading */}
           <motion.div
             variants={fadeUp}

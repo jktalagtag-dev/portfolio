@@ -10,7 +10,7 @@ import {
 const links = [
   {
     label: "Email",
-    value: "Let's Talk",
+    value: "talagtagjohnkarlo4@gmail.com",
     href: "mailto:talagtagjohnkarlo4@gmail.com",
   },
   {
@@ -20,8 +20,8 @@ const links = [
   },
   {
     label: "GitHub",
-    value: "View Work",
-    href: "#",
+    value: "github.com/jktalagtag-dev",
+    href: "https://github.com/jktalagtag-dev",
   },
   {
     label: "Resume",
@@ -38,7 +38,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-24 lg:py-40"
+      className="pb-24 pt-4 lg:pb-40 lg:pt-8"
     >
       <SectionContainer>
         <motion.div
@@ -85,31 +85,88 @@ export default function Contact() {
             </motion.span>
           </div>
 
-          <div className="col-span-12 lg:col-span-10">
+          <div className="lg:col-span-10">
             <motion.div
               variants={fadeUp}
-              className="max-w-5xl"
+              className="max-w-3xl"
             >
-              <h2
+              {/* Availability badge */}
+              <span
                 className="
-                  text-[3rem]
-                  sm:text-6xl
-                  xl:text-[7rem]
+                  inline-flex
+                  items-center
+                  gap-2.5
 
-                  font-light
-                  leading-[0.9]
-                  tracking-[-0.08em]
+                  rounded-full
+
+                  border
+                  border-neutral-200
+
+                  bg-white/60
+
+                  px-4
+                  py-2
+
+                  text-[10px]
+                  uppercase
+                  tracking-[0.2em]
+                  text-neutral-600
                 "
               >
-                Currently
-                <br />
-                available.
-              </h2>
+                <span className="relative flex h-1.5 w-1.5">
+                  <span
+                    className="
+                      absolute
+                      inline-flex
+
+                      h-full
+                      w-full
+
+                      animate-ping
+                      rounded-full
+
+                      bg-emerald-400
+                      opacity-60
+                    "
+                  />
+                  <span
+                    className="
+                      relative
+                      inline-flex
+
+                      h-1.5
+                      w-1.5
+
+                      rounded-full
+                      bg-emerald-500
+                    "
+                  />
+                </span>
+                Currently Available
+              </span>
 
               <p
                 className="
                   mt-8
-                  max-w-xl
+
+                  text-2xl
+                  sm:text-3xl
+                  xl:text-4xl
+
+                  font-light
+                  leading-[1.2]
+                  tracking-[-0.03em]
+
+                  text-neutral-900
+                "
+              >
+                Open to frontend development roles,
+                freelance projects, and collaborations.
+              </p>
+
+              <p
+                className="
+                  mt-6
 
                   text-base
                   sm:text-lg
@@ -118,16 +175,17 @@ export default function Contact() {
                   text-neutral-500
                 "
               >
-                Frontend development roles,
-                freelance projects,
-                and collaborations.
+                Based in the Philippines · Available for
+                remote work
               </p>
             </motion.div>
 
             <motion.div
               variants={staggerContainer}
               className="
-                mt-20
+                mt-16
+                lg:mt-20
+
                 border-t
                 border-neutral-200
               "
@@ -154,13 +212,15 @@ export default function Contact() {
                     items-center
                     justify-between
 
+                    gap-6
+
                     py-8
 
                     border-b
                     border-neutral-200
                   "
                 >
-                  <div>
+                  <div className="min-w-0">
                     <p
                       className="
                         text-[11px]
@@ -176,7 +236,9 @@ export default function Contact() {
                       className="
                         mt-2
 
-                        text-xl
+                        break-words
+
+                        text-lg
                         sm:text-2xl
                         xl:text-3xl
 
@@ -194,6 +256,8 @@ export default function Contact() {
 
                   <span
                     className="
+                      shrink-0
+
                       text-neutral-400
                       text-2xl
 
