@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 import SectionContainer from "../../components/ui/SectionContainer";
+import ProjectCard from "../../components/cards/ProjectCard";
 
 import {
   fadeUp,
@@ -114,6 +115,29 @@ export default function Projects({
               className="mt-16 lg:mt-24"
             >
               {displayedProjects.map((project) => {
+                // Card-tier projects get a slim, bounded row —
+                // no numeral, no hover preview, no destination
+                // link — spacing and density communicate that
+                // this is a lighter-weight entry.
+                if (project.tier === "card") {
+                  return (
+                    <motion.div
+                      key={project.number}
+                      variants={fadeUp}
+                      className="
+                        border-t
+                        border-neutral-200
+
+                        py-8
+                      "
+                    >
+                      <div className="max-w-sm">
+                        <ProjectCard project={project} compact />
+                      </div>
+                    </motion.div>
+                  );
+                }
+
                 const isActive =
                   activeProject?.number === project.number;
 

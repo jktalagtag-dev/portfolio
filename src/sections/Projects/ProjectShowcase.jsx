@@ -5,17 +5,26 @@ import { projects } from "../../data/projects";
 
 import HeroContainer from "../../components/ui/HeroContainer";
 import CinematicImage from "../../components/ui/CinematicImage";
+import ProjectCard from "../../components/cards/ProjectCard";
 
 import { fadeUp, staggerContainer } from "../../utils/animations";
 
 /*
  * Selected work (Home) — full-bleed scroll-expanding images
- * with an editorial baseline row beneath each: number and
- * year left, stack right, title and description on a
- * 12-column grid. Echoes the hero's ruler language.
+ * for flagship projects only, each followed by a single calm
+ * editorial read: title, then description, then CTA — one
+ * focal point at a time, not competing side by side. Everything
+ * else surfaces below in a quieter "More Work" strip, so
+ * visual weight matches actual significance.
  */
 
-const shownProjects = projects.slice(0, 3);
+const flagshipProjects = projects.filter(
+  (project) => project.tier === "flagship"
+);
+
+const restProjects = projects.filter(
+  (project) => project.tier !== "flagship"
+);
 
 function ShowcaseItem({ project, featured }) {
   return (
@@ -79,7 +88,7 @@ function ShowcaseItem({ project, featured }) {
         </CinematicImage>
       </Link>
 
-      {/* Baseline row */}
+      {/* Baseline — one focal read at a time */}
       <HeroContainer>
         <motion.div
           variants={staggerContainer}
@@ -89,22 +98,15 @@ function ShowcaseItem({ project, featured }) {
             once: true,
             amount: 0.4,
           }}
-          className="
-            mt-8
-            lg:mt-12
-          "
         >
-          {/* Eyebrow row + ruler */}
-          <motion.div
+          {/* Eyebrow + ruler */}
+          <motion.p
             variants={fadeUp}
             className="
-              flex
-              flex-wrap
-              items-baseline
-              justify-between
-
-              gap-x-6
-              gap-y-2
+              text-[11px]
+              uppercase
+              tracking-[0.3em]
+              text-neutral-400
 
               border-b
               border-neutral-200
@@ -112,129 +114,96 @@ function ShowcaseItem({ project, featured }) {
               pb-4
             "
           >
-            <p
-              className="
-                text-[11px]
-                uppercase
-                tracking-[0.3em]
-                text-neutral-400
-              "
-            >
-              {project.number}
-              {featured && " — Featured"}
-              &ensp;·&ensp;
-              {project.year}
-            </p>
+            {project.number}&ensp;·&ensp;{project.year}
+          </motion.p>
 
-            <p
-              className="
-                hidden
-                sm:block
-
-                text-[11px]
-                uppercase
-                tracking-[0.3em]
-                text-neutral-400
-              "
-            >
-              {project.tech.join("  ·  ")}
-            </p>
-          </motion.div>
-
-          {/* Title — description */}
-          <div
+          {/* Title */}
+          <motion.h2
+            variants={fadeUp}
             className="
-              mt-6
-              lg:mt-8
-
-              grid
-              grid-cols-1
-              lg:grid-cols-12
-
-              gap-6
-              lg:gap-10
+              mt-10
+              sm:mt-12
+              lg:mt-14
             "
           >
-            <motion.h2
-              variants={fadeUp}
-              className="lg:col-span-7"
+            <Link
+              to={`/work/${project.slug}`}
+              className="
+                inline-block
+
+                text-[2.25rem]
+                sm:text-[3.25rem]
+                lg:text-[4.5rem]
+
+                font-light
+                leading-[0.95]
+                tracking-[-0.05em]
+
+                transition-colors
+                duration-500
+
+                hover:text-neutral-500
+              "
             >
-              <Link
-                to={`/work/${project.slug}`}
-                className="
-                  inline-block
+              {project.title}
+            </Link>
+          </motion.h2>
 
-                  text-[2rem]
-                  sm:text-[2.75rem]
-                  lg:text-[3.5rem]
+          {/* Description */}
+          <motion.p
+            variants={fadeUp}
+            className="
+              mt-8
+              lg:mt-10
 
-                  font-light
-                  leading-[1.02]
-                  tracking-[-0.05em]
+              max-w-2xl
 
-                  transition-colors
-                  duration-500
+              text-lg
 
-                  hover:text-neutral-500
-                "
-              >
-                {project.title}
-              </Link>
-            </motion.h2>
+              leading-relaxed
+              text-neutral-500
+            "
+          >
+            {project.description}
+          </motion.p>
 
-            <motion.div
-              variants={fadeUp}
-              className="lg:col-span-5"
+          {/* CTA */}
+          <motion.div variants={fadeUp}>
+            <Link
+              to={`/work/${project.slug}`}
+              className="
+                group/link
+
+                mt-6
+
+                inline-flex
+                items-center
+                gap-3
+
+                text-sm
+                uppercase
+                tracking-[0.18em]
+                text-neutral-500
+
+                transition-colors
+                duration-300
+
+                hover:text-black
+              "
             >
-              <p
+              View Case Study
+              <span
                 className="
-                  max-w-md
-
-                  text-base
-
-                  leading-relaxed
-                  text-neutral-500
-                "
-              >
-                {project.description}
-              </p>
-
-              <Link
-                to={`/work/${project.slug}`}
-                className="
-                  group/link
-
-                  mt-6
-
-                  inline-flex
-                  items-center
-                  gap-3
-
-                  text-sm
-                  uppercase
-                  tracking-[0.18em]
-                  text-neutral-500
-
-                  transition-colors
+                  transition-transform
                   duration-300
 
-                  hover:text-black
+                  group-hover/link:translate-x-1.5
                 "
               >
-                View Case Study
-                <span
-                  className="
-                    transition-transform
-                    duration-300
-
-                    group-hover/link:translate-x-1.5
-                  "
-                >
-                  →
-                </span>
-              </Link>
-            </motion.div>
-          </div>
+                →
+              </span>
+            </Link>
+          </motion.div>
         </motion.div>
       </HeroContainer>
     </article>
@@ -286,12 +255,12 @@ export default function ProjectShowcase() {
               text-neutral-400
             "
           >
-            2025 — 2026&ensp;·&ensp;(03)
+            ({String(flagshipProjects.length).padStart(2, "0")})
           </p>
         </motion.div>
       </HeroContainer>
 
-      {/* Projects */}
+      {/* Flagship projects */}
       <div
         className="
           mt-14
@@ -301,7 +270,7 @@ export default function ProjectShowcase() {
           lg:space-y-36
         "
       >
-        {shownProjects.map((project, index) => (
+        {flagshipProjects.map((project, index) => (
           <ShowcaseItem
             key={project.slug}
             project={project}
@@ -309,6 +278,63 @@ export default function ProjectShowcase() {
           />
         ))}
       </div>
+
+      {/* More Work — everything else, at a lighter weight */}
+      {restProjects.length > 0 && (
+        <HeroContainer>
+          <div
+            className="
+              mt-24
+              lg:mt-32
+            "
+          >
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="
+                text-[11px]
+                uppercase
+                tracking-[0.3em]
+                text-neutral-400
+
+                pb-5
+
+                border-b
+                border-neutral-200
+              "
+            >
+              More Work
+            </motion.p>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="
+                mt-10
+
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+
+                gap-6
+                lg:gap-8
+              "
+            >
+              {restProjects.map((project) => (
+                <ProjectCard
+                  key={project.slug}
+                  project={project}
+                  compact
+                />
+              ))}
+            </motion.div>
+          </div>
+        </HeroContainer>
+      )}
 
       {/* All projects */}
       <HeroContainer>

@@ -1,8 +1,18 @@
+// Tier guide (see /work/:slug dispatch in PortfolioCaseStudy.jsx):
+// "flagship" -> full case study (FlagshipCaseStudy.jsx). Reads all fields.
+// "concise"  -> short dedicated page (ConciseCaseStudy.jsx). Reads: title,
+//               description, role, timeline, year, tech, image, objectives
+//               (shown as "Key Features"), gallery (optional, "Screenshots"),
+//               live, github. Does NOT read process/architecture/reflection
+//               fields.
+// "card"     -> no dedicated page (ProjectCard only, Home + archive).
+//               Reads: title, description, tech, image, live, github.
 export const projects = [
     {
         number: "01",
         slug: "guidance-management-system",
         year: "2025",
+        tier: "flagship",
         title: "Guidance Management System",
         description:
         "A web-based guidance management platform developed for Forbes College, featuring appointment scheduling, student records management, and a safe-response chatbot.",
@@ -139,6 +149,7 @@ export const projects = [
         number: "02",
         slug: "portfolio-website",
         year: "2026",
+        tier: "flagship",
         title: "Portfolio Website",
         description:
         "A personal portfolio focused on editorial layouts, thoughtful interactions, and showcasing frontend development and interface implementation skills.",
@@ -281,6 +292,7 @@ export const projects = [
         number: "03",
         slug: "coming-soon",
         year: "2026",
+        tier: "card",
         title: "Next Project",
         description:
         "A new frontend-focused project currently in planning and development.",
