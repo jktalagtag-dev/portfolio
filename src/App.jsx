@@ -1,10 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import {
+  AnimatePresence,
+  MotionConfig,
+} from "framer-motion";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 import Loader from "./components/ui/Loader";
 import ScrollToTop from "./components/ui/ScrollToTop";
 import useSmoothScroll from "./utils/useSmoothScroll";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 /*
  * Route-level code splitting — each page ships as its own
@@ -37,41 +41,53 @@ export default function App() {
     const timer = setTimeout(() => {
       sessionStorage.setItem("intro-loader-shown", "1");
       setLoading(false);
+      requestAnimationFrame(() => {
+  ScrollTrigger.refresh();
+});
     }, 1800);
 
     return () => clearTimeout(timer);
   }, [loading]);
 
-  if (loading) {
-    return (
-      <AnimatePresence>
-        <Loader />
-      </AnimatePresence>
-    );
-  }
-
   return (
-    <>
-      <ScrollToTop />
+    <MotionConfig reducedMotion="never">
+      <AnimatePresence mode="wait">
+        {loading ? (
+          <Loader key="loader" />
+        ) : (
+          <>
+            <ScrollToTop />
 
-      <Suspense fallback={null}>
-        <Routes>
-          <Route path="/" element={<Home />} />
+            <Suspense fallback={null}>
+              <Routes>
+                <Route path="/" element={<Home />} />
 
-          <Route path="/work" element={<Work />} />
+                <Route path="/work" element={<Work />} />
 
-          <Route
-            path="/work/:slug"
-            element={<ProjectCaseStudy />}
-          />
+                <Route
+                  path="/work/:slug"
+                  element={<ProjectCaseStudy />}
+                />
 
-          <Route path="/about" element={<AboutPage />} />
+                <Route
+                  path="/about"
+                  element={<AboutPage />}
+                />
 
-          <Route path="/contact" element={<Contact />} />
+                <Route
+                  path="/contact"
+                  element={<Contact />}
+                />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </>
+                <Route
+                  path="*"
+                  element={<NotFound />}
+                />
+              </Routes>
+            </Suspense>
+          </>
+        )}
+      </AnimatePresence>
+    </MotionConfig>
   );
 }

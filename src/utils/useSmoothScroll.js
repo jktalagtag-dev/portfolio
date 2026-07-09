@@ -2,10 +2,15 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 
 /*
- * Lenis smooth scrolling — inertia-based scroll that makes
- * every scroll-linked animation (hero curtain, cinematic
- * images) interpolate smoothly instead of stepping with the
- * wheel. Disabled under prefers-reduced-motion.
+ * Lenis smooth scrolling
+ * ----------------------
+ * Development version:
+ * - Always enables Lenis regardless of the OS "Reduce Motion" setting.
+ * - Keeps scroll-linked animations smooth.
+ * - Properly cleans up on unmount.
+ *
+ * Before deploying to production, consider restoring
+ * prefers-reduced-motion support for accessibility.
  */
 
 let lenisInstance = null;
@@ -16,21 +21,17 @@ export function getLenis() {
 
 export default function useSmoothScroll() {
   useEffect(() => {
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)")
-        .matches
-    ) {
-      return undefined;
-    }
-
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
+      syncTouch: false,
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
     });
 
     lenisInstance = lenis;
 
-    let rafId;
+    let rafId = 0;
 
     const raf = (time) => {
       lenis.raf(time);

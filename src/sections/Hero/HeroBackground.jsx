@@ -11,19 +11,37 @@ export default function HeroBackground() {
   return (
     <motion.div
       aria-hidden
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={
+        reduceMotion
+          ? false
+          : {
+              opacity: 0,
+              scale: 1.04,
+              filter: "blur(10px)",
+            }
+      }
+      animate={{
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+      }}
       transition={{
-        duration: 1.5,
-        ease: "easeOut",
+        duration: 1.8,
+        ease: [0.16, 1, 0.3, 1],
       }}
       className="absolute inset-0 overflow-hidden pointer-events-none"
     >
       {/* Base */}
       <div className="absolute inset-0 bg-[#f8f8f6]" />
 
-      {/* Extremely subtle grid */}
-      <div
+      {/* Grid */}
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 0.3 }}
+        transition={{
+          delay: 0.2,
+          duration: 1.2,
+        }}
         className="absolute inset-0"
         style={{
           backgroundImage: `
@@ -31,7 +49,6 @@ export default function HeroBackground() {
             linear-gradient(90deg, rgba(0,0,0,.012) 1px, transparent 1px)
           `,
           backgroundSize: "120px 120px",
-          opacity: 0.3,
           maskImage:
             "radial-gradient(circle at center, black 35%, transparent 90%)",
           WebkitMaskImage:
@@ -39,11 +56,20 @@ export default function HeroBackground() {
         }}
       />
 
-      {/* Editorial guide lines */}
-      <div className="absolute left-[8%] top-0 bottom-0 w-px bg-black/4" />
-      <div className="absolute right-[8%] top-0 bottom-0 w-px bg-black/4" />
+      {/* Editorial Guides */}
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: 0.35,
+          duration: 1,
+        }}
+      >
+        <div className="absolute left-[8%] top-0 bottom-0 w-px bg-black/4" />
+        <div className="absolute right-[8%] top-0 bottom-0 w-px bg-black/4" />
+      </motion.div>
 
-      {/* Soft spotlight */}
+      {/* Spotlight */}
       <motion.div
         style={parallax}
         className="absolute inset-0"
@@ -53,12 +79,13 @@ export default function HeroBackground() {
             reduceMotion
               ? undefined
               : {
-                  x: [0, 15, 0],
-                  y: [0, -15, 0],
+                  x: [0, 18, 0],
+                  y: [0, -18, 0],
+                  scale: [1, 1.05, 1],
                 }
           }
           transition={{
-            duration: 20,
+            duration: 18,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -78,13 +105,19 @@ export default function HeroBackground() {
           "
           style={{
             background:
-              "radial-gradient(circle, rgba(255,255,255,.9) 0%, rgba(245,245,245,.55) 55%, transparent 80%)",
+              "radial-gradient(circle, rgba(255,255,255,.92) 0%, rgba(245,245,245,.55) 55%, transparent 80%)",
           }}
         />
       </motion.div>
 
-      {/* Top light */}
-      <div
+      {/* Top Light */}
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: 0.1,
+          duration: 1.4,
+        }}
         className="absolute inset-0"
         style={{
           background:
@@ -92,7 +125,7 @@ export default function HeroBackground() {
         }}
       />
 
-      {/* Bottom fade */}
+      {/* Bottom Fade */}
       <div
         className="absolute inset-x-0 bottom-0 h-80"
         style={{
@@ -102,8 +135,14 @@ export default function HeroBackground() {
       />
 
       {/* Grain */}
-      <div
-        className="absolute inset-0 opacity-[0.025] mix-blend-multiply"
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 0.025 }}
+        transition={{
+          delay: 0.55,
+          duration: 1.5,
+        }}
+        className="absolute inset-0 mix-blend-multiply"
         style={{
           backgroundImage: NOISE,
         }}
