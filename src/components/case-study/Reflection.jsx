@@ -1,6 +1,10 @@
-import { motion } from "framer-motion";
+import MaskText from "../motion/MaskText";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+/*
+ * Reflection — the closing statement wipes up (mask), then the
+ * learnings rise beneath it.
+ */
 
 export default function Reflection({
   headline,
@@ -8,18 +12,10 @@ export default function Reflection({
   note,
 }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
-      className="max-w-4xl"
-    >
-      <motion.h2
-        variants={fadeUp}
+    <div className="max-w-4xl">
+      <MaskText
+        as="h2"
+        start="top 85%"
         className="
           text-3xl
           sm:text-4xl
@@ -31,39 +27,41 @@ export default function Reflection({
         "
       >
         {headline}
-      </motion.h2>
+      </MaskText>
 
-      <motion.p
-        variants={fadeUp}
-        className="
-          mt-10
-
-          text-lg
-          sm:text-xl
-
-          leading-relaxed
-          text-neutral-600
-        "
-      >
-        {learnings}
-      </motion.p>
-
-      {note && (
-        <motion.p
-          variants={fadeUp}
+      <Reveal variant="rise" stagger={0.1}>
+        <p
+          data-reveal
           className="
-            mt-8
+            mt-10
 
-            text-base
-            sm:text-lg
+            text-lg
+            sm:text-xl
 
             leading-relaxed
-            text-neutral-500
+            text-neutral-600
           "
         >
-          {note}
-        </motion.p>
-      )}
-    </motion.div>
+          {learnings}
+        </p>
+
+        {note && (
+          <p
+            data-reveal
+            className="
+              mt-8
+
+              text-base
+              sm:text-lg
+
+              leading-relaxed
+              text-neutral-500
+            "
+          >
+            {note}
+          </p>
+        )}
+      </Reveal>
+    </div>
   );
 }

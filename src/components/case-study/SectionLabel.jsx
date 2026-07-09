@@ -1,3 +1,10 @@
+import DrawLine from "../motion/DrawLine";
+
+/*
+ * Case-study section marker: a short rule that draws itself in
+ * beside the label. Sticks alongside the content column on lg+.
+ */
+
 export default function SectionLabel({ label }) {
   return (
     <div
@@ -13,7 +20,7 @@ export default function SectionLabel({ label }) {
         lg:pb-0
       "
     >
-      <div className="h-px w-10 bg-neutral-300" />
+      <DrawLine axis="x" className="h-px w-10 bg-neutral-300" />
 
       <span
         className="

@@ -1,9 +1,13 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import HeroContainer from "../ui/HeroContainer";
+import MaskText from "../motion/MaskText";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+/*
+ * Next project — the title wipes up as the closing beat of the
+ * case study, matching the "All Projects" / page-CTA treatment
+ * used elsewhere so the site's big links share one gesture.
+ */
 
 export default function NextProject({ project }) {
   return (
@@ -18,81 +22,71 @@ export default function NextProject({ project }) {
           to={`/work/${project.slug}`}
           className="group block py-20 lg:py-32"
         >
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{
-              once: true,
-              amount: 0.3,
-            }}
+          <p
+            className="
+              text-[11px]
+              uppercase
+              tracking-[0.3em]
+              text-neutral-400
+            "
           >
-            <motion.p
-              variants={fadeUp}
+            Next Project
+          </p>
+
+          <MaskText
+            as="h2"
+            start="top 88%"
+            className="
+              mt-6
+
+              text-[2.75rem]
+              sm:text-[4rem]
+              lg:text-[6rem]
+
+              font-extralight
+              leading-[0.95]
+              tracking-[-0.06em]
+            "
+            innerClassName="
+              transition-colors
+              duration-500
+
+              group-hover:text-neutral-500
+            "
+          >
+            {project.title}
+          </MaskText>
+
+          <p
+            className="
+              mt-8
+
+              inline-flex
+              items-center
+              gap-3
+
+              text-sm
+              uppercase
+              tracking-[0.18em]
+              text-neutral-500
+
+              transition-colors
+              duration-300
+
+              group-hover:text-black
+            "
+          >
+            View Case Study
+            <span
               className="
-                text-[11px]
-                uppercase
-                tracking-[0.3em]
-                text-neutral-400
-              "
-            >
-              Next Project
-            </motion.p>
-
-            <motion.h2
-              variants={fadeUp}
-              className="
-                mt-6
-
-                text-[2.75rem]
-                sm:text-[4rem]
-                lg:text-[6rem]
-
-                font-extralight
-                leading-[0.95]
-                tracking-[-0.06em]
-
-                transition-colors
-                duration-500
-
-                group-hover:text-neutral-500
-              "
-            >
-              {project.title}
-            </motion.h2>
-
-            <motion.p
-              variants={fadeUp}
-              className="
-                mt-8
-
-                inline-flex
-                items-center
-                gap-3
-
-                text-sm
-                uppercase
-                tracking-[0.18em]
-                text-neutral-500
-
-                transition-colors
+                transition-transform
                 duration-300
-
-                group-hover:text-black
+                group-hover:translate-x-2
               "
             >
-              View Case Study
-              <span
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:translate-x-2
-                "
-              >
-                →
-              </span>
-            </motion.p>
-          </motion.div>
+              →
+            </span>
+          </p>
         </Link>
       </HeroContainer>
     </section>

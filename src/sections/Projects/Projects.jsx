@@ -4,45 +4,34 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import SectionContainer from "../../components/ui/SectionContainer";
 import ProjectCard from "../../components/cards/ProjectCard";
-
-import {
-  fadeUp,
-  staggerContainer,
-} from "../../utils/animations";
+import MaskText from "../../components/motion/MaskText";
+import Reveal from "../../components/motion/Reveal";
 
 import { projects } from "../../data/projects";
 
-export default function Projects({
-  variant = "archive",
-}) {
+/*
+ * Work archive. Scroll entrances are GSAP (heading wipes up, each
+ * row rises in, card-tier rows scale in); the desktop
+ * hover-preview panel and the on-hover text shift stay Framer —
+ * those are pointer interactions, not scroll motion.
+ */
+
+export default function Projects({ variant = "archive" }) {
   const [activeProject, setActiveProject] = useState(null);
 
   const featuredProjects = projects.slice(0, 2);
 
   const displayedProjects =
-    variant === "featured"
-      ? featuredProjects
-      : projects;
+    variant === "featured" ? featuredProjects : projects;
 
   return (
-    <section
-      id="projects"
-      className="overflow-hidden"
-    >
+    <section id="projects" className="overflow-hidden">
       <SectionContainer>
         <div className="py-20 lg:py-40">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{
-              once: true,
-              amount: 0.2,
-            }}
-          >
-            {/* Section Label */}
-            <motion.p
-              variants={fadeUp}
+          {/* Header */}
+          <Reveal variant="rise" stagger={0.1}>
+            <p
+              data-reveal
               className="
                 text-[11px]
                 uppercase
@@ -54,13 +43,9 @@ export default function Projects({
               {variant === "featured"
                 ? "Featured Work"
                 : "All Projects"}
-            </motion.p>
+            </p>
 
-            {/* Heading */}
-            <motion.div
-              variants={fadeUp}
-              className="max-w-4xl"
-            >
+            <div className="max-w-4xl">
               <h2
                 className="
                   max-w-[280px]
@@ -75,22 +60,20 @@ export default function Projects({
                   tracking-[-0.08em]
                 "
               >
-                {variant === "featured" ? (
-                  <>
-                    Featured
-                    <br />
-                    work.
-                  </>
-                ) : (
-                  <>
-                    All
-                    <br />
-                    projects.
-                  </>
-                )}
+                <MaskText as="span" className="block" delay={0}>
+                  {variant === "featured" ? "Featured" : "All"}
+                </MaskText>
+                <MaskText
+                  as="span"
+                  className="block"
+                  delay={0.12}
+                >
+                  {variant === "featured" ? "work." : "projects."}
+                </MaskText>
               </h2>
 
               <p
+                data-reveal
                 className="
                   mt-6
                   max-w-lg
@@ -102,55 +85,44 @@ export default function Projects({
                   text-neutral-500
                 "
               >
-                A selection of projects showcasing
-                my approach to frontend development,
-                thoughtful interfaces, and
+                A selection of projects showcasing my approach to
+                frontend development, thoughtful interfaces, and
                 user-focused experiences.
               </p>
-            </motion.div>
+            </div>
+          </Reveal>
 
-            {/* Projects */}
-            <motion.div
-              variants={staggerContainer}
-              className="mt-16 lg:mt-24"
-            >
-              {displayedProjects.map((project) => {
-                // Card-tier projects get a slim, bounded row —
-                // no numeral, no hover preview, no destination
-                // link — spacing and density communicate that
-                // this is a lighter-weight entry.
-                if (project.tier === "card") {
-                  return (
-                    <motion.div
-                      key={project.number}
-                      variants={fadeUp}
-                      className="
-                        border-t
-                        border-neutral-200
-
-                        py-8
-                      "
-                    >
-                      <div className="max-w-sm">
-                        <ProjectCard project={project} compact />
-                      </div>
-                    </motion.div>
-                  );
-                }
-
-                const isActive =
-                  activeProject?.number === project.number;
-
+          {/* Projects */}
+          <div className="mt-16 lg:mt-24">
+            {displayedProjects.map((project) => {
+              // Card-tier: a slim, bounded row — scales in.
+              if (project.tier === "card") {
                 return (
-                  <motion.div
+                  <Reveal
                     key={project.number}
-                    variants={fadeUp}
-                    onMouseEnter={() =>
-                      setActiveProject(project)
-                    }
-                    onMouseLeave={() =>
-                      setActiveProject(null)
-                    }
+                    variant="scale"
+                    className="
+                      border-t
+                      border-neutral-200
+
+                      py-8
+                    "
+                  >
+                    <div className="max-w-sm">
+                      <ProjectCard project={project} compact />
+                    </div>
+                  </Reveal>
+                );
+              }
+
+              const isActive =
+                activeProject?.number === project.number;
+
+              return (
+                <Reveal key={project.number} variant="rise">
+                  <div
+                    onMouseEnter={() => setActiveProject(project)}
+                    onMouseLeave={() => setActiveProject(null)}
                     className="
                       group
                       border-t
@@ -220,12 +192,8 @@ export default function Projects({
                       {/* Content */}
                       <div className="xl:col-span-6">
                         <motion.h3
-                          animate={{
-                            x: isActive ? 20 : 0,
-                          }}
-                          transition={{
-                            duration: 0.35,
-                          }}
+                          animate={{ x: isActive ? 20 : 0 }}
+                          transition={{ duration: 0.35 }}
                           className="
                             hidden
                             xl:block
@@ -263,12 +231,8 @@ export default function Projects({
                         </div>
 
                         <motion.p
-                          animate={{
-                            x: isActive ? 12 : 0,
-                          }}
-                          transition={{
-                            duration: 0.4,
-                          }}
+                          animate={{ x: isActive ? 12 : 0 }}
+                          transition={{ duration: 0.4 }}
                           className="
                             mt-6
 
@@ -285,61 +249,49 @@ export default function Projects({
                         </motion.p>
 
                         <div
-  className="
-    mt-4
+                          className="
+                            mt-4
 
-    flex
-    flex-wrap
-    gap-x-8
-    gap-y-3
-  "
->
-  <div>
-    <p
-      className="
-        text-[10px]
-        uppercase
-        tracking-[0.2em]
-        text-neutral-400
-      "
-    >
-      Role
-    </p>
+                            flex
+                            flex-wrap
+                            gap-x-8
+                            gap-y-3
+                          "
+                        >
+                          <div>
+                            <p
+                              className="
+                                text-[10px]
+                                uppercase
+                                tracking-[0.2em]
+                                text-neutral-400
+                              "
+                            >
+                              Role
+                            </p>
 
-    <p
-      className="
-        mt-1
-        text-sm
-        text-neutral-600
-      "
-    >
-      {project.role}
-    </p>
-  </div>
+                            <p className="mt-1 text-sm text-neutral-600">
+                              {project.role}
+                            </p>
+                          </div>
 
-  <div>
-    <p
-      className="
-        text-[10px]
-        uppercase
-        tracking-[0.2em]
-        text-neutral-400
-      "
-    >
-      Timeline
-    </p>
+                          <div>
+                            <p
+                              className="
+                                text-[10px]
+                                uppercase
+                                tracking-[0.2em]
+                                text-neutral-400
+                              "
+                            >
+                              Timeline
+                            </p>
 
-    <p
-      className="
-        mt-1
-        text-sm
-        text-neutral-600
-      "
-    >
-      {project.timeline}
-    </p>
-  </div>
-</div>
+                            <p className="mt-1 text-sm text-neutral-600">
+                              {project.timeline}
+                            </p>
+                          </div>
+                        </div>
 
                         {/* Tech Stack */}
                         <div
@@ -405,46 +357,46 @@ export default function Projects({
                           </Link>
 
                           {project.live !== "#" && (
-  <a
-    href={project.live}
-    target="_blank"
-    rel="noreferrer"
-    className="
-      text-sm
-      uppercase
-      tracking-[0.15em]
-      text-neutral-500
+                            <a
+                              href={project.live}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="
+                                text-sm
+                                uppercase
+                                tracking-[0.15em]
+                                text-neutral-500
 
-      transition-all
-      duration-300
+                                transition-all
+                                duration-300
 
-      hover:text-black
-    "
-  >
-    Live Demo ↗
-  </a>
-)}
+                                hover:text-black
+                              "
+                            >
+                              Live Demo ↗
+                            </a>
+                          )}
 
-                         {project.github !== "#" && (
-  <a
-    href={project.github}
-    target="_blank"
-    rel="noreferrer"
-    className="
-      text-sm
-      uppercase
-      tracking-[0.15em]
-      text-neutral-500
+                          {project.github !== "#" && (
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="
+                                text-sm
+                                uppercase
+                                tracking-[0.15em]
+                                text-neutral-500
 
-      transition-all
-      duration-300
+                                transition-all
+                                duration-300
 
-      hover:text-black
-    "
-  >
-    GitHub ↗
-  </a>
-)}
+                                hover:text-black
+                              "
+                            >
+                              GitHub ↗
+                            </a>
+                          )}
                         </div>
                       </div>
 
@@ -484,12 +436,7 @@ export default function Projects({
                               }}
                               transition={{
                                 duration: 0.45,
-                                ease: [
-                                  0.22,
-                                  1,
-                                  0.36,
-                                  1,
-                                ],
+                                ease: [0.22, 1, 0.36, 1],
                               }}
                               className="
                                 absolute
@@ -521,70 +468,66 @@ export default function Projects({
                         </AnimatePresence>
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
+                  </div>
+                </Reveal>
+              );
+            })}
 
-              {variant === "archive" && (
-  <motion.div
-    variants={fadeUp}
-    className="
-      mt-20
-      pt-12
+            {variant === "archive" && (
+              <Reveal
+                variant="rise"
+                className="
+                  mt-20
+                  pt-12
 
-      border-t
-      border-neutral-200
-    "
-  >
-    <p
-      className="
-        max-w-xl
+                  border-t
+                  border-neutral-200
+                "
+              >
+                <p
+                  className="
+                    max-w-xl
 
-        text-lg
-        leading-relaxed
+                    text-lg
+                    leading-relaxed
 
-        text-neutral-500
-      "
-    >
-      More projects are currently in development.
-      This collection will continue to grow as I
-      explore frontend development, UI
-      implementation, and interactive web
-      experiences.
-    </p>
-  </motion.div>
-)}
-
-              {variant === "featured" && (
-                <motion.div
-                  variants={fadeUp}
-                  className="mt-16"
+                    text-neutral-500
+                  "
                 >
-                  <Link
-                    to="/work"
-                    className="
-                      inline-flex
-                      items-center
-                      gap-3
+                  More projects are currently in development. This
+                  collection will continue to grow as I explore
+                  frontend development, UI implementation, and
+                  interactive web experiences.
+                </p>
+              </Reveal>
+            )}
 
-                      text-sm
-                      uppercase
-                      tracking-[0.18em]
+            {variant === "featured" && (
+              <Reveal variant="rise" className="mt-16">
+                <Link
+                  to="/work"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-3
 
-                      text-neutral-500
+                    text-sm
+                    uppercase
+                    tracking-[0.18em]
 
-                      transition-colors
-                      duration-300
+                    text-neutral-500
 
-                      hover:text-black
-                    "
-                  >
-                    View All Work →
-                  </Link>
-                </motion.div>
-              )}
-            </motion.div>
-          </motion.div>
+                    transition-colors
+                    duration-300
+
+                    hover:text-black
+                  "
+                >
+                  View All Work →
+                </Link>
+              </Reveal>
+            )}
+          </div>
         </div>
       </SectionContainer>
     </section>

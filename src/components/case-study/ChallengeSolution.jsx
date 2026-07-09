@@ -1,23 +1,20 @@
-import { motion } from "framer-motion";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+/*
+ * Challenges & Solutions — paired cards settle in (scale).
+ */
 
 export default function ChallengeSolution({ items }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
+    <Reveal
+      variant="scale"
+      stagger={0.1}
       className="space-y-6 lg:space-y-10"
     >
       {items.map((item) => (
-        <motion.div
+        <div
           key={item.challenge}
-          variants={fadeUp}
+          data-reveal
           className="
             border
             border-neutral-200
@@ -83,8 +80,8 @@ export default function ChallengeSolution({ items }) {
               {item.solution}
             </p>
           </div>
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </Reveal>
   );
 }

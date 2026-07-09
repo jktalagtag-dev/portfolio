@@ -50,12 +50,16 @@ export default function Reveal({
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return undefined;
-    if (prefersReducedMotion()) return undefined;
 
     const targets = stagger
       ? el.querySelectorAll("[data-reveal]")
       : [el];
     if (!targets.length) return undefined;
+
+    if (prefersReducedMotion()) {
+      gsap.set(targets, { clearProps: "all" });
+      return undefined;
+    }
 
     const ctx = gsap.context(() => {
       gsap.fromTo(targets, FROM[variant] || FROM.rise, {

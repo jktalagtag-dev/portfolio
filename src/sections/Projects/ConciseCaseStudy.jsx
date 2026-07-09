@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import HeroContainer from "../../components/ui/HeroContainer";
@@ -9,7 +8,9 @@ import DesignShowcase from "../../components/case-study/DesignShowcase";
 import ProjectLinks from "../../components/case-study/ProjectLinks";
 import NextProject from "../../components/case-study/NextProject";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+import MaskText from "../../components/motion/MaskText";
+import Reveal from "../../components/motion/Reveal";
+import ParallaxImage from "../../components/motion/ParallaxImage";
 
 /*
  * Concise project page — for projects that deserve a dedicated
@@ -29,47 +30,35 @@ export default function ConciseCaseStudy({
 
   return (
     <>
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        animate="show"
-      >
-        {/* ====================================================== */}
-        {/* HERO */}
-        {/* ====================================================== */}
+      {/* Hero */}
+      <section className="pt-32 lg:pt-40 pb-16 lg:pb-20">
+        <HeroContainer>
+          <Reveal variant="rise" stagger={0.1}>
+            <Link
+              data-reveal
+              to="/work"
+              className="
+                inline-flex
+                items-center
+                gap-2
 
-        <section className="pt-32 lg:pt-40 pb-16 lg:pb-20">
-          <HeroContainer>
+                text-[11px]
+                uppercase
+                tracking-[0.25em]
+                text-neutral-400
 
-            <motion.div variants={fadeUp}>
-              <Link
-                to="/work"
-                className="
-                  inline-flex
-                  items-center
-                  gap-2
+                transition-colors
+                duration-300
 
-                  text-[11px]
-                  uppercase
-                  tracking-[0.25em]
-                  text-neutral-400
-
-                  transition-colors
-                  duration-300
-
-                  hover:text-black
-                "
-              >
-                ← Back to Work
-              </Link>
-            </motion.div>
-
-            <motion.div
-              variants={fadeUp}
-              className="mt-16"
+                hover:text-black
+              "
             >
+              ← Back to Work
+            </Link>
 
+            <div className="mt-16">
               <p
+                data-reveal
                 className="
                   text-[11px]
                   uppercase
@@ -80,7 +69,9 @@ export default function ConciseCaseStudy({
                 {project.number} · Overview
               </p>
 
-              <h1
+              <MaskText
+                as="h1"
+                start="top 90%"
                 className="
                   mt-6
 
@@ -96,9 +87,10 @@ export default function ConciseCaseStudy({
                 "
               >
                 {project.title}
-              </h1>
+              </MaskText>
 
               <p
+                data-reveal
                 className="
                   mt-6
 
@@ -112,96 +104,71 @@ export default function ConciseCaseStudy({
               >
                 {project.description}
               </p>
+            </div>
+          </Reveal>
+        </HeroContainer>
+      </section>
 
-            </motion.div>
-          </HeroContainer>
-        </section>
+      {/* Metadata */}
+      <section className="pb-16">
+        <HeroContainer>
+          <Reveal
+            variant="rise"
+            stagger={0.08}
+            className="
+              border-y
+              border-neutral-200
 
-        {/* ====================================================== */}
-        {/* METADATA */}
-        {/* ====================================================== */}
+              py-12
 
-        <section className="pb-16">
-          <HeroContainer>
+              grid
+              grid-cols-2
+              lg:grid-cols-4
 
-            <motion.div
-              variants={fadeUp}
-              className="
-                border-y
-                border-neutral-200
-
-                py-12
-
-                grid
-                grid-cols-2
-                lg:grid-cols-4
-
-                gap-10
-              "
-            >
-              <MetadataCard
-                label="Role"
-                value={project.role}
-              />
-
+              gap-10
+            "
+          >
+            <div data-reveal>
+              <MetadataCard label="Role" value={project.role} />
+            </div>
+            <div data-reveal>
               <MetadataCard
                 label="Timeline"
                 value={project.timeline}
               />
+            </div>
+            <div data-reveal>
+              <MetadataCard label="Year" value={project.year} />
+            </div>
+            <div data-reveal>
+              <MetadataCard label="Stack" value={project.tech} />
+            </div>
+          </Reveal>
+        </HeroContainer>
+      </section>
 
-              <MetadataCard
-                label="Year"
-                value={project.year}
-              />
+      {/* Hero image */}
+      {hasImage && (
+        <section className="pb-24">
+          <HeroContainer>
+            <ParallaxImage
+              src={project.image}
+              alt={project.title}
+              priority
+              intensity={8}
+              className="
+                aspect-[16/9]
 
-              <MetadataCard
-                label="Stack"
-                value={project.tech}
-              />
-            </motion.div>
-
+                border
+                border-neutral-200
+              "
+            />
           </HeroContainer>
         </section>
+      )}
 
-        {/* ====================================================== */}
-        {/* HERO IMAGE */}
-        {/* ====================================================== */}
-
-        {hasImage && (
-          <section className="pb-24">
-            <HeroContainer>
-
-              <motion.div
-                variants={fadeUp}
-                className="
-                  overflow-hidden
-                  border
-                  border-neutral-200
-                "
-              >
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  decoding="async"
-                  className="
-                    w-full
-                    aspect-[16/9]
-                    object-cover
-                  "
-                />
-              </motion.div>
-
-            </HeroContainer>
-          </section>
-        )}
-      </motion.div>
-
-      {/* ====================================================== */}
-      {/* CONTENT */}
-      {/* ====================================================== */}
-
+      {/* Content */}
       <HeroContainer>
-
         {project.objectives?.length > 0 && (
           <CaseStudySection label="Key Features">
             <Objectives objectives={project.objectives} />
@@ -215,20 +182,16 @@ export default function ConciseCaseStudy({
         )}
 
         {hasLinks && (
-          <CaseStudySection label="Explore">
+          <CaseStudySection label="Explore" reveal="rise">
             <ProjectLinks
               live={project.live}
               github={project.github}
             />
           </CaseStudySection>
         )}
-
       </HeroContainer>
 
-      {/* ====================================================== */}
-      {/* NEXT PROJECT */}
-      {/* ====================================================== */}
-
+      {/* Next project */}
       <NextProject project={nextProject} />
     </>
   );

@@ -1,15 +1,11 @@
-import { motion } from "framer-motion";
-
-import { fadeUp } from "../../utils/animations";
-
 /*
  * Lightweight project presentation — for projects that don't
  * warrant a dedicated page (tier: "card"). A bounded box, not
  * the site's edge-to-edge row idiom: that boundary is what
  * signals "lighter tier" at a glance, not just smaller text.
  *
- * Used in two placements: the Home "More Work" strip
- * (compact) and card-tier rows in the Work archive (default).
+ * Used in card-tier rows in the Work archive. Entrance motion is
+ * owned by the caller's Reveal, so this is a plain article.
  */
 
 export default function ProjectCard({
@@ -21,8 +17,7 @@ export default function ProjectCard({
   const hasGithub = project.github !== "#";
 
   return (
-    <motion.article
-      variants={fadeUp}
+    <article
       className={`
         border
         border-neutral-200
@@ -221,6 +216,6 @@ export default function ProjectCard({
           )}
         </div>
       )}
-    </motion.article>
+    </article>
   );
 }

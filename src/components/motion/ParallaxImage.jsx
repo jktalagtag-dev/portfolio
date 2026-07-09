@@ -29,7 +29,10 @@ export default function ParallaxImage({
     const frame = frameRef.current;
     const img = imgRef.current;
     if (!frame || !img) return undefined;
-    if (prefersReducedMotion()) return undefined;
+    if (prefersReducedMotion()) {
+      gsap.set(img, { clearProps: "all" });
+      return undefined;
+    }
 
     const ctx = gsap.context(() => {
       // Uniform zoom gives vertical travel room without ever

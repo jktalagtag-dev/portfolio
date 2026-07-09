@@ -1,17 +1,15 @@
-import { motion } from "framer-motion";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+/*
+ * Objectives — cards settle in from slightly larger (scale),
+ * distinct from the Challenge grid's clip above.
+ */
 
 export default function Objectives({ objectives }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
+    <Reveal
+      variant="scale"
+      stagger={0.08}
       className="
         grid
         sm:grid-cols-2
@@ -21,9 +19,9 @@ export default function Objectives({ objectives }) {
       "
     >
       {objectives.map((item) => (
-        <motion.div
+        <div
           key={item}
-          variants={fadeUp}
+          data-reveal
           className="
             border
             border-neutral-200
@@ -45,8 +43,8 @@ export default function Objectives({ objectives }) {
           >
             {item}
           </h3>
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </Reveal>
   );
 }
