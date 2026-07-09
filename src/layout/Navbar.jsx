@@ -1,290 +1,312 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 import HeroContainer from "../components/ui/HeroContainer";
-import Magnetic from "../components/ui/Magnetic";
+
 import logo from "../assets/img/JKT.png";
 
 const navItems = [
-  {
-    label: "Work",
-    href: "/work",
-  },
-  {
-    label: "About",
-    href: "/about",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
-// Underline slides in on hover and stays put on the
-// active page.
-const desktopLink = ({ isActive }) => `
-  relative
-  text-sm
-
-  transition-colors
-  duration-300
-
-  hover:text-neutral-900
-
-  after:absolute
-  after:left-0
-  after:-bottom-1
-  after:h-px
-  after:bg-neutral-900
-  after:transition-all
-  after:duration-300
-
-  hover:after:w-full
-
-  ${
-    isActive
-      ? "text-neutral-900 after:w-full"
-      : "text-neutral-500 after:w-0"
-  }
-`;
+const easeOutExpo = [0.22, 1, 0.36, 1];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Lock page scroll behind the open menu; close on Escape.
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
 
-    const onKeyDown = (e) => {
+    const esc = (e) => {
       if (e.key === "Escape") setIsOpen(false);
     };
 
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", esc);
 
     return () => {
       document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keydown", esc);
     };
   }, [isOpen]);
 
   return (
-    <header
-      className={`
-        fixed
-        top-0
-        left-0
-        w-full
-        z-50
+    <>
+      <header
+        className="
+          fixed
+          inset-x-0
+          top-0
 
-        transition-colors
-        duration-300
+          z-50
 
-        ${
-          isOpen
-            ? "bg-[#F8F8F8]"
-            : "backdrop-blur-md bg-white/40"
-        }
-      `}
-    >
-      <HeroContainer>
-        <nav
-          className="
-            relative
-            flex
-            items-center
-            justify-between
-            py-4
-            md:py-6
-          "
-        >
-          {/* Logo */}
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            aria-label="Home"
+          pointer-events-none
+        "
+      >
+        <HeroContainer>
+          <nav
             className="
-              select-none
-              transition-opacity
-              duration-300
-              hover:opacity-70
-            "
-          >
-            <img
-              src={logo}
-              alt="JKT logo"
-              width="64"
-              height="64"
-              className="
-                h-12
-                md:h-16
-                w-auto
-                object-contain
-              "
-              draggable="false"
-            />
-          </Link>
+              pointer-events-auto
 
-          {/* Desktop Navigation */}
-          <ul
-            className="
-              hidden
-              md:flex
+              flex
               items-center
-              gap-12
+              justify-between
+
+              h-20
+              lg:h-24
             "
           >
-            {navItems.map((item) => (
-              <li key={item.label}>
-                <Magnetic
-                  strength={0.25}
-                  className="p-2 -m-2"
-                >
-                  <NavLink
-                    to={item.href}
-                    className={desktopLink}
-                  >
-                    {item.label}
-                  </NavLink>
-                </Magnetic>
-              </li>
-            ))}
-          </ul>
+            {/* Logo */}
+            <Link
+              to="/"
+              onClick={() => setIsOpen(false)}
+              aria-label="Home"
+              className="
+                shrink-0
 
-          {/* Resume */}
-          <Magnetic
-            strength={0.25}
-            className="hidden md:block p-2 -m-2"
-          >
-            <a
-              href="#"
+                transition-opacity
+                duration-300
+
+                hover:opacity-60
+              "
+            >
+              <img
+                src={logo}
+                alt="JKT logo"
+                width="64"
+                height="64"
+                draggable={false}
+                className="h-8 lg:h-9 w-auto"
+              />
+            </Link>
+
+            {/* Hamburger */}
+            <button
+              type="button"
+              onClick={() => setIsOpen((v) => !v)}
+              aria-expanded={isOpen}
+              aria-controls="menu-overlay"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
               className="
                 relative
 
-                text-sm
-                text-neutral-500
+                flex
+                h-10
+                w-10
 
-                transition-colors
-                duration-300
+                items-center
+                justify-center
 
-                hover:text-neutral-900
-
-                after:absolute
-                after:left-0
-                after:-bottom-1
-                after:h-px
-                after:w-0
-                after:bg-neutral-900
-                after:transition-all
-                after:duration-300
-
-                hover:after:w-full
+                -mr-2
               "
             >
-              Resume ↗
-            </a>
-          </Magnetic>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
-            aria-controls="mobile-menu"
-            className="
-              md:hidden
-
-              -m-3
-              p-3
-
-              text-sm
-              uppercase
-              tracking-[0.2em]
-              text-neutral-900
-              transition-opacity
-              duration-300
-              hover:opacity-60
-            "
-          >
-            {isOpen ? "Close" : "Menu"}
-          </button>
-
-          {/* Divider */}
-          <div
-            className="
-              absolute
-              bottom-0
-              left-0
-              w-full
-              h-px
-              bg-gradient-to-r
-              from-transparent
-              via-neutral-200
-              to-transparent
-            "
-          />
-        </nav>
-
-        {/* Mobile Dropdown */}
-        <div
-          id="mobile-menu"
-          className={`
-            md:hidden
-            overflow-hidden
-            transition-all
-            duration-500
-
-            ${
-              isOpen
-                ? "max-h-[500px] py-8 border-b border-neutral-200"
-                : "max-h-0"
-            }
-          `}
-        >
-          <div
-            className="
-              flex
-              flex-col
-              gap-6
-
-              border-t
-              border-neutral-200
-
-              pt-8
-            "
-          >
-            {navItems.map((item) => (
-              <NavLink
-                key={item.label}
-                to={item.href}
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) => `
-                  text-2xl
-                  font-light
-                  tracking-[-0.04em]
-
-                  ${
-                    isActive
-                      ? "text-neutral-900"
-                      : "text-neutral-500"
+              <span className="relative block h-3 w-7">
+                <motion.span
+                  animate={
+                    isOpen
+                      ? { rotate: 45, y: 5 }
+                      : { rotate: 0, y: 0 }
                   }
-                `}
-              >
-                {item.label}
-              </NavLink>
-            ))}
+                  transition={{ duration: 0.4, ease: easeOutExpo }}
+                  className="
+                    absolute
+                    left-0
+                    top-0
 
-            <a
-              href="#"
-              onClick={() => setIsOpen(false)}
-              className="
-                pt-4
-                text-neutral-500
-              "
-            >
-              Resume ↗
-            </a>
-          </div>
-        </div>
-      </HeroContainer>
-    </header>
+                    block
+                    h-px
+                    w-7
+
+                    bg-neutral-900
+                  "
+                />
+                <motion.span
+                  animate={
+                    isOpen
+                      ? { rotate: -45, y: -5 }
+                      : { rotate: 0, y: 0 }
+                  }
+                  transition={{ duration: 0.4, ease: easeOutExpo }}
+                  className="
+                    absolute
+                    bottom-0
+                    left-0
+
+                    block
+                    h-px
+                    w-7
+
+                    bg-neutral-900
+                  "
+                />
+              </span>
+            </button>
+          </nav>
+        </HeroContainer>
+      </header>
+
+      {/* Full-screen overlay menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id="menu-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: easeOutExpo }}
+            className="
+              fixed
+              inset-0
+
+              z-40
+
+              bg-[#F8F8F8]
+            "
+          >
+            <HeroContainer className="h-full">
+              <div
+                className="
+                  flex
+                  h-full
+                  flex-col
+                  justify-end
+
+                  pb-16
+                  pt-28
+                "
+              >
+                <nav
+                  className="
+                    flex
+                    flex-col
+
+                    gap-2
+                    sm:gap-3
+                  "
+                >
+                  {navItems.map((item, i) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, y: 40 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{
+                        opacity: 0,
+                        y: 20,
+                        transition: { duration: 0.2 },
+                      }}
+                      transition={{
+                        duration: 0.7,
+                        delay: 0.12 + i * 0.07,
+                        ease: easeOutExpo,
+                      }}
+                    >
+                      <NavLink
+                        to={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={({ isActive }) => `
+                          group
+
+                          inline-flex
+                          items-baseline
+                          gap-4
+
+                          text-[clamp(2.75rem,9vw,7rem)]
+
+                          font-extralight
+                          leading-[1]
+                          tracking-[-0.05em]
+
+                          transition-colors
+                          duration-300
+
+                          ${
+                            isActive
+                              ? "text-neutral-900"
+                              : "text-neutral-400 hover:text-neutral-900"
+                          }
+                        `}
+                      >
+                        <span
+                          className="
+                            text-[11px]
+                            font-normal
+                            uppercase
+                            tracking-[0.25em]
+                            text-neutral-400
+
+                            self-start
+                            pt-3
+                          "
+                        >
+                          0{i + 1}
+                        </span>
+                        {item.label}
+                      </NavLink>
+                    </motion.div>
+                  ))}
+                </nav>
+
+                {/* Footer row of the overlay */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.4,
+                    ease: easeOutExpo,
+                  }}
+                  className="
+                    mt-16
+                    lg:mt-20
+
+                    flex
+                    flex-wrap
+                    items-center
+                    justify-between
+
+                    gap-6
+
+                    border-t
+                    border-neutral-200
+
+                    pt-8
+
+                    text-[11px]
+                    uppercase
+                    tracking-[0.22em]
+                    text-neutral-500
+                  "
+                >
+                  <a
+                    href="mailto:talagtagjohnkarlo4@gmail.com"
+                    className="
+                      transition-colors
+                      duration-300
+                      hover:text-neutral-900
+                    "
+                  >
+                    talagtagjohnkarlo4@gmail.com
+                  </a>
+
+                  <a
+                    href="#"
+                    className="
+                      transition-colors
+                      duration-300
+                      hover:text-neutral-900
+                    "
+                  >
+                    Resume ↗
+                  </a>
+                </motion.div>
+              </div>
+            </HeroContainer>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

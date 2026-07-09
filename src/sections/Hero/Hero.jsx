@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
+  useReducedMotion,
   useScroll,
   useTransform,
-  useReducedMotion,
   easeOut,
 } from "framer-motion";
 
@@ -17,12 +17,6 @@ export default function Hero() {
   const sectionRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
-  /*
-   * Parallax exit — as the pinned Intro rises to cover the
-   * hero, the lockup drifts down slower than the scroll
-   * (classic depth lag) and fades, so the handoff reads as
-   * layered rather than a flat scroll-away.
-   */
   const [exitDistance, setExitDistance] = useState(700);
 
   useEffect(() => {
@@ -33,6 +27,7 @@ export default function Hero() {
     };
 
     measure();
+
     window.addEventListener("resize", measure);
 
     return () => window.removeEventListener("resize", measure);
@@ -43,21 +38,29 @@ export default function Hero() {
   const contentY = useTransform(
     scrollY,
     [0, exitDistance],
-    [0, 120],
-    { ease: easeOut }
+    [0, 140],
+    {
+      ease: easeOut,
+    }
   );
 
   const contentOpacity = useTransform(
     scrollY,
-    [exitDistance * 0.25, exitDistance * 0.85],
+    [exitDistance * 0.2, exitDistance * 0.82],
     [1, 0]
+  );
+
+  const contentScale = useTransform(
+    scrollY,
+    [0, exitDistance],
+    [1, 0.96]
   );
 
   return (
     <section
       ref={sectionRef}
       id="hero"
-      className="relative"
+      className="relative isolate"
     >
       <CursorEffect className="relative overflow-hidden">
         <HeroBackground />
@@ -69,32 +72,20 @@ export default function Hero() {
               : {
                   y: contentY,
                   opacity: contentOpacity,
+                  scale: contentScale,
                 }
           }
           className="
             relative
             z-10
 
+            origin-top
+
             will-change-transform
           "
         >
           <HeroContainer>
-            <div
-              className="
-                flex
-                flex-col
-                justify-center
-
-                min-h-[90svh]
-
-                pt-28
-                md:pt-32
-
-                pb-16
-              "
-            >
-              <HeroContent />
-            </div>
+            <HeroContent />
           </HeroContainer>
         </motion.div>
       </CursorEffect>

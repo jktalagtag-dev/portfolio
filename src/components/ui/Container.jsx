@@ -14,7 +14,7 @@ export default function Container({
         md:px-10
         lg:px-14
         xl:px-16
-        2xl:px-20
+        2xl:px-12
 
         ${className}
       `}
