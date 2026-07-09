@@ -1,88 +1,149 @@
+import { useLayoutEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+import MaskText from "../../components/motion/MaskText";
+import ParallaxImage from "../../components/motion/ParallaxImage";
+
+gsap.registerPlugin(ScrollTrigger);
 
 /*
- * Non-pinned fallback for mobile and reduced-motion: the same
- * projects as a calm, scroll-revealed stacked sequence — image
- * over story, one project at a time. No scroll-jacking.
+ * Mobile / narrow-screen project sequence. Not the desktop
+ * pinned carousel, and deliberately not a uniform fade-on-scroll
+ * list either — each project is a small composed scene:
+ *
+ *   - a layered parallax image (frame fixed, photo drifts),
+ *   - an oversized numeral behind it drifting the OTHER way
+ *     (the second plane — this is the "layered" in parallax),
+ *   - a mask-wipe reveal on the title (text-on-scroll),
+ *   - a short metadata stagger.
+ *
+ * The choreography is per-scene and one-shot, so a fast-skimming
+ * reader is never blocked and nothing loops.
  */
 
 export default function ExhibitionFallback({ projects }) {
+  const rootRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return undefined;
+
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray("[data-scene]").forEach((scene) => {
+        // Metadata cascade — earned, tight, one-shot on enter.
+        const bits = scene.querySelectorAll("[data-reveal]");
+        if (bits.length) {
+          gsap.from(bits, {
+            y: 26,
+            autoAlpha: 0,
+            filter: "blur(6px)",
+            duration: 0.7,
+            ease: "power3.out",
+            stagger: 0.08,
+            scrollTrigger: {
+              trigger: scene,
+              start: "top 70%",
+              once: true,
+            },
+          });
+        }
+
+        // Second plane: the big numeral drifts opposite the photo.
+        const num = scene.querySelector("[data-parallax-num]");
+        if (num) {
+          gsap.fromTo(
+            num,
+            { yPercent: 22 },
+            {
+              yPercent: -22,
+              ease: "none",
+              scrollTrigger: {
+                trigger: scene,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              },
+            }
+          );
+        }
+      });
+
+      ScrollTrigger.refresh();
+    }, rootRef);
+
+    return () => ctx.revert();
+  }, [projects]);
+
   return (
     <div
+      ref={rootRef}
       className="
         px-5
         sm:px-6
         md:px-10
 
-        space-y-20
+        space-y-24
         sm:space-y-28
       "
     >
-      {projects.map((project) => (
-        <motion.article
-          key={project.slug}
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-        >
+      {projects.map((project, i) => (
+        <article key={project.slug} data-scene>
+          {/* Image plane + numeral plane */}
           <Link
             to={`/work/${project.slug}`}
-            className="group block"
+            className="group relative block"
           >
-            <motion.div
-              variants={fadeUp}
+            <ParallaxImage
+              src={project.image}
+              alt={project.title}
+              priority={i === 0}
+              intensity={6}
               className="
-                overflow-hidden
+                relative
+                z-10
+
+                aspect-[4/3]
+                sm:aspect-[16/10]
 
                 border
                 border-neutral-200
               "
+            />
+
+            {/* Foreground plane — editorial page-number over the
+                image, drifting on its own rate. mix-blend keeps it
+                legible on any photo. */}
+            <span
+              data-parallax-num
+              aria-hidden="true"
+              className="
+                pointer-events-none
+                absolute
+                right-4
+                top-3
+                z-20
+
+                font-extralight
+                leading-none
+                tracking-[-0.04em]
+
+                text-[3.25rem]
+                sm:text-[4rem]
+
+                text-white
+                mix-blend-difference
+              "
             >
-              <img
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-                decoding="async"
-                className="
-                  aspect-[4/3]
-                  sm:aspect-[16/10]
-
-                  w-full
-
-                  object-cover
-
-                  transition-transform
-                  duration-700
-                  ease-[cubic-bezier(0.16,1,0.3,1)]
-
-                  group-hover:scale-[1.03]
-                "
-              />
-            </motion.div>
+              {project.number}
+            </span>
           </Link>
 
-          <motion.p
-            variants={fadeUp}
+          {/* Title — mask-wipe reveal (text-on-scroll) */}
+          <h3
             className="
               mt-8
-
-              text-[11px]
-              uppercase
-              tracking-[0.3em]
-              text-neutral-400
-            "
-          >
-            {project.number}&ensp;·&ensp;{project.year}
-          </motion.p>
-
-          <motion.h3
-            variants={fadeUp}
-            className="
-              mt-4
 
               text-[2rem]
               sm:text-[2.5rem]
@@ -93,20 +154,40 @@ export default function ExhibitionFallback({ projects }) {
               text-neutral-900
             "
           >
-            <Link
-              to={`/work/${project.slug}`}
-              className="
+            <MaskText
+              as="span"
+              start="top 82%"
+              innerClassName="
                 transition-colors
                 duration-300
-                hover:text-neutral-500
               "
             >
-              {project.title}
-            </Link>
-          </motion.h3>
+              <Link
+                to={`/work/${project.slug}`}
+                className="hover:text-neutral-500"
+              >
+                {project.title}
+              </Link>
+            </MaskText>
+          </h3>
 
-          <motion.p
-            variants={fadeUp}
+          {/* Metadata cascade */}
+          <p
+            data-reveal
+            className="
+              mt-5
+
+              text-[11px]
+              uppercase
+              tracking-[0.3em]
+              text-neutral-400
+            "
+          >
+            {project.number}&ensp;·&ensp;{project.year}
+          </p>
+
+          <p
+            data-reveal
             className="
               mt-4
 
@@ -118,10 +199,10 @@ export default function ExhibitionFallback({ projects }) {
             "
           >
             {project.description}
-          </motion.p>
+          </p>
 
-          <motion.p
-            variants={fadeUp}
+          <p
+            data-reveal
             className="
               mt-5
 
@@ -132,10 +213,10 @@ export default function ExhibitionFallback({ projects }) {
             "
           >
             {project.role}&ensp;·&ensp;{project.timeline}
-          </motion.p>
+          </p>
 
-          <motion.div
-            variants={fadeUp}
+          <div
+            data-reveal
             className="
               mt-4
 
@@ -164,12 +245,9 @@ export default function ExhibitionFallback({ projects }) {
                 {tech}
               </span>
             ))}
-          </motion.div>
+          </div>
 
-          <motion.div
-            variants={fadeUp}
-            className="mt-7"
-          >
+          <div data-reveal className="mt-7">
             <Link
               to={`/work/${project.slug}`}
               className="
@@ -202,8 +280,8 @@ export default function ExhibitionFallback({ projects }) {
                 →
               </span>
             </Link>
-          </motion.div>
-        </motion.article>
+          </div>
+        </article>
       ))}
     </div>
   );
