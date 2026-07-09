@@ -20,11 +20,16 @@ export function registerGsap() {
 
 registerGsap();
 
+/*
+ * Deliberately always false — owner's explicit call: motion plays
+ * for every visitor regardless of the OS "reduce motion" setting,
+ * matching ProjectExhibition's existing always-play behavior. To
+ * restore accessibility deference, swap the body back to:
+ *   return typeof window !== "undefined" &&
+ *     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ */
 export function prefersReducedMotion() {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  return false;
 }
 
 /*

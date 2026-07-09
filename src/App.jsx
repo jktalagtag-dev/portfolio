@@ -1,5 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import {
+  AnimatePresence,
+  MotionConfig,
+} from "framer-motion";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 import Loader from "./components/ui/Loader";
@@ -47,33 +50,44 @@ export default function App() {
   }, [loading]);
 
   return (
-    <AnimatePresence mode="wait">
-      {loading ? (
-        <Loader key="loader" />
-      ) : (
-        <>
-          <ScrollToTop />
+    // reducedMotion="never": owner's explicit call to always play
+    // motion for every visitor, matching prefersReducedMotion()
+    // in utils/gsap.js — see that file for how to revert both.
+    <MotionConfig reducedMotion="never">
+      <AnimatePresence mode="wait">
+        {loading ? (
+          <Loader key="loader" />
+        ) : (
+          <>
+            <ScrollToTop />
 
-          <Suspense fallback={null}>
-            <Routes>
-              <Route path="/" element={<Home />} />
+            <Suspense fallback={null}>
+              <Routes>
+                <Route path="/" element={<Home />} />
 
-              <Route path="/work" element={<Work />} />
+                <Route path="/work" element={<Work />} />
 
-              <Route
-                path="/work/:slug"
-                element={<ProjectCaseStudy />}
-              />
+                <Route
+                  path="/work/:slug"
+                  element={<ProjectCaseStudy />}
+                />
 
-              <Route path="/about" element={<AboutPage />} />
+                <Route
+                  path="/about"
+                  element={<AboutPage />}
+                />
 
-              <Route path="/contact" element={<Contact />} />
+                <Route
+                  path="/contact"
+                  element={<Contact />}
+                />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </>
-      )}
-    </AnimatePresence>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </>
+        )}
+      </AnimatePresence>
+    </MotionConfig>
   );
 }
