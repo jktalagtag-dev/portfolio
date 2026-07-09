@@ -1,33 +1,43 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 import useLocalTime from "../../utils/useLocalTime";
 
-/*
- * Bottom metadata cluster — name at the left edge, live local
- * time offset to the right, both small/uppercase, sitting on
- * one baseline beneath the headline (stacks on mobile).
- */
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 1.0,
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 32,
+    filter: "blur(8px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.9,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
 
 export default function HeroMeta() {
   const time = useLocalTime();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        y: 24,
-        filter: "blur(8px)",
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-      }}
-      transition={{
-        delay: 1.05,
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+      variants={containerVariants}
+      initial={shouldReduceMotion ? false : "hidden"}
+      animate="visible"
       className="
         mt-10
         lg:mt-14
@@ -38,21 +48,28 @@ export default function HeroMeta() {
 
         sm:flex-row
         sm:items-end
-
-        sm:gap-x-[14vw]
+        sm:justify-between
 
         text-[11px]
         sm:text-[12px]
+
         uppercase
         tracking-[0.22em]
-        text-neutral-700
       "
     >
-      <p>John Karlo Talagtag</p>
+      <motion.p
+        variants={itemVariants}
+        className="text-neutral-700"
+      >
+        John Karlo Talagtag
+      </motion.p>
 
-      <p className="text-neutral-500">
+      <motion.p
+        variants={itemVariants}
+        className="text-neutral-500"
+      >
         Current Time: {time} PHT
-      </p>
+      </motion.p>
     </motion.div>
   );
 }
