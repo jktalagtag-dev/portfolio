@@ -10,29 +10,35 @@ import ExhibitionFallback from "./ExhibitionFallback";
 gsap.registerPlugin(ScrollTrigger);
 
 /*
- * Scroll-scrubbed pinned exhibition — the section pins and the
- * viewport holds while each project cross-dissolves into the
- * next, driven entirely by scroll position (scrub). Images are
- * stacked and overlap through the transition so there is never
- * an empty state; the info panel on the right stays anchored
- * while its contents change. Only runs on lg+ with motion
- * allowed; everything else falls back to a calm stacked list.
+ * Continuous vertical carousel — the section pins and two
+ * tracks (image + info) translate upward in lockstep, mapped
+ * 1:1 to scroll so advancing feels like one smooth, connected
+ * motion rather than a hold-then-jump. Each image parallaxes at
+ * a slower rate inside its frame for depth, and a progress bar
+ * tracks position. Only runs on lg+ with motion allowed;
+ * everything else falls back to a calm stacked list.
  */
 
-const HOLD = 0.55; // scroll "dwell" on each scene before it moves
-const SHIFT = 130; // px the editorial spread travels in/out
+// Scroll length (in viewport heights) budgeted per project. Lower
+// = snappier advance between projects; higher = more dwell.
+const VH_PER_PROJECT = 88;
+
+// How far the image drifts against its frame — the parallax depth.
+const PARALLAX = 9;
 
 export default function ProjectExhibition({ projects }) {
   const wrapperRef = useRef(null);
-  const stageRef = useRef(null);
-  const slotRefs = useRef([]);
+  const imageTrackRef = useRef(null);
+  const infoTrackRef = useRef(null);
   const imgRefs = useRef([]);
-  const infoRefs = useRef([]);
+  const progressRef = useRef(null);
+  const activeRef = useRef(0);
+
+  const [pinned, setPinned] = useState(false);
+  const [active, setActive] = useState(0);
 
   // Decide the mode after mount so we never mismatch the
   // pinned/fallback markup, and rebuild on breakpoint change.
-  const [pinned, setPinned] = useState(false);
-
   useEffect(() => {
     const decide = () =>
       setPinned(
@@ -56,129 +62,63 @@ export default function ProjectExhibition({ projects }) {
     lenis?.on("scroll", onLenisScroll);
 
     const ctx = gsap.context(() => {
-      const slots = slotRefs.current;
-      const imgs = imgRefs.current;
-      const infos = infoRefs.current;
       const n = projects.length;
+      if (n < 2) return;
 
-      // Resting states: project 0 shown, the rest staged below.
-      slots.forEach((slot, i) => {
-        gsap.set(slot, {
-          y: i === 0 ? 0 : SHIFT,
-          scale: i === 0 ? 1 : 1.08,
-          autoAlpha: i === 0 ? 1 : 0,
-          filter: i === 0 ? "blur(0px)" : "blur(12px)",
-        });
-      });
+      // Distance both tracks travel: from the first slide to the
+      // last. yPercent is a share of each track's own height, and
+      // each track is n slides tall, so one slide = 100/n percent.
+      const travel = -100 * ((n - 1) / n);
 
-      infos.forEach((info, i) => {
-        gsap.set(info, { autoAlpha: i === 0 ? 1 : 0 });
-        const bits = info.querySelectorAll("[data-reveal]");
-        if (i !== 0) {
-          gsap.set(bits, {
-            y: 40,
-            autoAlpha: 0,
-            filter: "blur(8px)",
-          });
-        }
-      });
-
-      // Pin is CSS position:sticky on the stage (robust across
-      // smooth-scroll setups); ScrollTrigger only scrubs the
-      // timeline against the tall wrapper's scroll progress.
+      // One linear, scrubbed timeline drives everything. No dwell,
+      // no eased scenes — motion is tied directly to scroll so it
+      // reads as a continuous carousel.
       const tl = gsap.timeline({
-        defaults: { ease: "power3.out" },
+        defaults: { ease: "none" },
         scrollTrigger: {
           trigger: wrapperRef.current,
           start: "top top",
           end: "bottom bottom",
-          scrub: 1,
+          scrub: 0.7,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const idx = Math.round(self.progress * (n - 1));
+            if (idx !== activeRef.current) {
+              activeRef.current = idx;
+              setActive(idx);
+            }
+          },
         },
       });
 
-      // Gentle parallax on the inner image across the whole
-      // pinned pass — only the visible frame reads it.
-      imgs.forEach((img) => {
+      // Both columns advance together — the carousel itself.
+      tl.to(
+        [imageTrackRef.current, infoTrackRef.current],
+        { yPercent: travel, duration: 1 },
+        0
+      );
+
+      // Each image drifts against its frame for parallax depth:
+      // starting lower and ending higher, it lags the upward
+      // track motion so it reads as a separate, slower layer.
+      imgRefs.current.forEach((img) => {
+        if (!img) return;
         tl.fromTo(
           img,
-          { yPercent: -6 },
-          { yPercent: 6, ease: "none", duration: n },
+          { yPercent: -PARALLAX },
+          { yPercent: PARALLAX, duration: 1 },
           0
         );
       });
 
-      let at = HOLD;
-
-      for (let i = 0; i < projects.length - 1; i++) {
-        const out = slots[i];
-        const inc = slots[i + 1];
-        const outInfo = infos[i];
-        const incInfo = infos[i + 1];
-        const incBits =
-          incInfo.querySelectorAll("[data-reveal]");
-
-        // Outgoing spread recedes upward and blurs away.
-        tl.to(
-          out,
-          {
-            y: -SHIFT,
-            scale: 0.98,
-            autoAlpha: 0,
-            filter: "blur(12px)",
-            ease: "power2.in",
-            duration: 0.9,
-          },
-          at
-        );
-
-        // Incoming spread slides up into place — overlaps the
-        // outgoing one so the frame is never empty.
+      // Scrub progress bar along the bottom edge.
+      if (progressRef.current) {
         tl.fromTo(
-          inc,
-          {
-            y: SHIFT,
-            scale: 1.08,
-            autoAlpha: 0,
-            filter: "blur(12px)",
-          },
-          {
-            y: 0,
-            scale: 1,
-            autoAlpha: 1,
-            filter: "blur(0px)",
-            ease: "power3.out",
-            duration: 1,
-          },
-          at + 0.15
+          progressRef.current,
+          { scaleX: 0 },
+          { scaleX: 1, duration: 1 },
+          0
         );
-
-        // Info panel: old copy lifts out, new copy staggers in.
-        tl.to(
-          outInfo,
-          {
-            autoAlpha: 0,
-            duration: 0.4,
-            ease: "power2.in",
-          },
-          at
-        );
-        tl.set(incInfo, { autoAlpha: 1 }, at + 0.2);
-        tl.fromTo(
-          incBits,
-          { y: 40, autoAlpha: 0, filter: "blur(8px)" },
-          {
-            y: 0,
-            autoAlpha: 1,
-            filter: "blur(0px)",
-            ease: "power3.out",
-            duration: 0.8,
-            stagger: 0.09,
-          },
-          at + 0.3
-        );
-
-        at += 1 + HOLD;
       }
 
       ScrollTrigger.refresh();
@@ -194,14 +134,15 @@ export default function ProjectExhibition({ projects }) {
     return <ExhibitionFallback projects={projects} />;
   }
 
+  const total = String(projects.length).padStart(2, "0");
+
   return (
     <section
       ref={wrapperRef}
       aria-label="Featured projects"
-      style={{ height: `${projects.length * 100}vh` }}
+      style={{ height: `${projects.length * VH_PER_PROJECT}vh` }}
     >
       <div
-        ref={stageRef}
         className="
           sticky
           top-0
@@ -223,30 +164,25 @@ export default function ProjectExhibition({ projects }) {
             2xl:px-20
 
             grid
-            grid-cols-[1.7fr_1fr]
+            grid-cols-[1.6fr_1fr]
             gap-14
             xl:gap-20
 
             items-center
           "
         >
-          {/* Image stack (left) */}
-          <div className="relative h-[72vh]">
-            {projects.map((project, i) => (
-              <div
-                key={project.slug}
-                ref={(el) => (slotRefs.current[i] = el)}
-                className="
-                  absolute
-                  inset-0
-
-                  will-change-transform
-                "
-              >
+          {/* Image column — a vertical track that scrolls up */}
+          <div className="h-[74vh] overflow-hidden">
+            <div
+              ref={imageTrackRef}
+              className="will-change-transform"
+            >
+              {projects.map((project, i) => (
                 <div
+                  key={project.slug}
                   className="
                     relative
-                    h-full
+                    h-[74vh]
                     w-full
 
                     overflow-hidden
@@ -263,214 +199,243 @@ export default function ProjectExhibition({ projects }) {
                     decoding="async"
                     className="
                       absolute
-                      inset-0
+                      inset-x-0
 
-                      h-full
+                      h-[120%]
                       w-full
 
                       object-cover
 
                       will-change-transform
                     "
-                    style={{ scale: "1.12" }}
+                    style={{ top: "-10%" }}
                   />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* Info panel (right) — anchored, contents cross-fade */}
-          <div className="relative h-[72vh]">
-            {projects.map((project, i) => (
-              <div
-                key={project.slug}
-                ref={(el) => (infoRefs.current[i] = el)}
-                className="
-                  absolute
-                  inset-0
-
-                  flex
-                  flex-col
-                  justify-center
-                "
-              >
-                <p
-                  data-reveal
-                  className="
-                    text-[11px]
-                    uppercase
-                    tracking-[0.3em]
-                    text-neutral-400
-                  "
-                >
-                  {project.number}&ensp;·&ensp;{project.year}
-                </p>
-
-                <h3
-                  data-reveal
-                  className="
-                    mt-6
-
-                    text-[2.5rem]
-                    xl:text-[3.25rem]
-
-                    font-light
-                    leading-[1.02]
-                    tracking-[-0.04em]
-
-                    text-neutral-900
-                  "
-                >
-                  {project.title}
-                </h3>
-
-                <p
-                  data-reveal
-                  className="
-                    mt-6
-
-                    max-w-md
-
-                    text-base
-                    leading-relaxed
-                    text-neutral-500
-                  "
-                >
-                  {project.description}
-                </p>
-
-                <p
-                  data-reveal
-                  className="
-                    mt-7
-
-                    text-[11px]
-                    uppercase
-                    tracking-[0.2em]
-                    text-neutral-400
-                  "
-                >
-                  {project.role}&ensp;·&ensp;{project.timeline}
-                </p>
-
+          {/* Info column — a matching track, moves in lockstep */}
+          <div className="h-[74vh] overflow-hidden">
+            <div
+              ref={infoTrackRef}
+              className="will-change-transform"
+            >
+              {projects.map((project) => (
                 <div
-                  data-reveal
+                  key={project.slug}
                   className="
-                    mt-4
-
                     flex
-                    flex-wrap
-                    gap-2
+                    h-[74vh]
+                    flex-col
+                    justify-center
                   "
                 >
-                  {project.tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className="
-                        px-3
-                        py-1.5
-
-                        text-[11px]
-                        uppercase
-                        tracking-[0.12em]
-
-                        border
-                        border-neutral-200
-
-                        text-neutral-500
-                      "
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div
-                  data-reveal
-                  className="
-                    mt-9
-
-                    flex
-                    flex-wrap
-                    items-center
-
-                    gap-x-8
-                    gap-y-3
-                  "
-                >
-                  <Link
-                    to={`/work/${project.slug}`}
+                  <p
                     className="
-                      group/link
-
-                      inline-flex
-                      items-center
-                      gap-3
-
-                      text-sm
+                      text-[11px]
                       uppercase
-                      tracking-[0.18em]
-                      text-neutral-900
-
-                      transition-colors
-                      duration-300
-
-                      hover:text-neutral-500
+                      tracking-[0.3em]
+                      text-neutral-400
                     "
                   >
-                    View Case Study
-                    <span
-                      className="
-                        transition-transform
-                        duration-300
+                    {project.number}&ensp;·&ensp;{project.year}
+                  </p>
 
-                        group-hover/link:translate-x-1.5
-                      "
-                    >
-                      →
-                    </span>
-                  </Link>
+                  <h3
+                    className="
+                      mt-6
 
-                  {project.live !== "#" && (
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noreferrer"
+                      text-[2.5rem]
+                      xl:text-[3.25rem]
+
+                      font-light
+                      leading-[1.02]
+                      tracking-[-0.04em]
+
+                      text-neutral-900
+                    "
+                  >
+                    {project.title}
+                  </h3>
+
+                  <p
+                    className="
+                      mt-6
+
+                      max-w-md
+
+                      text-base
+                      leading-relaxed
+                      text-neutral-500
+                    "
+                  >
+                    {project.description}
+                  </p>
+
+                  <p
+                    className="
+                      mt-7
+
+                      text-[11px]
+                      uppercase
+                      tracking-[0.2em]
+                      text-neutral-400
+                    "
+                  >
+                    {project.role}&ensp;·&ensp;{project.timeline}
+                  </p>
+
+                  <div
+                    className="
+                      mt-4
+
+                      flex
+                      flex-wrap
+                      gap-2
+                    "
+                  >
+                    {project.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className="
+                          px-3
+                          py-1.5
+
+                          text-[11px]
+                          uppercase
+                          tracking-[0.12em]
+
+                          border
+                          border-neutral-200
+
+                          text-neutral-500
+                        "
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div
+                    className="
+                      mt-9
+
+                      flex
+                      flex-wrap
+                      items-center
+
+                      gap-x-8
+                      gap-y-3
+                    "
+                  >
+                    <Link
+                      to={`/work/${project.slug}`}
                       className="
+                        group/link
+
+                        inline-flex
+                        items-center
+                        gap-3
+
                         text-sm
                         uppercase
                         tracking-[0.18em]
-                        text-neutral-500
+                        text-neutral-900
 
                         transition-colors
                         duration-300
 
-                        hover:text-neutral-900
+                        hover:text-neutral-500
                       "
                     >
-                      Live ↗
-                    </a>
-                  )}
+                      View Case Study
+                      <span
+                        className="
+                          transition-transform
+                          duration-300
+
+                          group-hover/link:translate-x-1.5
+                        "
+                      >
+                        →
+                      </span>
+                    </Link>
+
+                    {project.live !== "#" && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="
+                          text-sm
+                          uppercase
+                          tracking-[0.18em]
+                          text-neutral-500
+
+                          transition-colors
+                          duration-300
+
+                          hover:text-neutral-900
+                        "
+                      >
+                        Live ↗
+                      </a>
+                    )}
+                  </div>
                 </div>
-
-                {/* Progress index */}
-                <p
-                  className="
-                    mt-12
-
-                    text-[11px]
-                    uppercase
-                    tracking-[0.25em]
-                    text-neutral-300
-                  "
-                >
-                  {String(i + 1).padStart(2, "0")}
-                  &ensp;/&ensp;
-                  {String(projects.length).padStart(2, "0")}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+        </div>
+
+        {/* Live index — fixed, does not travel with the tracks */}
+        <p
+          className="
+            pointer-events-none
+            absolute
+            bottom-8
+            right-14
+            xl:right-16
+            2xl:right-20
+
+            text-[11px]
+            uppercase
+            tracking-[0.25em]
+            text-neutral-400
+
+            tabular-nums
+          "
+        >
+          {String(active + 1).padStart(2, "0")}
+          &ensp;/&ensp;
+          {total}
+        </p>
+
+        {/* Scrub progress bar */}
+        <div
+          className="
+            absolute
+            bottom-0
+            left-0
+            right-0
+
+            h-px
+            bg-neutral-200
+          "
+        >
+          <div
+            ref={progressRef}
+            className="
+              h-px
+              w-full
+
+              origin-left
+              scale-x-0
+
+              bg-neutral-900
+            "
+          />
         </div>
       </div>
     </section>
