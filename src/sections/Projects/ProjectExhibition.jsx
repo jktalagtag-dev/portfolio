@@ -10,13 +10,14 @@ import ExhibitionFallback from "./ExhibitionFallback";
 gsap.registerPlugin(ScrollTrigger);
 
 /*
- * Continuous vertical carousel — the section pins and two
- * tracks (image + info) translate upward in lockstep, mapped
- * 1:1 to scroll so advancing feels like one smooth, connected
- * motion rather than a hold-then-jump. Each image parallaxes at
- * a slower rate inside its frame for depth, and a progress bar
- * tracks position. Only runs on lg+ with motion allowed;
- * everything else falls back to a calm stacked list.
+ * Continuous vertical carousel — the section pins (CSS sticky)
+ * and two tracks (image + info) translate upward in lockstep,
+ * mapped 1:1 to scroll so advancing feels like one smooth,
+ * connected motion rather than a hold-then-jump. Each image
+ * parallaxes at a slower rate inside its frame for depth, and a
+ * progress bar tracks position. Runs on lg+ regardless of the OS
+ * reduced-motion setting (this is the signature piece); narrower
+ * screens fall back to a calm stacked list.
  */
 
 // Scroll length (in viewport heights) budgeted per project. Lower
@@ -40,13 +41,12 @@ export default function ProjectExhibition({ projects }) {
   // Decide the mode after mount so we never mismatch the
   // pinned/fallback markup, and rebuild on breakpoint change.
   useEffect(() => {
+    // Width only — the carousel is the signature piece and plays
+    // even under OS reduced-motion (owner's explicit call). The
+    // layout genuinely needs the width, so narrow screens still
+    // fall back to the stacked list.
     const decide = () =>
-      setPinned(
-        window.matchMedia("(min-width: 1024px)").matches &&
-          !window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-          ).matches
-      );
+      setPinned(window.matchMedia("(min-width: 1024px)").matches);
 
     decide();
     window.addEventListener("resize", decide);
@@ -57,6 +57,10 @@ export default function ProjectExhibition({ projects }) {
   useEffect(() => {
     if (!pinned) return undefined;
 
+    // Lenis already runs its own RAF loop (useSmoothScroll); we
+    // only need to tell ScrollTrigger to re-read scroll on each
+    // Lenis tick. Do NOT drive lenis.raf here too — that would
+    // advance it twice per frame.
     const lenis = getLenis();
     const onLenisScroll = () => ScrollTrigger.update();
     lenis?.on("scroll", onLenisScroll);
@@ -76,10 +80,13 @@ export default function ProjectExhibition({ projects }) {
       const tl = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
+          // Pin is CSS position:sticky on the stage (robust with
+          // Lenis); ScrollTrigger only scrubs the timeline against
+          // the tall wrapper's scroll progress — no ST pinning.
           trigger: wrapperRef.current,
           start: "top top",
           end: "bottom bottom",
-          scrub: 0.7,
+          scrub: 0.8,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const idx = Math.round(self.progress * (n - 1));
@@ -195,7 +202,8 @@ export default function ProjectExhibition({ projects }) {
                     ref={(el) => (imgRefs.current[i] = el)}
                     src={project.image}
                     alt={project.title}
-                    loading={i === 0 ? "eager" : "lazy"}
+                    loading="eager"
+fetchPriority={i === 0 ? "high" : "auto"}
                     decoding="async"
                     className="
                       absolute
