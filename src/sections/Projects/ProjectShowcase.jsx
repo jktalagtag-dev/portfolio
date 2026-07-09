@@ -16,7 +16,7 @@ import { fadeUp } from "../../utils/animations";
 
 export default function ProjectShowcase() {
   return (
-    <section id="projects" className="pt-20 lg:pt-28">
+    <section id="projects" className="pt-14 sm:pt-16 lg:pt-28">
       {/* Section masthead */}
       <HeroContainer>
         <motion.div
@@ -74,7 +74,8 @@ export default function ProjectShowcase() {
           whileInView="show"
           viewport={{ once: true }}
           className="
-            mt-20
+            mt-14
+            sm:mt-16
             lg:mt-28
 
             border-t
@@ -92,7 +93,8 @@ export default function ProjectShowcase() {
 
               gap-6
 
-              py-10
+              py-8
+              sm:py-10
               lg:py-16
             "
           >
@@ -150,7 +152,7 @@ export default function ProjectShowcase() {
         </motion.div>
       </HeroContainer>
 
-      <div className="pb-10 lg:pb-16" />
+      <div className="pb-8 sm:pb-10 lg:pb-16" />
     </section>
   );
 }

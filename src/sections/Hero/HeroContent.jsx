@@ -16,10 +16,15 @@ export default function HeroContent() {
         flex-col
         justify-end
 
-        min-h-svh
+        min-h-[85svh]
+        sm:min-h-[88svh]
+        lg:min-h-svh
 
-        pt-32
-        pb-8
+        pt-20
+        sm:pt-24
+        lg:pt-32
+
+        pb-10
         lg:pb-10
       "
     >
