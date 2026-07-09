@@ -1,14 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import {
-  AnimatePresence,
-  MotionConfig,
-} from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 import Loader from "./components/ui/Loader";
 import ScrollToTop from "./components/ui/ScrollToTop";
 import useSmoothScroll from "./utils/useSmoothScroll";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "./utils/gsap";
 
 /*
  * Route-level code splitting — each page ships as its own
@@ -50,44 +47,33 @@ export default function App() {
   }, [loading]);
 
   return (
-    <MotionConfig reducedMotion="never">
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <Loader key="loader" />
-        ) : (
-          <>
-            <ScrollToTop />
+    <AnimatePresence mode="wait">
+      {loading ? (
+        <Loader key="loader" />
+      ) : (
+        <>
+          <ScrollToTop />
 
-            <Suspense fallback={null}>
-              <Routes>
-                <Route path="/" element={<Home />} />
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<Home />} />
 
-                <Route path="/work" element={<Work />} />
+              <Route path="/work" element={<Work />} />
 
-                <Route
-                  path="/work/:slug"
-                  element={<ProjectCaseStudy />}
-                />
+              <Route
+                path="/work/:slug"
+                element={<ProjectCaseStudy />}
+              />
 
-                <Route
-                  path="/about"
-                  element={<AboutPage />}
-                />
+              <Route path="/about" element={<AboutPage />} />
 
-                <Route
-                  path="/contact"
-                  element={<Contact />}
-                />
+              <Route path="/contact" element={<Contact />} />
 
-                <Route
-                  path="*"
-                  element={<NotFound />}
-                />
-              </Routes>
-            </Suspense>
-          </>
-        )}
-      </AnimatePresence>
-    </MotionConfig>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

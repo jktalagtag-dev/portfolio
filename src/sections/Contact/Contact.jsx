@@ -1,11 +1,6 @@
-import { motion } from "framer-motion";
 import SectionContainer from "../../components/ui/SectionContainer";
-
-import {
-  fadeUp,
-  staggerContainer,
-  lineGrow,
-} from "../../utils/animations";
+import VerticalLabel from "../../components/ui/VerticalLabel";
+import Reveal from "../../components/motion/Reveal";
 
 const links = [
   {
@@ -34,6 +29,12 @@ const links = [
 // mailto and placeholder links behave badly with _blank.
 const isExternal = (href) => href.startsWith("http");
 
+/*
+ * Contact. The intro rises in; the contact rows then slide in
+ * from the left, echoing their own "→" hover motion — a reveal
+ * that matches what the element does, not a uniform fade.
+ */
+
 export default function Contact() {
   return (
     <section
@@ -41,14 +42,7 @@ export default function Contact() {
       className="pb-24 pt-4 lg:pb-40 lg:pt-8"
     >
       <SectionContainer>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{
-            once: true,
-            amount: 0.2,
-          }}
+        <div
           className="
             grid
             grid-cols-1
@@ -56,42 +50,14 @@ export default function Contact() {
             gap-8
           "
         >
-          <div
-            className="
-              hidden
-              lg:flex
-              col-span-2
-              items-start
-              gap-6
-            "
-          >
-            <motion.div
-              variants={lineGrow}
-              className="w-px h-[300px] bg-neutral-200"
-            />
-
-            <motion.span
-              variants={fadeUp}
-              className="
-                text-[11px]
-                uppercase
-                tracking-[0.25em]
-                text-neutral-400
-                [writing-mode:vertical-rl]
-                rotate-180
-              "
-            >
-              CONTACT · 2026
-            </motion.span>
-          </div>
+          <VerticalLabel label="CONTACT · 2026" />
 
           <div className="lg:col-span-10">
-            <motion.div
-              variants={fadeUp}
-              className="max-w-3xl"
-            >
+            {/* Intro */}
+            <Reveal variant="rise" stagger={0.1} className="max-w-3xl">
               {/* Availability badge */}
               <span
+                data-reveal
                 className="
                   inline-flex
                   items-center
@@ -146,6 +112,7 @@ export default function Contact() {
               </span>
 
               <p
+                data-reveal
                 className="
                   mt-8
 
@@ -160,11 +127,12 @@ export default function Contact() {
                   text-neutral-900
                 "
               >
-                Open to frontend development roles,
-                freelance projects, and collaborations.
+                Open to frontend development roles, freelance
+                projects, and collaborations.
               </p>
 
               <p
+                data-reveal
                 className="
                   mt-6
 
@@ -175,13 +143,15 @@ export default function Contact() {
                   text-neutral-500
                 "
               >
-                Based in the Philippines · Available for
-                remote work
+                Based in the Philippines · Available for remote
+                work
               </p>
-            </motion.div>
+            </Reveal>
 
-            <motion.div
-              variants={staggerContainer}
+            {/* Links */}
+            <Reveal
+              variant="slide"
+              stagger={0.1}
               className="
                 mt-16
                 lg:mt-20
@@ -191,19 +161,15 @@ export default function Contact() {
               "
             >
               {links.map((link) => (
-                <motion.a
+                <a
                   key={link.label}
-                  variants={fadeUp}
+                  data-reveal
                   href={link.href}
                   target={
-                    isExternal(link.href)
-                      ? "_blank"
-                      : undefined
+                    isExternal(link.href) ? "_blank" : undefined
                   }
                   rel={
-                    isExternal(link.href)
-                      ? "noreferrer"
-                      : undefined
+                    isExternal(link.href) ? "noreferrer" : undefined
                   }
                   className="
                     group
@@ -270,11 +236,11 @@ export default function Contact() {
                   >
                     ↗
                   </span>
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
+            </Reveal>
           </div>
-        </motion.div>
+        </div>
       </SectionContainer>
     </section>
   );

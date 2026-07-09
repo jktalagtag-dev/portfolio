@@ -1,30 +1,24 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import SectionContainer from "../../components/ui/SectionContainer";
+import VerticalLabel from "../../components/ui/VerticalLabel";
+import Reveal from "../../components/motion/Reveal";
 
-import {
-  fadeUp,
-  staggerContainer,
-  lineGrow,
-} from "../../utils/animations";
+/*
+ * About preview. Motion character: a calm "rise" — heading and
+ * paragraphs lift into place in sequence. (Skills scales,
+ * Experience slides, Currently wipes — each section reads
+ * distinctly so the page never feels like one repeated reveal.)
+ */
 
 export default function About() {
   return (
-    <section
-      id="about-preview"
-      className="overflow-hidden"
-    >
+    <section id="about-preview" className="overflow-hidden">
       <SectionContainer>
         <div className="py-20 lg:py-40">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{
-              once: true,
-              amount: 0.25,
-            }}
+          <Reveal
+            variant="rise"
+            stagger={0.12}
             className="
               grid
               grid-cols-1
@@ -32,40 +26,11 @@ export default function About() {
               gap-10
             "
           >
-            {/* Vertical Label */}
-            <div
-              className="
-                hidden
-                lg:flex
-                col-span-2
-                items-center
-                gap-6
-              "
-            >
-              <motion.div
-                variants={lineGrow}
-                className="w-px bg-neutral-200"
-              />
-
-              <motion.span
-                variants={fadeUp}
-                className="
-                  text-[11px]
-                  uppercase
-                  tracking-[0.25em]
-                  text-neutral-400
-                  [writing-mode:vertical-rl]
-                  rotate-180
-                "
-              >
-                ABOUT · PREVIEW
-              </motion.span>
-            </div>
+            <VerticalLabel label="ABOUT · PREVIEW" />
 
             {/* Heading */}
-            <div className="lg:col-span-5">
-              <motion.h2
-                variants={fadeUp}
+            <div data-reveal className="lg:col-span-5">
+              <h2
                 className="
                   max-w-[300px]
                   sm:max-w-none
@@ -82,15 +47,12 @@ export default function About() {
                 A little
                 <br />
                 about me.
-              </motion.h2>
+              </h2>
             </div>
 
             {/* Content */}
             <div className="lg:col-span-5 lg:pt-6">
-              <motion.div
-                variants={staggerContainer}
-                className="max-w-xl"
-              >
+              <div className="max-w-xl">
                 <div
                   className="
                     space-y-6
@@ -102,27 +64,27 @@ export default function About() {
                     text-neutral-600
                   "
                 >
-                  <motion.p variants={fadeUp}>
-                    I'm John Karlo, a Frontend Developer who enjoys
-                    turning ideas into clean and intuitive digital
-                    experiences.
-                  </motion.p>
+                  <p data-reveal>
+                    I&rsquo;m John Karlo, a Frontend Developer who
+                    enjoys turning ideas into clean and intuitive
+                    digital experiences.
+                  </p>
 
-                  <motion.p variants={fadeUp}>
+                  <p data-reveal>
                     My focus is building responsive interfaces with
                     React while bringing a full-stack understanding
                     from working with Laravel, PHP, and databases.
-                  </motion.p>
+                  </p>
 
-                  <motion.p variants={fadeUp}>
+                  <p data-reveal>
                     I enjoy the intersection of design and
                     development—where thoughtful user experiences
                     meet solid implementation.
-                  </motion.p>
+                  </p>
                 </div>
 
-                <motion.div
-                  variants={fadeUp}
+                <div
+                  data-reveal
                   className="
                     mt-12
 
@@ -153,10 +115,10 @@ export default function About() {
                   >
                     View My Work →
                   </Link>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </SectionContainer>
     </section>

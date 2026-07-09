@@ -5,6 +5,7 @@ import { projects } from "../../data/projects";
 
 import HeroContainer from "../../components/ui/HeroContainer";
 import ProjectExhibition from "./ProjectExhibition";
+import MaskText from "../../components/motion/MaskText";
 
 import { fadeUp } from "../../utils/animations";
 
@@ -68,11 +69,7 @@ export default function ProjectShowcase() {
 
       {/* All projects */}
       <HeroContainer>
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
+        <div
           className="
             mt-14
             sm:mt-16
@@ -98,16 +95,19 @@ export default function ProjectShowcase() {
               lg:py-16
             "
           >
-            <span
+            <MaskText
+              as="span"
+              start="top 92%"
               className="
                 text-[1.75rem]
                 sm:text-[2.75rem]
                 lg:text-[3.5rem]
 
                 font-light
-                leading-none
+                leading-[1.05]
                 tracking-[-0.04em]
-
+              "
+              innerClassName="
                 transition-colors
                 duration-500
 
@@ -115,7 +115,7 @@ export default function ProjectShowcase() {
               "
             >
               All Projects
-            </span>
+            </MaskText>
 
             <span
               className="
@@ -149,7 +149,7 @@ export default function ProjectShowcase() {
               </span>
             </span>
           </Link>
-        </motion.div>
+        </div>
       </HeroContainer>
 
       <div className="pb-8 sm:pb-10 lg:pb-16" />

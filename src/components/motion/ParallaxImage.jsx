@@ -1,8 +1,10 @@
 import { useLayoutEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+import {
+  gsap,
+  prefersReducedMotion,
+  scheduleRefresh,
+} from "../../utils/gsap";
 
 /*
  * Layered parallax image — the frame is fixed and clips, while
@@ -27,6 +29,7 @@ export default function ParallaxImage({
     const frame = frameRef.current;
     const img = imgRef.current;
     if (!frame || !img) return undefined;
+    if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
       // Uniform zoom gives vertical travel room without ever
@@ -48,6 +51,8 @@ export default function ParallaxImage({
         }
       );
     });
+
+    scheduleRefresh();
 
     return () => ctx.revert();
   }, [intensity]);

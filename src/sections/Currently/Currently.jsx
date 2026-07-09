@@ -1,11 +1,13 @@
-import { motion } from "framer-motion";
 import SectionContainer from "../../components/ui/SectionContainer";
+import VerticalLabel from "../../components/ui/VerticalLabel";
+import Reveal from "../../components/motion/Reveal";
 
-import {
-  fadeUp,
-  staggerContainer,
-  lineGrow,
-} from "../../utils/animations";
+/*
+ * Currently. Motion character: "clip" — the heading and status
+ * blocks wipe open from the top edge, a cleaner, more architectural
+ * reveal that closes the About page distinctly from the rise /
+ * scale / slide of the sections above.
+ */
 
 export default function Currently() {
   return (
@@ -18,14 +20,9 @@ export default function Currently() {
       "
     >
       <SectionContainer>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{
-            once: true,
-            amount: 0.2,
-          }}
+        <Reveal
+          variant="clip"
+          stagger={0.12}
           className="
             grid
             grid-cols-1
@@ -33,44 +30,12 @@ export default function Currently() {
             gap-8
           "
         >
-          {/* Vertical Label */}
-          <div
-            className="
-              hidden
-              lg:flex
-              col-span-2
-              items-start
-              pt-8
-              gap-6
-            "
-          >
-            <motion.div
-              variants={lineGrow}
-              className="w-px h-[320px] bg-neutral-200"
-            />
-
-            <motion.span
-              variants={fadeUp}
-              className="
-                text-[11px]
-                uppercase
-                tracking-[0.25em]
-                text-neutral-400
-                [writing-mode:vertical-rl]
-                rotate-180
-              "
-            >
-              CURRENTLY · 2026
-            </motion.span>
-          </div>
+          <VerticalLabel label="CURRENTLY · 2026" />
 
           {/* Content */}
           <div className="lg:col-span-10">
             {/* Heading */}
-            <motion.div
-              variants={fadeUp}
-              className="max-w-5xl"
-            >
+            <div data-reveal className="max-w-5xl">
               <h2
                 className="
                   text-4xl
@@ -83,7 +48,7 @@ export default function Currently() {
               >
                 Currently.
               </h2>
-            </motion.div>
+            </div>
 
             {/* Main Content */}
             <div
@@ -100,10 +65,7 @@ export default function Currently() {
               "
             >
               {/* Left */}
-              <motion.div
-                variants={fadeUp}
-                className="lg:col-span-6"
-              >
+              <div data-reveal className="lg:col-span-6">
                 <p
                   className="
                     text-2xl
@@ -115,19 +77,14 @@ export default function Currently() {
                     tracking-tight
                   "
                 >
-                  Building portfolio projects,
-                  refining my React and UI
-                  engineering skills, and actively
-                  seeking opportunities to grow as
-                  a frontend developer.
+                  Building portfolio projects, refining my React
+                  and UI engineering skills, and actively seeking
+                  opportunities to grow as a frontend developer.
                 </p>
-              </motion.div>
+              </div>
 
               {/* Right */}
-              <motion.div
-                variants={fadeUp}
-                className="lg:col-span-6"
-              >
+              <div data-reveal className="lg:col-span-6">
                 <div
                   className="
                     border-t
@@ -211,10 +168,10 @@ export default function Currently() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </Reveal>
       </SectionContainer>
     </section>
   );

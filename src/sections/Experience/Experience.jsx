@@ -1,31 +1,24 @@
-import { motion } from "framer-motion";
 import SectionContainer from "../../components/ui/SectionContainer";
-
-import {
-  fadeUp,
-  staggerContainer,
-  lineGrow,
-} from "../../utils/animations";
+import VerticalLabel from "../../components/ui/VerticalLabel";
+import Reveal from "../../components/motion/Reveal";
 
 import { experience } from "../../data/experience";
 
+/*
+ * Experience. Motion character: "slide" — the heading and each
+ * timeline entry enter from the left, so the section reads as a
+ * sequence advancing in time, distinct from the scale/rise/clip
+ * of its neighbours.
+ */
+
 export default function Experience() {
   return (
-    <section
-      id="experience"
-      className="overflow-hidden"
-    >
+    <section id="experience" className="overflow-hidden">
       <SectionContainer>
         <div className="py-20 lg:py-40">
-
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{
-              once: true,
-              amount: 0.2,
-            }}
+          <Reveal
+            variant="slide"
+            stagger={0.12}
             className="
               grid
               grid-cols-1
@@ -33,44 +26,12 @@ export default function Experience() {
               gap-8
             "
           >
-            {/* Vertical Label */}
-            <div
-              className="
-                hidden
-                lg:flex
-                col-span-2
-                items-start
-                gap-6
-              "
-            >
-              <motion.div
-                variants={lineGrow}
-                className="w-px bg-neutral-200"
-              />
-
-              <motion.span
-                variants={fadeUp}
-                className="
-                  text-[11px]
-                  uppercase
-                  tracking-[0.25em]
-                  text-neutral-400
-                  [writing-mode:vertical-rl]
-                  rotate-180
-                "
-              >
-                EXPERIENCE · 2026
-              </motion.span>
-            </div>
+            <VerticalLabel label="EXPERIENCE · 2026" />
 
             {/* Content */}
             <div className="lg:col-span-10">
-
               {/* Heading */}
-              <motion.div
-                variants={fadeUp}
-                className="max-w-4xl"
-              >
+              <div data-reveal className="max-w-4xl">
                 <h2
                   className="
                     text-[2.5rem]
@@ -97,25 +58,20 @@ export default function Experience() {
                     text-neutral-500
                   "
                 >
-                  Professional experience,
-                  academic achievements,
-                  and projects that shaped
-                  my development journey.
+                  Professional experience, academic achievements,
+                  and projects that shaped my development journey.
                 </p>
-              </motion.div>
+              </div>
 
               {/* Timeline */}
-              <motion.div
-                variants={staggerContainer}
-                className="mt-16 lg:mt-24"
-              >
+              <div className="mt-16 lg:mt-24">
                 {experience.map((item, index) => {
                   const isFeatured = item.featured;
 
                   return (
-                    <motion.article
+                    <article
                       key={index}
-                      variants={fadeUp}
+                      data-reveal
                       className="
                         group
 
@@ -135,11 +91,7 @@ export default function Experience() {
                         "
                       >
                         {/* Year */}
-                        <div
-                          className="
-                            xl:col-span-2
-                          "
-                        >
+                        <div className="xl:col-span-2">
                           <span
                             className="
                               text-[4rem]
@@ -151,11 +103,6 @@ export default function Experience() {
                               tracking-[-0.08em]
 
                               text-neutral-200
-
-                              transition-all
-                              duration-500
-
-                            
                             "
                           >
                             {item.year}
@@ -163,12 +110,7 @@ export default function Experience() {
                         </div>
 
                         {/* Content */}
-                        <div
-                          className="
-                            xl:col-span-10
-                            max-w-4xl
-                          "
-                        >
+                        <div className="xl:col-span-10 max-w-4xl">
                           {/* Featured Badge */}
                           {isFeatured && (
                             <div
@@ -271,17 +213,13 @@ export default function Experience() {
                             ))}
                           </div>
                         </div>
-
                       </div>
-                    </motion.article>
+                    </article>
                   );
                 })}
-              </motion.div>
-
+              </div>
             </div>
-
-          </motion.div>
-
+          </Reveal>
         </div>
       </SectionContainer>
     </section>
