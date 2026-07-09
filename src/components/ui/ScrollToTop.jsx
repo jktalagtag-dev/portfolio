@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import { getLenis } from "../../utils/useSmoothScroll";
+import { scheduleRefresh } from "../../utils/gsap";
 
 export default function ScrollToTop() {
   const { pathname } = useLocation();
@@ -16,6 +17,12 @@ export default function ScrollToTop() {
       left: 0,
       behavior: "instant",
     });
+
+    // The new route's scroll-reveals mount fresh; recompute their
+    // trigger positions once the page has laid out, or they keep
+    // the previous route's (stale) coordinates and never fire.
+    // (Debounced; the primitives also schedule this on mount.)
+    scheduleRefresh();
   }, [pathname]);
 
   return null;

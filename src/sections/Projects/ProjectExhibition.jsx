@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { getLenis } from "../../utils/useSmoothScroll";
+import {
+  gsap,
+  ScrollTrigger,
+  prefersReducedMotion,
+} from "../../utils/gsap";
 
 import ExhibitionFallback from "./ExhibitionFallback";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /*
  * Continuous vertical carousel — the section pins (CSS sticky)
@@ -41,12 +41,13 @@ export default function ProjectExhibition({ projects }) {
   // Decide the mode after mount so we never mismatch the
   // pinned/fallback markup, and rebuild on breakpoint change.
   useEffect(() => {
-    // Width only — the carousel is the signature piece and plays
-    // even under OS reduced-motion (owner's explicit call). The
-    // layout genuinely needs the width, so narrow screens still
-    // fall back to the stacked list.
+    // Pin only on lg+ with motion allowed; narrow screens and
+    // reduced-motion visitors get the calm stacked fallback.
     const decide = () =>
-      setPinned(window.matchMedia("(min-width: 1024px)").matches);
+      setPinned(
+        window.matchMedia("(min-width: 1024px)").matches &&
+          !prefersReducedMotion()
+      );
 
     decide();
     window.addEventListener("resize", decide);
@@ -57,14 +58,8 @@ export default function ProjectExhibition({ projects }) {
   useEffect(() => {
     if (!pinned) return undefined;
 
-    // Lenis already runs its own RAF loop (useSmoothScroll); we
-    // only need to tell ScrollTrigger to re-read scroll on each
-    // Lenis tick. Do NOT drive lenis.raf here too — that would
-    // advance it twice per frame.
-    const lenis = getLenis();
-    const onLenisScroll = () => ScrollTrigger.update();
-    lenis?.on("scroll", onLenisScroll);
-
+    // Lenis↔ScrollTrigger sync is wired globally in
+    // useSmoothScroll, so this only builds the scrub timeline.
     const ctx = gsap.context(() => {
       const n = projects.length;
       if (n < 2) return;
@@ -131,10 +126,7 @@ export default function ProjectExhibition({ projects }) {
       ScrollTrigger.refresh();
     }, wrapperRef);
 
-    return () => {
-      lenis?.off("scroll", onLenisScroll);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, [pinned, projects]);
 
   if (!pinned) {

@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 
 import SectionContainer from "../components/ui/SectionContainer";
+import Reveal from "../components/motion/Reveal";
 
 import { getLenis } from "../utils/useSmoothScroll";
 import useLocalTime from "../utils/useLocalTime";
-import { fadeUp, staggerContainer } from "../utils/animations";
 
 const menuLinks = [
   {
@@ -58,14 +57,7 @@ export default function Footer() {
       <SectionContainer>
 
         {/* Upper — CTA and link columns */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
+        <div
           className="
             grid
             grid-cols-1
@@ -82,9 +74,9 @@ export default function Footer() {
             lg:pb-24
           "
         >
-          {/* CTA */}
-          <motion.div
-            variants={fadeUp}
+          {/* CTA — clip-wipe reveal (the footer's signature) */}
+          <Reveal
+            variant="clip"
             className="md:col-span-7"
           >
             <p
@@ -125,11 +117,12 @@ export default function Footer() {
             >
               talagtagjohnkarlo4@gmail.com
             </a>
-          </motion.div>
+          </Reveal>
 
           {/* Link columns */}
-          <motion.div
-            variants={fadeUp}
+          <Reveal
+            variant="rise"
+            delay={0.1}
             className="
               md:col-span-5
 
@@ -215,15 +208,12 @@ export default function Footer() {
                 ))}
               </ul>
             </div>
-          </motion.div>
-        </motion.div>
+          </Reveal>
+        </div>
 
         {/* Baseline */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
+        <Reveal
+          variant="rise"
           className="
             border-t
             border-neutral-200
@@ -277,7 +267,7 @@ export default function Footer() {
           >
             Back to Top ↑
           </button>
-        </motion.div>
+        </Reveal>
 
       </SectionContainer>
     </footer>

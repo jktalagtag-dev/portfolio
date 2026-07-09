@@ -4,6 +4,7 @@ import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
 import HeroContainer from "../components/ui/HeroContainer";
+import MaskText from "../components/motion/MaskText";
 import ContactSection from "../sections/Contact/Contact";
 
 export default function Contact() {
@@ -42,11 +43,15 @@ export default function Contact() {
                 tracking-[-0.08em]
               "
             >
-              Let's build
-              <br />
-              something
-              <br />
-              meaningful.
+              <MaskText as="span" className="block" delay={0}>
+                Let&rsquo;s build
+              </MaskText>
+              <MaskText as="span" className="block" delay={0.12}>
+                something
+              </MaskText>
+              <MaskText as="span" className="block" delay={0.24}>
+                meaningful.
+              </MaskText>
             </h1>
           </div>
         </HeroContainer>

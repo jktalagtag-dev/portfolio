@@ -1,16 +1,18 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
+import { ScrollTrigger, prefersReducedMotion } from "./gsap";
+
 /*
- * Lenis smooth scrolling
- * ----------------------
- * Development version:
- * - Always enables Lenis regardless of the OS "Reduce Motion" setting.
- * - Keeps scroll-linked animations smooth.
- * - Properly cleans up on unmount.
+ * Lenis smooth scrolling, and the one place the whole GSAP
+ * scroll system is kept in sync: every Lenis tick tells
+ * ScrollTrigger to re-read scroll, so scroll-linked motion on
+ * ANY page stays glued to the smooth scroll (not just the
+ * project showcase, which used to wire this itself).
  *
- * Before deploying to production, consider restoring
- * prefers-reduced-motion support for accessibility.
+ * Disabled under prefers-reduced-motion — motion-sensitive
+ * visitors get native, instant scrolling and the reveal
+ * primitives render their final state with no animation.
  */
 
 let lenisInstance = null;
@@ -21,6 +23,8 @@ export function getLenis() {
 
 export default function useSmoothScroll() {
   useEffect(() => {
+    if (prefersReducedMotion()) return undefined;
+
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
@@ -30,6 +34,9 @@ export default function useSmoothScroll() {
     });
 
     lenisInstance = lenis;
+
+    const onScroll = () => ScrollTrigger.update();
+    lenis.on("scroll", onScroll);
 
     let rafId = 0;
 
@@ -42,6 +49,7 @@ export default function useSmoothScroll() {
 
     return () => {
       cancelAnimationFrame(rafId);
+      lenis.off("scroll", onScroll);
       lenis.destroy();
       lenisInstance = null;
     };

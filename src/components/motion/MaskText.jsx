@@ -1,8 +1,10 @@
 import { useLayoutEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+import {
+  gsap,
+  prefersReducedMotion,
+  scheduleRefresh,
+} from "../../utils/gsap";
 
 /*
  * Text-on-scroll reveal — the content sits in an overflow-hidden
@@ -26,6 +28,7 @@ export default function MaskText({
   useLayoutEffect(() => {
     const inner = innerRef.current;
     if (!inner) return undefined;
+    if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
       gsap.from(inner, {
@@ -41,11 +44,17 @@ export default function MaskText({
       });
     });
 
+    scheduleRefresh();
+
     return () => ctx.revert();
   }, [delay, start]);
 
   return (
-    <Tag className={`block overflow-hidden ${className}`}>
+    // pb/-mb pair gives the clip box room for descenders (g, j, p)
+    // without adding layout space below the line.
+    <Tag
+      className={`block overflow-hidden pb-[0.14em] -mb-[0.14em] ${className}`}
+    >
       <span
         ref={innerRef}
         className={`block will-change-transform ${innerClassName}`}
