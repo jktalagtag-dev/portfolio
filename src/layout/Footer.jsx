@@ -73,10 +73,12 @@ export default function Footer() {
 
             gap-12
 
-            pt-16
+            pt-12
+            sm:pt-14
             lg:pt-24
 
-            pb-16
+            pb-12
+            sm:pb-14
             lg:pb-24
           "
         >
