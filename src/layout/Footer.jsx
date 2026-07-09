@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import SectionContainer from "../components/ui/SectionContainer";
 
 import { getLenis } from "../utils/useSmoothScroll";
+import useLocalTime from "../utils/useLocalTime";
 import { fadeUp, staggerContainer } from "../utils/animations";
 
 const menuLinks = [
@@ -40,30 +40,9 @@ const connectLinks = [
   },
 ];
 
-const formatManilaTime = () =>
-  new Intl.DateTimeFormat("en-PH", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: "Asia/Manila",
-  }).format(new Date());
-
-function LocalTime() {
-  const [time, setTime] = useState(formatManilaTime);
-
-  useEffect(() => {
-    const id = setInterval(
-      () => setTime(formatManilaTime()),
-      30000
-    );
-
-    return () => clearInterval(id);
-  }, []);
-
-  return <>{time}</>;
-}
-
 export default function Footer() {
+  const time = useLocalTime();
+
   const scrollToTop = () => {
     const lenis = getLenis();
 
@@ -273,9 +252,7 @@ export default function Footer() {
               text-neutral-400
             "
           >
-            Philippines&ensp;·&ensp;
-            <LocalTime />
-            &ensp;PHT
+            Philippines&ensp;·&ensp;{time}&ensp;PHT
           </p>
 
           <button

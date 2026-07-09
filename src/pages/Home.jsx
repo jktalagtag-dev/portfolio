@@ -5,7 +5,6 @@ import Footer from "../layout/Footer";
 
 import Hero from "../sections/Hero/Hero";
 import ProjectShowcase from "../sections/Projects/ProjectShowcase";
-import Intro from "../sections/Hero/Intro";
 
 export default function Home() {
   return (
@@ -24,11 +23,10 @@ export default function Home() {
 
       <main>
         <Hero />
-        <Intro />
+
         {/*
-          Curtain — everything after the hero sits on an
-          opaque layer that scrolls up and covers the
-          pinned hero.
+          Opaque layer above the hero — as it scrolls up it
+          covers the hero's fade/recede exit.
         */}
         <div
           className="
