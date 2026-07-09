@@ -81,13 +81,18 @@ export default function ProjectCaseStudy() {
 
       <main className="min-h-screen">
 
+        {/* key by slug so navigating between case studies fully
+            remounts the pipeline — otherwise the scroll-reveal
+            effects don't re-run for the new project's content. */}
         {project.tier === "flagship" ? (
           <FlagshipCaseStudy
+            key={slug}
             project={project}
             nextProject={nextProject}
           />
         ) : (
           <ConciseCaseStudy
+            key={slug}
             project={project}
             nextProject={nextProject}
           />

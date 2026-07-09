@@ -4,6 +4,7 @@ import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
 import HeroContainer from "../components/ui/HeroContainer";
+import MaskText from "../components/motion/MaskText";
 import Projects from "../sections/Projects/Projects";
 
 export default function Work() {
@@ -42,11 +43,15 @@ export default function Work() {
                 tracking-[-0.08em]
               "
             >
-              Selected work
-              <br />
-              and case
-              <br />
-              studies.
+              <MaskText as="span" className="block" delay={0}>
+                Selected work
+              </MaskText>
+              <MaskText as="span" className="block" delay={0.12}>
+                and case
+              </MaskText>
+              <MaskText as="span" className="block" delay={0.24}>
+                studies.
+              </MaskText>
             </h1>
           </div>
         </HeroContainer>

@@ -1,4 +1,5 @@
 import HeroContainer from "../../components/ui/HeroContainer";
+import Reveal from "../../components/motion/Reveal";
 
 import CaseStudySection from "../../components/case-study/CaseStudySection";
 import ProjectHero from "../../components/case-study/ProjectHero";
@@ -42,7 +43,7 @@ export default function FlagshipCaseStudy({
         {/* OVERVIEW */}
         {/* ================================================== */}
 
-        <CaseStudySection label="Overview">
+        <CaseStudySection label="Overview" reveal="rise">
 
           <div className="max-w-3xl">
 
@@ -96,7 +97,7 @@ export default function FlagshipCaseStudy({
         {/* MY ROLE */}
         {/* ================================================== */}
 
-        <CaseStudySection label="My Role">
+        <CaseStudySection label="My Role" reveal="slide">
 
           <div className="max-w-4xl">
 
@@ -168,19 +169,21 @@ export default function FlagshipCaseStudy({
 
         <CaseStudySection label="Process">
           <div className="max-w-4xl">
-            <h2
-              className="
-                text-3xl
-                sm:text-4xl
-                lg:text-5xl
+            <Reveal variant="rise">
+              <h2
+                className="
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
 
-                font-light
-                leading-[1.05]
-                tracking-[-0.05em]
-              "
-            >
-              From research to deployment.
-            </h2>
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
+                "
+              >
+                From research to deployment.
+              </h2>
+            </Reveal>
 
             <div className="mt-16">
               <ProcessTimeline steps={project.processSteps} />
@@ -204,21 +207,23 @@ export default function FlagshipCaseStudy({
 
         <CaseStudySection label="Development">
           <div>
-            <h2
-              className="
-                max-w-4xl
+            <Reveal variant="rise">
+              <h2
+                className="
+                  max-w-4xl
 
-                text-3xl
-                sm:text-4xl
-                lg:text-5xl
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
 
-                font-light
-                leading-[1.05]
-                tracking-[-0.05em]
-              "
-            >
-              {project.developmentHeadline}
-            </h2>
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
+                "
+              >
+                {project.developmentHeadline}
+              </h2>
+            </Reveal>
 
             <div className="mt-16">
               <DevelopmentArchitecture
@@ -244,35 +249,39 @@ export default function FlagshipCaseStudy({
 
         <CaseStudySection label="Outcome">
           <div>
-            <h2
-              className="
-                max-w-4xl
+            <Reveal variant="rise" stagger={0.1}>
+              <h2
+                data-reveal
+                className="
+                  max-w-4xl
 
-                text-3xl
-                sm:text-4xl
-                lg:text-5xl
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
 
-                font-light
-                leading-[1.05]
-                tracking-[-0.05em]
-              "
-            >
-              {project.outcomeHeadline}
-            </h2>
+                  font-light
+                  leading-[1.05]
+                  tracking-[-0.05em]
+                "
+              >
+                {project.outcomeHeadline}
+              </h2>
 
-            <p
-              className="
-                mt-10
+              <p
+                data-reveal
+                className="
+                  mt-10
 
-                max-w-3xl
+                  max-w-3xl
 
-                text-lg
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              {project.outcome}
-            </p>
+                  text-lg
+                  leading-relaxed
+                  text-neutral-600
+                "
+              >
+                {project.outcome}
+              </p>
+            </Reveal>
 
             <div className="mt-16">
               <OutcomeGrid
@@ -299,7 +308,7 @@ export default function FlagshipCaseStudy({
         {/* ================================================== */}
 
         {hasLinks && (
-          <CaseStudySection label="Explore">
+          <CaseStudySection label="Explore" reveal="rise">
             <ProjectLinks
               live={project.live}
               github={project.github}

@@ -1,17 +1,14 @@
-import { motion } from "framer-motion";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+/*
+ * The Challenge — cards wipe open (clip) in sequence.
+ */
 
 export default function ChallengeGrid({ challenges }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
+    <Reveal
+      variant="clip"
+      stagger={0.1}
       className="
         grid
         md:grid-cols-2
@@ -19,9 +16,9 @@ export default function ChallengeGrid({ challenges }) {
       "
     >
       {challenges.map((item) => (
-        <motion.div
+        <div
           key={item}
-          variants={fadeUp}
+          data-reveal
           className="
             border
             border-neutral-200
@@ -43,8 +40,8 @@ export default function ChallengeGrid({ challenges }) {
           >
             {item}
           </h3>
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </Reveal>
   );
 }

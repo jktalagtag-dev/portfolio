@@ -33,19 +33,43 @@ export function prefersReducedMotion() {
  * after creating its trigger, so a freshly-navigated (lazy) route
  * gets exactly one refresh once its content has laid out — fixing
  * the "reveal never fires because its start position was measured
- * on the previous page" class of bug. Debounced across the batch.
+ * on the previous page" class of bug. Debounced across the batch,
+ * and it waits for web fonts so trigger positions aren't measured
+ * against the pre-font (wrong-height) layout.
  */
 let refreshQueued = false;
 
 export function scheduleRefresh() {
   if (refreshQueued) return;
   refreshQueued = true;
+
+  const run = () => {
+    refreshQueued = false;
+    ScrollTrigger.refresh();
+  };
+
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      refreshQueued = false;
-      ScrollTrigger.refresh();
+      if (
+        typeof document !== "undefined" &&
+        document.fonts &&
+        document.fonts.status !== "loaded"
+      ) {
+        document.fonts.ready.then(run);
+      } else {
+        run();
+      }
     });
   });
+}
+
+// Belt-and-suspenders for the very first load: fonts and full
+// load can both shift layout after the initial trigger creation.
+if (typeof window !== "undefined") {
+  window.addEventListener("load", () => ScrollTrigger.refresh());
+  if (typeof document !== "undefined" && document.fonts) {
+    document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }
 }
 
 export { gsap, ScrollTrigger };

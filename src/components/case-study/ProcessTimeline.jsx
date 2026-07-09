@@ -1,23 +1,21 @@
-import { motion } from "framer-motion";
+import DrawLine from "../motion/DrawLine";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer, drawLine } from "../../utils/animations";
+/*
+ * Process — the spine draws itself down as you scroll (scrubbed),
+ * and each step rises in. The drawn line is the signature here;
+ * no other section draws a vertical timeline.
+ */
 
 export default function ProcessTimeline({ steps }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
-      className="relative"
-    >
-      {/* Line */}
-      <motion.div
-        variants={drawLine}
-        style={{ transformOrigin: "top" }}
+    <div className="relative">
+      {/* Timeline spine */}
+      <DrawLine
+        axis="y"
+        scrub
+        start="top 75%"
+        end="bottom 45%"
         className="
           absolute
           left-0
@@ -30,11 +28,15 @@ export default function ProcessTimeline({ steps }) {
       />
 
       {/* Steps */}
-      <div className="space-y-10">
+      <Reveal
+        variant="rise"
+        stagger={0.12}
+        className="space-y-10"
+      >
         {steps.map((step, index) => (
-          <motion.div
+          <div
             key={step.title}
-            variants={fadeUp}
+            data-reveal
             className="
               flex
               gap-8
@@ -73,9 +75,9 @@ export default function ProcessTimeline({ steps }) {
                 {step.description}
               </p>
             </div>
-          </motion.div>
+          </div>
         ))}
-      </div>
-    </motion.div>
+      </Reveal>
+    </div>
   );
 }

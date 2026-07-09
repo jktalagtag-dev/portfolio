@@ -28,7 +28,10 @@ export default function MaskText({
   useLayoutEffect(() => {
     const inner = innerRef.current;
     if (!inner) return undefined;
-    if (prefersReducedMotion()) return undefined;
+    if (prefersReducedMotion()) {
+      gsap.set(inner, { clearProps: "all" });
+      return undefined;
+    }
 
     const ctx = gsap.context(() => {
       gsap.from(inner, {

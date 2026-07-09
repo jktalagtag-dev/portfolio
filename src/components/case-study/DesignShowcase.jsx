@@ -1,17 +1,16 @@
-import { motion } from "framer-motion";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+/*
+ * Design gallery — figures rise in sequence. (Renders only when a
+ * project has gallery images; kept image-natural so real
+ * screenshots aren't cropped to a forced ratio.)
+ */
 
 export default function DesignShowcase({ images }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.1,
-      }}
+    <Reveal
+      variant="rise"
+      stagger={0.12}
       className="
         grid
         md:grid-cols-2
@@ -21,14 +20,10 @@ export default function DesignShowcase({ images }) {
       "
     >
       {images.map((image, index) => (
-        <motion.figure
+        <figure
           key={image.src}
-          variants={fadeUp}
-          className={
-            index % 3 === 0
-              ? "md:col-span-2"
-              : ""
-          }
+          data-reveal
+          className={index % 3 === 0 ? "md:col-span-2" : ""}
         >
           <div
             className="
@@ -62,8 +57,8 @@ export default function DesignShowcase({ images }) {
               {image.caption}
             </figcaption>
           )}
-        </motion.figure>
+        </figure>
       ))}
-    </motion.div>
+    </Reveal>
   );
 }

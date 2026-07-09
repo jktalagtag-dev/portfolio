@@ -1,17 +1,14 @@
-import { motion } from "framer-motion";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer } from "../../utils/animations";
+/*
+ * Outcome highlights — feature labels wipe open (clip).
+ */
 
 export default function OutcomeGrid({ highlights }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
+    <Reveal
+      variant="clip"
+      stagger={0.08}
       className="
         grid
         grid-cols-2
@@ -22,9 +19,9 @@ export default function OutcomeGrid({ highlights }) {
       "
     >
       {highlights.map((item) => (
-        <motion.div
+        <div
           key={item}
-          variants={fadeUp}
+          data-reveal
           className="
             border
             border-neutral-200
@@ -50,8 +47,8 @@ export default function OutcomeGrid({ highlights }) {
           >
             {item}
           </h3>
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </Reveal>
   );
 }

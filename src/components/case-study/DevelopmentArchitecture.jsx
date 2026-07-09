@@ -1,23 +1,23 @@
-import { motion } from "framer-motion";
+import DrawLine from "../motion/DrawLine";
+import Reveal from "../motion/Reveal";
 
-import { fadeUp, staggerContainer, drawLine } from "../../utils/animations";
+/*
+ * Development architecture — layered cards slide in while the
+ * connectors between them draw down, so the stack reads as
+ * assembling itself.
+ */
 
 export default function DevelopmentArchitecture({ layers }) {
   return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="show"
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
+    <Reveal
+      variant="slide"
+      stagger={0.12}
       className="max-w-3xl"
     >
       {layers.map((layer, index) => (
         <div key={layer.title}>
-          <motion.div
-            variants={fadeUp}
+          <div
+            data-reveal
             className="
               border
               border-neutral-200
@@ -71,23 +71,18 @@ export default function DevelopmentArchitecture({ layers }) {
                 {layer.description}
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {index !== layers.length - 1 && (
             <div className="flex justify-center">
-              <motion.div
-                variants={drawLine}
-                style={{ transformOrigin: "top" }}
-                className="
-                  h-10
-                  w-px
-                  bg-neutral-300
-                "
+              <DrawLine
+                axis="y"
+                className="h-10 w-px bg-neutral-300"
               />
             </div>
           )}
         </div>
       ))}
-    </motion.div>
+    </Reveal>
   );
 }
