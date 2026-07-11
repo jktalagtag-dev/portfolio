@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
 
 import HeroContainer from "../components/ui/HeroContainer";
 import useDialogEffects from "../utils/useDialogEffects";
@@ -13,7 +12,11 @@ const navItems = [
   { label: "Contact", href: "/contact" },
 ];
 
-const easeOutExpo = [0.22, 1, 0.36, 1];
+/*
+ * No entrance/exit motion here — the overlay and hamburger just
+ * toggle instantly. The animated version was unreliable on first
+ * load, so this trades that polish for something that always works.
+ */
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -93,14 +96,8 @@ export default function Navbar() {
               "
             >
               <span className="relative block h-3 w-7">
-                <motion.span
-                  animate={
-                    isOpen
-                      ? { rotate: 45, y: 5 }
-                      : { rotate: 0, y: 0 }
-                  }
-                  transition={{ duration: 0.4, ease: easeOutExpo }}
-                  className="
+                <span
+                  className={`
                     absolute
                     left-0
                     top-0
@@ -110,16 +107,12 @@ export default function Navbar() {
                     w-7
 
                     bg-neutral-900
-                  "
+
+                    ${isOpen ? "rotate-45 translate-y-[5px]" : ""}
+                  `}
                 />
-                <motion.span
-                  animate={
-                    isOpen
-                      ? { rotate: -45, y: -5 }
-                      : { rotate: 0, y: 0 }
-                  }
-                  transition={{ duration: 0.4, ease: easeOutExpo }}
-                  className="
+                <span
+                  className={`
                     absolute
                     bottom-0
                     left-0
@@ -129,7 +122,9 @@ export default function Navbar() {
                     w-7
 
                     bg-neutral-900
-                  "
+
+                    ${isOpen ? "-rotate-45 -translate-y-[5px]" : ""}
+                  `}
                 />
               </span>
             </button>
@@ -138,165 +133,136 @@ export default function Navbar() {
       </header>
 
       {/* Full-screen overlay menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            id="menu-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: easeOutExpo }}
-            className="
-              fixed
-              inset-0
+      {isOpen && (
+        <div
+          id="menu-overlay"
+          className="
+            fixed
+            inset-0
 
-              z-40
+            z-40
 
-              bg-[#F8F8F8]
-            "
-          >
-            <HeroContainer className="h-full">
-              <div
+            bg-[#F8F8F8]
+          "
+        >
+          <HeroContainer className="h-full">
+            <div
+              className="
+                flex
+                h-full
+                flex-col
+                justify-end
+
+                pb-16
+                pt-28
+              "
+            >
+              <nav
                 className="
                   flex
-                  h-full
                   flex-col
-                  justify-end
 
-                  pb-16
-                  pt-28
+                  gap-2
+                  sm:gap-3
                 "
               >
-                <nav
-                  className="
-                    flex
-                    flex-col
+                {navItems.map((item, i) => (
+                  <NavLink
+                    key={item.label}
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) => `
+                      group
 
-                    gap-2
-                    sm:gap-3
-                  "
-                >
-                  {navItems.map((item, i) => (
-                    <motion.div
-                      key={item.label}
-                      initial={{ opacity: 0, y: 40 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{
-                        opacity: 0,
-                        y: 20,
-                        transition: { duration: 0.2 },
-                      }}
-                      transition={{
-                        duration: 0.7,
-                        delay: 0.12 + i * 0.07,
-                        ease: easeOutExpo,
-                      }}
+                      inline-flex
+                      items-baseline
+                      gap-4
+
+                      text-[clamp(2.75rem,9vw,7rem)]
+
+                      font-extralight
+                      leading-[1]
+                      tracking-[-0.05em]
+
+                      transition-colors
+                      duration-300
+
+                      ${
+                        isActive
+                          ? "text-neutral-900"
+                          : "text-neutral-400 hover:text-neutral-900"
+                      }
+                    `}
+                  >
+                    <span
+                      className="
+                        text-[11px]
+                        font-normal
+                        uppercase
+                        tracking-[0.25em]
+                        text-neutral-400
+
+                        self-start
+                        pt-3
+                      "
                     >
-                      <NavLink
-                        to={item.href}
-                        onClick={() => setIsOpen(false)}
-                        className={({ isActive }) => `
-                          group
+                      0{i + 1}
+                    </span>
+                    {item.label}
+                  </NavLink>
+                ))}
+              </nav>
 
-                          inline-flex
-                          items-baseline
-                          gap-4
+              {/* Footer row of the overlay */}
+              <div
+                className="
+                  mt-16
+                  lg:mt-20
 
-                          text-[clamp(2.75rem,9vw,7rem)]
+                  flex
+                  flex-wrap
+                  items-center
+                  justify-between
 
-                          font-extralight
-                          leading-[1]
-                          tracking-[-0.05em]
+                  gap-6
 
-                          transition-colors
-                          duration-300
+                  border-t
+                  border-neutral-200
 
-                          ${
-                            isActive
-                              ? "text-neutral-900"
-                              : "text-neutral-400 hover:text-neutral-900"
-                          }
-                        `}
-                      >
-                        <span
-                          className="
-                            text-[11px]
-                            font-normal
-                            uppercase
-                            tracking-[0.25em]
-                            text-neutral-400
+                  pt-8
 
-                            self-start
-                            pt-3
-                          "
-                        >
-                          0{i + 1}
-                        </span>
-                        {item.label}
-                      </NavLink>
-                    </motion.div>
-                  ))}
-                </nav>
-
-                {/* Footer row of the overlay */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  transition={{
-                    duration: 0.7,
-                    delay: 0.4,
-                    ease: easeOutExpo,
-                  }}
+                  text-[11px]
+                  uppercase
+                  tracking-[0.22em]
+                  text-neutral-500
+                "
+              >
+                <a
+                  href="mailto:talagtagjohnkarlo4@gmail.com"
                   className="
-                    mt-16
-                    lg:mt-20
-
-                    flex
-                    flex-wrap
-                    items-center
-                    justify-between
-
-                    gap-6
-
-                    border-t
-                    border-neutral-200
-
-                    pt-8
-
-                    text-[11px]
-                    uppercase
-                    tracking-[0.22em]
-                    text-neutral-500
+                    transition-colors
+                    duration-300
+                    hover:text-neutral-900
                   "
                 >
-                  <a
-                    href="mailto:talagtagjohnkarlo4@gmail.com"
-                    className="
-                      transition-colors
-                      duration-300
-                      hover:text-neutral-900
-                    "
-                  >
-                    talagtagjohnkarlo4@gmail.com
-                  </a>
+                  talagtagjohnkarlo4@gmail.com
+                </a>
 
-                  <a
-                    href="#"
-                    className="
-                      transition-colors
-                      duration-300
-                      hover:text-neutral-900
-                    "
-                  >
-                    Resume ↗
-                  </a>
-                </motion.div>
+                <a
+                  href="#"
+                  className="
+                    transition-colors
+                    duration-300
+                    hover:text-neutral-900
+                  "
+                >
+                  Resume ↗
+                </a>
               </div>
-            </HeroContainer>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          </HeroContainer>
+        </div>
+      )}
     </>
   );
 }

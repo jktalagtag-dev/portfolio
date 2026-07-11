@@ -18,8 +18,12 @@ const easeOutExpo = [0.22, 1, 0.36, 1];
  * Panel stays on the site's light theme (not black) so it reads as
  * the clear focal surface against the dark backdrop, and so it can
  * reuse ProjectLinks / tech-chip / metadata styling verbatim. Image
- * dominates the composition (70/30 split) with a compact detail
- * column — this is a quick look, not a reading surface.
+ * and details are independent flex columns (not a shared padded
+ * wrapper) so the image can bleed fully — no inset padding on any
+ * side, at any breakpoint — while the details column keeps its own
+ * padding. On desktop the image is align-stretched to match the
+ * detail column's natural height (object-cover fills whatever that
+ * resolves to), so it always fills its full 70% × full-height area.
  */
 
 export default function ProjectModal({
@@ -112,11 +116,14 @@ export default function ProjectModal({
 
               bg-[#F8F8F8]
 
+              flex
+              flex-col
+              lg:flex-row
+
               outline-none
             "
           >
-            {/* Close — floats over the image corner, doesn't clip
-                content beneath it (no sticky bar / negative margin). */}
+            {/* Close — floats over the image corner. */}
             <button
               type="button"
               onClick={onClose}
@@ -181,299 +188,281 @@ export default function ProjectModal({
             </button>
 
             {project && (
-              <div
-                className="
-                  px-5
-                  sm:px-8
-                  lg:px-10
-
-                  pt-5
-                  sm:pt-8
-                  lg:pt-10
-
-                  pb-8
-                  lg:pb-10
-                "
-              >
+              <>
+                {/* Image — full bleed, no padding on any side, at
+                    any breakpoint. Fixed aspect on mobile/tablet
+                    (stacked layout); on desktop it stretches to
+                    match the detail column's height (flex row
+                    align-stretch) and object-cover fills that. */}
                 <div
                   className="
-                    grid
-                    grid-cols-1
-                    lg:grid-cols-[7fr_3fr]
+                    relative
+                    shrink-0
 
-                    items-start
+                    lg:w-[70%]
+                    lg:self-stretch
 
-                    gap-6
-                    lg:gap-8
+                    overflow-hidden
+
+                    aspect-[16/10]
+                    lg:aspect-auto
+
+                    border-b
+                    lg:border-b-0
+                    lg:border-r
+
+                    border-neutral-200
                   "
                 >
-                  {/* Image — bleeds to the panel's edges below the
-                      two-column desktop layout, so the close button
-                      floats on top of it like a real photo corner.
-                      Slight zoom + top-anchored crop so UI/dashboard
-                      screenshots fill the frame with no dead edges
-                      and keep their nav/header visible. */}
-                  <div
+                  <img
+                    src={project.image}
+                    alt={project.title}
                     className="
-                      relative
+                      h-full
+                      w-full
 
-                      -mx-5
-                      -mt-5
-                      sm:-mx-8
-                      sm:-mt-8
-                      lg:mx-0
-                      lg:mt-0
+                      scale-105
 
-                      overflow-hidden
+                      object-cover
+                      object-top
+                    "
+                  />
+                </div>
 
-                      border-b
-                      lg:border
+                {/* Details — its own padding, independent of the
+                    image, 30% width on desktop. */}
+                <div
+                  className="
+                    flex
+                    flex-1
+                    flex-col
 
-                      border-neutral-200
+                    px-5
+                    sm:px-8
+                    lg:px-6
 
-                      aspect-[16/10]
+                    pt-5
+                    sm:pt-8
+                    lg:pt-8
+
+                    pb-8
+                    lg:pb-8
+                  "
+                >
+                  <p
+                    className="
+                      text-[10px]
+                      uppercase
+                      tracking-[0.25em]
+                      text-neutral-400
                     "
                   >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="
-                        h-full
-                        w-full
+                    {project.number}&ensp;·&ensp;{project.year}
+                  </p>
 
-                        scale-105
+                  <h2
+                    id={titleId}
+                    className="
+                      mt-3
 
-                        object-cover
-                        object-top
-                      "
-                    />
+                      text-xl
+                      lg:text-2xl
+
+                      font-light
+                      leading-[1.1]
+                      tracking-[-0.03em]
+                    "
+                  >
+                    {project.title}
+                  </h2>
+
+                  <p
+                    className="
+                      mt-3
+
+                      text-sm
+                      leading-relaxed
+                      text-neutral-600
+                    "
+                  >
+                    {project.description}
+                  </p>
+
+                  <div className="mt-5 space-y-3">
+                    <div>
+                      <p
+                        className="
+                          text-[9px]
+                          uppercase
+                          tracking-[0.2em]
+                          text-neutral-400
+                        "
+                      >
+                        Role
+                      </p>
+                      <p className="mt-0.5 text-xs text-neutral-600">
+                        {project.role}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p
+                        className="
+                          text-[9px]
+                          uppercase
+                          tracking-[0.2em]
+                          text-neutral-400
+                        "
+                      >
+                        Timeline
+                      </p>
+                      <p className="mt-0.5 text-xs text-neutral-600">
+                        {project.timeline}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Details */}
                   <div
                     className="
-                      lg:h-full
+                      mt-4
+
+                      flex
+                      flex-wrap
+                      gap-1.5
+                    "
+                  >
+                    {project.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className="
+                          px-2.5
+                          py-1
+
+                          text-[10px]
+                          uppercase
+                          tracking-[0.1em]
+
+                          border
+                          border-neutral-200
+
+                          text-neutral-500
+                        "
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div
+                    className="
+                      mt-5
+
+                      pt-4
+
+                      border-t
+                      border-neutral-200
 
                       flex
                       flex-col
+                      gap-2
                     "
                   >
-                    <p
-                      className="
-                        text-[10px]
-                        uppercase
-                        tracking-[0.25em]
-                        text-neutral-400
-                      "
-                    >
-                      {project.number}&ensp;·&ensp;{project.year}
-                    </p>
+                    <ProjectLinks
+                      live={project.live}
+                      github={project.github}
+                    />
 
-                    <h2
-                      id={titleId}
-                      className="
-                        mt-3
+                    {project.tier !== "card" && (
+                      <Link
+                        to={`/work/${project.slug}`}
+                        onClick={onClose}
+                        className="
+                          group/link
 
-                        text-xl
-                        lg:text-2xl
+                          inline-flex
+                          items-center
+                          gap-2
 
-                        font-light
-                        leading-[1.1]
-                        tracking-[-0.03em]
-                      "
-                    >
-                      {project.title}
-                    </h2>
+                          text-xs
+                          uppercase
+                          tracking-[0.15em]
+                          text-neutral-900
 
-                    <p
-                      className="
-                        mt-3
+                          transition-colors
+                          duration-300
 
-                        text-sm
-                        leading-relaxed
-                        text-neutral-600
-                      "
-                    >
-                      {project.description}
-                    </p>
-
-                    <div className="mt-5 space-y-3">
-                      <div>
-                        <p
-                          className="
-                            text-[9px]
-                            uppercase
-                            tracking-[0.2em]
-                            text-neutral-400
-                          "
-                        >
-                          Role
-                        </p>
-                        <p className="mt-0.5 text-xs text-neutral-600">
-                          {project.role}
-                        </p>
-                      </div>
-
-                      <div>
-                        <p
-                          className="
-                            text-[9px]
-                            uppercase
-                            tracking-[0.2em]
-                            text-neutral-400
-                          "
-                        >
-                          Timeline
-                        </p>
-                        <p className="mt-0.5 text-xs text-neutral-600">
-                          {project.timeline}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div
-                      className="
-                        mt-4
-
-                        flex
-                        flex-wrap
-                        gap-1.5
-                      "
-                    >
-                      {project.tech.map((tech) => (
+                          hover:text-neutral-500
+                        "
+                      >
+                        View Full Case Study
                         <span
-                          key={tech}
                           className="
-                            px-2.5
-                            py-1
-
-                            text-[10px]
-                            uppercase
-                            tracking-[0.1em]
-
-                            border
-                            border-neutral-200
-
-                            text-neutral-500
-                          "
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div
-                      className="
-                        mt-5
-
-                        pt-4
-
-                        border-t
-                        border-neutral-200
-
-                        flex
-                        flex-col
-                        gap-2
-                      "
-                    >
-                      <ProjectLinks
-                        live={project.live}
-                        github={project.github}
-                      />
-
-                      {project.tier !== "card" && (
-                        <Link
-                          to={`/work/${project.slug}`}
-                          onClick={onClose}
-                          className="
-                            group/link
-
-                            inline-flex
-                            items-center
-                            gap-2
-
-                            text-xs
-                            uppercase
-                            tracking-[0.15em]
-                            text-neutral-900
-
-                            transition-colors
+                            transition-transform
                             duration-300
 
-                            hover:text-neutral-500
+                            group-hover/link:translate-x-1.5
                           "
                         >
-                          View Full Case Study
-                          <span
-                            className="
-                              transition-transform
-                              duration-300
+                          →
+                        </span>
+                      </Link>
+                    )}
+                  </div>
 
-                              group-hover/link:translate-x-1.5
-                            "
-                          >
-                            →
-                          </span>
-                        </Link>
-                      )}
-                    </div>
+                  {/* Prev / Next — pinned to the bottom of the
+                      column on desktop. */}
+                  <div
+                    className="
+                      mt-4
+                      lg:mt-auto
+                      lg:pt-4
 
-                    {/* Prev / Next — pinned to the bottom of the
-                        column on desktop, matching the reference's
-                        bottom-right anchored arrows. */}
-                    <div
+                      flex
+                      items-center
+                      justify-end
+                      gap-4
+                    "
+                  >
+                    <button
+                      type="button"
+                      onClick={onPrev}
+                      aria-label="Previous project"
                       className="
-                        mt-4
-                        lg:mt-auto
-                        lg:pt-4
+                        text-xs
+                        uppercase
+                        tracking-[0.15em]
+                        text-neutral-500
 
-                        flex
-                        items-center
-                        justify-end
-                        gap-4
+                        transition-colors
+                        duration-300
+
+                        hover:text-neutral-900
                       "
                     >
-                      <button
-                        type="button"
-                        onClick={onPrev}
-                        aria-label="Previous project"
-                        className="
-                          text-xs
-                          uppercase
-                          tracking-[0.15em]
-                          text-neutral-500
+                      ←
+                    </button>
 
-                          transition-colors
-                          duration-300
+                    <button
+                      type="button"
+                      onClick={onNext}
+                      aria-label="Next project"
+                      className="
+                        text-xs
+                        uppercase
+                        tracking-[0.15em]
+                        text-neutral-500
 
-                          hover:text-neutral-900
-                        "
-                      >
-                        ←
-                      </button>
+                        transition-colors
+                        duration-300
 
-                      <button
-                        type="button"
-                        onClick={onNext}
-                        aria-label="Next project"
-                        className="
-                          text-xs
-                          uppercase
-                          tracking-[0.15em]
-                          text-neutral-500
-
-                          transition-colors
-                          duration-300
-
-                          hover:text-neutral-900
-                        "
-                      >
-                        →
-                      </button>
-                    </div>
+                        hover:text-neutral-900
+                      "
+                    >
+                      →
+                    </button>
                   </div>
                 </div>
-              </div>
+              </>
             )}
           </motion.div>
         </motion.div>
