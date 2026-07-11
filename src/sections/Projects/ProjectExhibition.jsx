@@ -135,6 +135,17 @@ export default function ProjectExhibition({ projects }) {
     return () => ctx.revert();
   }, [pinned, projects]);
 
+  // Adjacent project with wraparound — same convention as the
+  // case-study "Next Project" computation in PortfolioCaseStudy.jsx.
+  const step = (offset) => {
+    if (!openProject) return;
+    const i = projects.findIndex(
+      (p) => p.slug === openProject.slug
+    );
+    const n = projects.length;
+    setOpenProject(projects[(i + offset + n) % n]);
+  };
+
   if (!pinned) {
     return (
       <>
@@ -145,6 +156,8 @@ export default function ProjectExhibition({ projects }) {
         <ProjectModal
           project={openProject}
           onClose={() => setOpenProject(null)}
+          onPrev={() => step(-1)}
+          onNext={() => step(1)}
         />
       </>
     );
@@ -400,6 +413,8 @@ export default function ProjectExhibition({ projects }) {
       <ProjectModal
         project={openProject}
         onClose={() => setOpenProject(null)}
+        onPrev={() => step(-1)}
+        onNext={() => step(1)}
       />
     </>
   );
