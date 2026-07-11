@@ -68,13 +68,16 @@ export function scheduleRefresh() {
   });
 }
 
-// Belt-and-suspenders for the very first load: fonts and full
-// load can both shift layout after the initial trigger creation.
+// Belt-and-suspenders for the very first load: window `load` can
+// still shift layout after the initial triggers are created (late
+// images, etc.). Routed through scheduleRefresh() rather than
+// calling ScrollTrigger.refresh() directly, so it shares the same
+// debounce as every primitive's own mount-time refresh instead of
+// stacking an extra, unconditional full-page measurement pass.
+// (scheduleRefresh already waits for document.fonts.ready itself,
+// so no separate fonts listener is needed here.)
 if (typeof window !== "undefined") {
-  window.addEventListener("load", () => ScrollTrigger.refresh());
-  if (typeof document !== "undefined" && document.fonts) {
-    document.fonts.ready.then(() => ScrollTrigger.refresh());
-  }
+  window.addEventListener("load", () => scheduleRefresh());
 }
 
 export { gsap, ScrollTrigger };
