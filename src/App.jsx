@@ -4,6 +4,7 @@ import {
   MotionConfig,
 } from "framer-motion";
 import { lazy, Suspense, useEffect, useState } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import Loader from "./components/ui/Loader";
 import ScrollToTop from "./components/ui/ScrollToTop";
@@ -60,6 +61,7 @@ export default function App() {
         ) : (
           <>
             <ScrollToTop />
+            <SpeedInsights />
 
             <Suspense fallback={null}>
               <Routes>
