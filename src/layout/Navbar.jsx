@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 import HeroContainer from "../components/ui/HeroContainer";
 import useDialogEffects from "../utils/useDialogEffects";
@@ -12,11 +13,7 @@ const navItems = [
   { label: "Contact", href: "/contact" },
 ];
 
-/*
- * No entrance/exit motion here — the overlay and hamburger just
- * toggle instantly. The animated version was unreliable on first
- * load, so this trades that polish for something that always works.
- */
+const easeOutExpo = [0.22, 1, 0.36, 1];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +24,17 @@ export default function Navbar() {
 
   return (
     <>
+      {/* mix-blend-mode lives on this element, not on the logo/
+          hamburger individually: a blend-mode descendant only
+          blends against other content painted within the SAME
+          stacking context, and position:fixed + z-index already
+          makes this header its own stacking context. Put the blend
+          any deeper and it has nothing behind it to diff against
+          (header has no background) and just renders flat white.
+          Blending here diffs the header's whole (mostly transparent)
+          layer against the real page — only the opaque logo/
+          hamburger pixels are affected, everything else passes
+          through untouched. */}
       <header
         className="
           fixed
@@ -36,6 +44,8 @@ export default function Navbar() {
           z-50
 
           pointer-events-none
+
+          mix-blend-difference
         "
       >
         <HeroContainer>
@@ -71,7 +81,14 @@ export default function Navbar() {
                 width="64"
                 height="64"
                 draggable={false}
-                className="h-8 lg:h-9 w-auto"
+                className="
+                  h-8
+                  lg:h-9
+                  w-auto
+
+                  brightness-0
+                  invert
+                "
               />
             </Link>
 
@@ -96,8 +113,14 @@ export default function Navbar() {
               "
             >
               <span className="relative block h-3 w-7">
-                <span
-                  className={`
+                <motion.span
+                  animate={
+                    isOpen
+                      ? { rotate: 45, y: 5 }
+                      : { rotate: 0, y: 0 }
+                  }
+                  transition={{ duration: 0.4, ease: easeOutExpo }}
+                  className="
                     absolute
                     left-0
                     top-0
@@ -106,13 +129,17 @@ export default function Navbar() {
                     h-px
                     w-7
 
-                    bg-neutral-900
-
-                    ${isOpen ? "rotate-45 translate-y-[5px]" : ""}
-                  `}
+                    bg-white
+                  "
                 />
-                <span
-                  className={`
+                <motion.span
+                  animate={
+                    isOpen
+                      ? { rotate: -45, y: -5 }
+                      : { rotate: 0, y: 0 }
+                  }
+                  transition={{ duration: 0.4, ease: easeOutExpo }}
+                  className="
                     absolute
                     bottom-0
                     left-0
@@ -121,10 +148,8 @@ export default function Navbar() {
                     h-px
                     w-7
 
-                    bg-neutral-900
-
-                    ${isOpen ? "-rotate-45 -translate-y-[5px]" : ""}
-                  `}
+                    bg-white
+                  "
                 />
               </span>
             </button>
@@ -133,136 +158,165 @@ export default function Navbar() {
       </header>
 
       {/* Full-screen overlay menu */}
-      {isOpen && (
-        <div
-          id="menu-overlay"
-          className="
-            fixed
-            inset-0
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id="menu-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: easeOutExpo }}
+            className="
+              fixed
+              inset-0
 
-            z-40
+              z-40
 
-            bg-[#F8F8F8]
-          "
-        >
-          <HeroContainer className="h-full">
-            <div
-              className="
-                flex
-                h-full
-                flex-col
-                justify-end
-
-                pb-16
-                pt-28
-              "
-            >
-              <nav
-                className="
-                  flex
-                  flex-col
-
-                  gap-2
-                  sm:gap-3
-                "
-              >
-                {navItems.map((item, i) => (
-                  <NavLink
-                    key={item.label}
-                    to={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={({ isActive }) => `
-                      group
-
-                      inline-flex
-                      items-baseline
-                      gap-4
-
-                      text-[clamp(2.75rem,9vw,7rem)]
-
-                      font-extralight
-                      leading-[1]
-                      tracking-[-0.05em]
-
-                      transition-colors
-                      duration-300
-
-                      ${
-                        isActive
-                          ? "text-neutral-900"
-                          : "text-neutral-400 hover:text-neutral-900"
-                      }
-                    `}
-                  >
-                    <span
-                      className="
-                        text-[11px]
-                        font-normal
-                        uppercase
-                        tracking-[0.25em]
-                        text-neutral-400
-
-                        self-start
-                        pt-3
-                      "
-                    >
-                      0{i + 1}
-                    </span>
-                    {item.label}
-                  </NavLink>
-                ))}
-              </nav>
-
-              {/* Footer row of the overlay */}
+              bg-[#F8F8F8]
+            "
+          >
+            <HeroContainer className="h-full">
               <div
                 className="
-                  mt-16
-                  lg:mt-20
-
                   flex
-                  flex-wrap
-                  items-center
-                  justify-between
+                  h-full
+                  flex-col
+                  justify-end
 
-                  gap-6
-
-                  border-t
-                  border-neutral-200
-
-                  pt-8
-
-                  text-[11px]
-                  uppercase
-                  tracking-[0.22em]
-                  text-neutral-500
+                  pb-16
+                  pt-28
                 "
               >
-                <a
-                  href="mailto:talagtagjohnkarlo4@gmail.com"
+                <nav
                   className="
-                    transition-colors
-                    duration-300
-                    hover:text-neutral-900
-                  "
-                >
-                  talagtagjohnkarlo4@gmail.com
-                </a>
+                    flex
+                    flex-col
 
-                <a
-                  href="#"
-                  className="
-                    transition-colors
-                    duration-300
-                    hover:text-neutral-900
+                    gap-2
+                    sm:gap-3
                   "
                 >
-                  Resume ↗
-                </a>
+                  {navItems.map((item, i) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, y: 40 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{
+                        opacity: 0,
+                        y: 20,
+                        transition: { duration: 0.2 },
+                      }}
+                      transition={{
+                        duration: 0.7,
+                        delay: 0.12 + i * 0.07,
+                        ease: easeOutExpo,
+                      }}
+                    >
+                      <NavLink
+                        to={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={({ isActive }) => `
+                          group
+
+                          inline-flex
+                          items-baseline
+                          gap-4
+
+                          text-[clamp(2.75rem,9vw,7rem)]
+
+                          font-extralight
+                          leading-[1]
+                          tracking-[-0.05em]
+
+                          transition-colors
+                          duration-300
+
+                          ${
+                            isActive
+                              ? "text-neutral-900"
+                              : "text-neutral-400 hover:text-neutral-900"
+                          }
+                        `}
+                      >
+                        <span
+                          className="
+                            text-[11px]
+                            font-normal
+                            uppercase
+                            tracking-[0.25em]
+                            text-neutral-400
+
+                            self-start
+                            pt-3
+                          "
+                        >
+                          0{i + 1}
+                        </span>
+                        {item.label}
+                      </NavLink>
+                    </motion.div>
+                  ))}
+                </nav>
+
+                {/* Footer row of the overlay */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.4,
+                    ease: easeOutExpo,
+                  }}
+                  className="
+                    mt-16
+                    lg:mt-20
+
+                    flex
+                    flex-wrap
+                    items-center
+                    justify-between
+
+                    gap-6
+
+                    border-t
+                    border-neutral-200
+
+                    pt-8
+
+                    text-[11px]
+                    uppercase
+                    tracking-[0.22em]
+                    text-neutral-500
+                  "
+                >
+                  <a
+                    href="mailto:talagtagjohnkarlo4@gmail.com"
+                    className="
+                      transition-colors
+                      duration-300
+                      hover:text-neutral-900
+                    "
+                  >
+                    talagtagjohnkarlo4@gmail.com
+                  </a>
+
+                  <a
+                    href="#"
+                    className="
+                      transition-colors
+                      duration-300
+                      hover:text-neutral-900
+                    "
+                  >
+                    Resume ↗
+                  </a>
+                </motion.div>
               </div>
-            </div>
-          </HeroContainer>
-        </div>
-      )}
+            </HeroContainer>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -29,7 +29,7 @@ export default function Contact() {
                 mb-8
               "
             >
-              CONTACT
+              Contact
             </p>
 
             <h1
