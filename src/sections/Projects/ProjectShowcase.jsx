@@ -13,11 +13,18 @@ import { fadeUp } from "../../utils/animations";
  * Selected work (Home) — a masthead scrolls in normally, then
  * the exhibition pins and scrubs each project into the next as
  * an immersive scene, releasing into the "All Projects" link.
+ *
+ * The whole section is one continuous black block — a full
+ * chapter break against the site's light base, not a dark
+ * rectangle floating inside a white section.
  */
 
 export default function ProjectShowcase() {
   return (
-    <section id="projects" className="pt-14 sm:pt-16 lg:pt-28">
+    <section
+      id="projects"
+      className="bg-black pt-14 sm:pt-16 lg:pt-28"
+    >
       {/* Section masthead */}
       <HeroContainer>
         <motion.div
@@ -33,7 +40,7 @@ export default function ProjectShowcase() {
             gap-6
 
             border-b
-            border-neutral-200
+            border-white/15
 
             pb-5
           "
@@ -43,7 +50,7 @@ export default function ProjectShowcase() {
               text-[11px]
               uppercase
               tracking-[0.3em]
-              text-neutral-400
+              text-neutral-500
             "
           >
             Selected Work
@@ -54,7 +61,7 @@ export default function ProjectShowcase() {
               text-[11px]
               uppercase
               tracking-[0.3em]
-              text-neutral-400
+              text-neutral-500
             "
           >
             ({String(projects.length).padStart(2, "0")})
@@ -76,7 +83,7 @@ export default function ProjectShowcase() {
             lg:mt-28
 
             border-t
-            border-neutral-200
+            border-white/15
           "
         >
           <Link
@@ -106,12 +113,14 @@ export default function ProjectShowcase() {
                 font-light
                 leading-[1.05]
                 tracking-[-0.04em]
+
+                text-white
               "
               innerClassName="
                 transition-colors
                 duration-500
 
-                group-hover:text-neutral-500
+                group-hover:text-neutral-400
               "
             >
               All Projects
@@ -131,7 +140,7 @@ export default function ProjectShowcase() {
                 transition-colors
                 duration-300
 
-                group-hover:text-black
+                group-hover:text-white
               "
             >
               <span className="hidden sm:inline">

@@ -1,12 +1,13 @@
 import { useLayoutEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import {
+  gsap,
+  ScrollTrigger,
+  prefersReducedMotion,
+} from "../../utils/gsap";
 
 import MaskText from "../../components/motion/MaskText";
 import ParallaxImage from "../../components/motion/ParallaxImage";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /*
  * Mobile / narrow-screen project sequence. Not the desktop
@@ -20,15 +21,22 @@ gsap.registerPlugin(ScrollTrigger);
  *   - a short metadata stagger.
  *
  * The choreography is per-scene and one-shot, so a fast-skimming
- * reader is never blocked and nothing loops.
+ * reader is never blocked and nothing loops. Image and title are
+ * buttons that open the shared ProjectModal (owned by
+ * ProjectExhibition) instead of navigating — only title + tech
+ * stay always-visible here, everything else lives in the modal.
  */
 
-export default function ExhibitionFallback({ projects }) {
+export default function ExhibitionFallback({
+  projects,
+  onOpenProject,
+}) {
   const rootRef = useRef(null);
 
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;
+    if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
       gsap.utils.toArray("[data-scene]").forEach((scene) => {
@@ -91,9 +99,11 @@ export default function ExhibitionFallback({ projects }) {
       {projects.map((project, i) => (
         <article key={project.slug} data-scene>
           {/* Image plane + numeral plane */}
-          <Link
-            to={`/work/${project.slug}`}
-            className="group relative block"
+          <button
+            type="button"
+            onClick={() => onOpenProject(project)}
+            aria-label={`View ${project.title} details`}
+            className="group relative block w-full text-left"
           >
             <ParallaxImage
               src={project.image}
@@ -108,7 +118,7 @@ export default function ExhibitionFallback({ projects }) {
                 sm:aspect-[16/10]
 
                 border
-                border-neutral-200
+                border-white/10
               "
             />
 
@@ -138,7 +148,7 @@ export default function ExhibitionFallback({ projects }) {
             >
               {project.number}
             </span>
-          </Link>
+          </button>
 
           {/* Title — mask-wipe reveal (text-on-scroll) */}
           <h3
@@ -151,7 +161,7 @@ export default function ExhibitionFallback({ projects }) {
               font-light
               leading-[1.05]
               tracking-[-0.04em]
-              text-neutral-900
+              text-white
             "
           >
             <MaskText
@@ -162,12 +172,13 @@ export default function ExhibitionFallback({ projects }) {
                 duration-300
               "
             >
-              <Link
-                to={`/work/${project.slug}`}
-                className="hover:text-neutral-500"
+              <button
+                type="button"
+                onClick={() => onOpenProject(project)}
+                className="text-left hover:text-neutral-400"
               >
                 {project.title}
-              </Link>
+              </button>
             </MaskText>
           </h3>
 
@@ -180,39 +191,10 @@ export default function ExhibitionFallback({ projects }) {
               text-[11px]
               uppercase
               tracking-[0.3em]
-              text-neutral-400
-            "
-          >
-            {project.number}&ensp;·&ensp;{project.year}
-          </p>
-
-          <p
-            data-reveal
-            className="
-              mt-4
-
-              max-w-xl
-
-              text-base
-              leading-relaxed
               text-neutral-500
             "
           >
-            {project.description}
-          </p>
-
-          <p
-            data-reveal
-            className="
-              mt-5
-
-              text-[11px]
-              uppercase
-              tracking-[0.2em]
-              text-neutral-400
-            "
-          >
-            {project.role}&ensp;·&ensp;{project.timeline}
+            {project.number}&ensp;·&ensp;{project.year}
           </p>
 
           <div
@@ -237,49 +219,14 @@ export default function ExhibitionFallback({ projects }) {
                   tracking-[0.12em]
 
                   border
-                  border-neutral-200
+                  border-white/15
 
-                  text-neutral-500
+                  text-neutral-400
                 "
               >
                 {tech}
               </span>
             ))}
-          </div>
-
-          <div data-reveal className="mt-7">
-            <Link
-              to={`/work/${project.slug}`}
-              className="
-                group/link
-
-                inline-flex
-                items-center
-                gap-3
-
-                text-sm
-                uppercase
-                tracking-[0.18em]
-                text-neutral-900
-
-                transition-colors
-                duration-300
-
-                hover:text-neutral-500
-              "
-            >
-              View Case Study
-              <span
-                className="
-                  transition-transform
-                  duration-300
-
-                  group-hover/link:translate-x-1.5
-                "
-              >
-                →
-              </span>
-            </Link>
           </div>
         </article>
       ))}

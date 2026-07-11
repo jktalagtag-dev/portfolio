@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import HeroContainer from "../components/ui/HeroContainer";
+import useDialogEffects from "../utils/useDialogEffects";
 
 import logo from "../assets/img/JKT.png";
 
@@ -17,20 +18,9 @@ const easeOutExpo = [0.22, 1, 0.36, 1];
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+  const close = useCallback(() => setIsOpen(false), []);
 
-    const esc = (e) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-
-    window.addEventListener("keydown", esc);
-
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", esc);
-    };
-  }, [isOpen]);
+  useDialogEffects(isOpen, close);
 
   return (
     <>

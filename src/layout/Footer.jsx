@@ -39,6 +39,12 @@ const connectLinks = [
   },
 ];
 
+/*
+ * The page's final "full stop" — black, matching the Project
+ * Showcase's chapter-break treatment above, so the homepage closes
+ * on the same deliberate contrast moment it opened one with.
+ */
+
 export default function Footer() {
   const time = useLocalTime();
 
@@ -53,7 +59,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-neutral-200">
+    <footer className="border-t border-white/15 bg-black">
       <SectionContainer>
 
         {/* Upper — CTA and link columns */}
@@ -89,7 +95,7 @@ export default function Footer() {
                 leading-[1.15]
                 tracking-[-0.03em]
 
-                text-neutral-900
+                text-white
               "
             >
               Have a project in mind?
@@ -107,12 +113,12 @@ export default function Footer() {
                 text-base
                 sm:text-lg
 
-                text-neutral-500
+                text-neutral-400
 
                 transition-colors
                 duration-300
 
-                hover:text-black
+                hover:text-white
               "
             >
               talagtagjohnkarlo4@gmail.com
@@ -139,7 +145,7 @@ export default function Footer() {
                   text-[11px]
                   uppercase
                   tracking-[0.25em]
-                  text-neutral-400
+                  text-neutral-500
                 "
               >
                 Menu
@@ -152,12 +158,12 @@ export default function Footer() {
                       to={link.href}
                       className="
                         text-sm
-                        text-neutral-500
+                        text-neutral-400
 
                         transition-colors
                         duration-300
 
-                        hover:text-black
+                        hover:text-white
                       "
                     >
                       {link.label}
@@ -173,7 +179,7 @@ export default function Footer() {
                   text-[11px]
                   uppercase
                   tracking-[0.25em]
-                  text-neutral-400
+                  text-neutral-500
                 "
               >
                 Connect
@@ -194,12 +200,12 @@ export default function Footer() {
                       }
                       className="
                         text-sm
-                        text-neutral-500
+                        text-neutral-400
 
                         transition-colors
                         duration-300
 
-                        hover:text-black
+                        hover:text-white
                       "
                     >
                       {link.label}&ensp;↗
@@ -216,7 +222,7 @@ export default function Footer() {
           variant="rise"
           className="
             border-t
-            border-neutral-200
+            border-white/15
 
             py-6
 
@@ -232,7 +238,7 @@ export default function Footer() {
           <p
             className="
               text-xs
-              text-neutral-400
+              text-neutral-500
             "
           >
             © 2026 John Karlo Talagtag
@@ -241,7 +247,7 @@ export default function Footer() {
           <p
             className="
               text-xs
-              text-neutral-400
+              text-neutral-500
             "
           >
             Philippines&ensp;·&ensp;{time}&ensp;PHT
@@ -257,12 +263,12 @@ export default function Footer() {
               text-xs
               uppercase
               tracking-[0.2em]
-              text-neutral-500
+              text-neutral-400
 
               transition-colors
               duration-300
 
-              hover:text-black
+              hover:text-white
             "
           >
             Back to Top ↑

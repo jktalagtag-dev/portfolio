@@ -5,6 +5,8 @@ import Footer from "../layout/Footer";
 
 import Hero from "../sections/Hero/Hero";
 import ProjectShowcase from "../sections/Projects/ProjectShowcase";
+import AboutTeaser from "../sections/Home/AboutTeaser";
+import ContactCTA from "../sections/Home/ContactCTA";
 
 export default function Home() {
   return (
@@ -37,6 +39,10 @@ export default function Home() {
           "
         >
           <ProjectShowcase />
+
+          <AboutTeaser />
+
+          <ContactCTA />
 
           <Footer />
         </div>
