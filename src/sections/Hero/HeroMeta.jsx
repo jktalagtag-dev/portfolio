@@ -1,7 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-import useLocalTime from "../../utils/useLocalTime";
-
 const containerVariants = {
   hidden: {},
   visible: {
@@ -30,7 +28,6 @@ const itemVariants = {
 };
 
 export default function HeroMeta() {
-  const time = useLocalTime();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -68,7 +65,7 @@ export default function HeroMeta() {
         variants={itemVariants}
         className="text-neutral-500"
       >
-        Current Time: {time} PHT
+        Frontend Developer & UI Implementer
       </motion.p>
     </motion.div>
   );

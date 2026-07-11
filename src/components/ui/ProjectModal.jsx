@@ -111,8 +111,13 @@ export default function ProjectModal({
               max-w-5xl
               max-h-[85svh]
               sm:max-h-[90vh]
+              lg:h-[560px]
+              lg:max-h-[85vh]
 
               overflow-y-auto
+              lg:overflow-hidden
+
+              scrollbar-thin-black
 
               bg-[#F8F8F8]
 
@@ -191,15 +196,17 @@ export default function ProjectModal({
               <>
                 {/* Image — full bleed, no padding on any side, at
                     any breakpoint. Fixed aspect on mobile/tablet
-                    (stacked layout); on desktop it stretches to
-                    match the detail column's height (flex row
-                    align-stretch) and object-cover fills that. */}
+                    (stacked layout); on desktop the panel has a
+                    fixed height (lg:h-[560px] on the panel) and
+                    this stretches to fill it exactly, so every
+                    project's modal is the same size regardless of
+                    how much detail-column content it has. */}
                 <div
                   className="
                     relative
                     shrink-0
 
-                    lg:w-[70%]
+                    lg:w-[60%]
                     lg:self-stretch
 
                     overflow-hidden
@@ -230,12 +237,21 @@ export default function ProjectModal({
                 </div>
 
                 {/* Details — its own padding, independent of the
-                    image, 30% width on desktop. */}
+                    image, 40% width on desktop. Scrolls internally
+                    if content exceeds the panel's fixed height,
+                    since the image no longer stretches to match
+                    variable content — the modal's overall size
+                    stays identical across every project. */}
                 <div
                   className="
                     flex
                     flex-1
                     flex-col
+
+                    lg:h-full
+                    lg:overflow-y-auto
+
+                    scrollbar-thin-black
 
                     px-5
                     sm:px-8

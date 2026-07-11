@@ -50,3 +50,28 @@ img {
   display: block;
   max-width: 100%;
 }
+
+/*
+ * Thin, black scrollbar for scroll containers that want a more
+ * deliberate look than the browser default (e.g. the project
+ * modal). Firefox via scrollbar-width/color, WebKit/Blink via
+ * ::-webkit-scrollbar.
+ */
+.scrollbar-thin-black {
+  scrollbar-width: thin;
+  scrollbar-color: #171717 transparent;
+}
+
+.scrollbar-thin-black::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin-black::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin-black::-webkit-scrollbar-thumb {
+  background-color: #171717;
+  border-radius: 9999px;
+}

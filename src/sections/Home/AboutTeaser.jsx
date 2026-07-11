@@ -3,25 +3,17 @@ import { Link } from "react-router-dom";
 import HeroContainer from "../../components/ui/HeroContainer";
 import Reveal from "../../components/motion/Reveal";
 
-import skills from "../../data/skills";
-
 /*
  * Home's "who is this" beat, between the project showcase and the
- * contact close. Deliberately NOT the About page's own preview
- * text (that would repeat verbatim the moment a visitor clicks
- * through to /about) — a fresh one-liner instead, backed by the
- * tech stack as evidence. No eyebrow label here: ProjectShowcase
- * above already used one, and the Contact CTA below uses another —
- * repeating a third would read as templated section scaffolding.
+ * contact close. Mirrors the About page's former "Currently" layout
+ * (statement + status grid) rather than the About page's own
+ * preview text, so nothing repeats when a visitor clicks through —
+ * and it's now the ONLY place this status snapshot lives, since
+ * Currently was removed from the About page in favor of putting it
+ * here instead. No eyebrow label: ProjectShowcase above already
+ * used one, and the Contact CTA below uses another — a third would
+ * read as templated section scaffolding.
  */
-
-const stack = [
-  ...new Set(
-    skills.flatMap((skill) =>
-      skill.tech.split("·").map((item) => item.trim())
-    )
-  ),
-];
 
 export default function AboutTeaser() {
   return (
@@ -31,72 +23,137 @@ export default function AboutTeaser() {
           variant="scale"
           stagger={0.08}
           className="
-            py-16
-            sm:py-20
-            lg:py-32
+            py-20
+            sm:py-28
+            lg:py-40
 
             border-t
             border-neutral-200
           "
         >
-          <h2
-            data-reveal
-            className="
-              max-w-3xl
-
-              text-[1.75rem]
-              sm:text-[2.5rem]
-              lg:text-[3.25rem]
-
-              font-light
-              leading-[1.1]
-              tracking-[-0.04em]
-            "
-          >
-            Frontend developer with a full-stack
-            eye for detail — I build the interface,
-            and understand what it takes to run
-            behind it.
-          </h2>
-
           <div
             data-reveal
             className="
-              mt-10
-              lg:mt-12
+              grid
+              grid-cols-1
+              lg:grid-cols-12
 
-              flex
-              flex-wrap
-              gap-2
+              gap-10
+              lg:gap-12
             "
           >
-            {stack.map((tech) => (
-              <span
-                key={tech}
+            {/* Statement */}
+            <div className="lg:col-span-6">
+              <p
                 className="
-                  px-3
-                  py-1.5
+                  text-2xl
+                  sm:text-3xl
+                  xl:text-4xl
 
-                  text-[11px]
-                  uppercase
-                  tracking-[0.12em]
-
-                  border
-                  border-neutral-200
-
-                  text-neutral-500
+                  font-light
+                  leading-[1.15]
+                  tracking-tight
                 "
               >
-                {tech}
-              </span>
-            ))}
+                Frontend developer with a full-stack eye
+                for detail — I build the interface, and
+                understand what it takes to run behind it.
+              </p>
+            </div>
+
+            {/* Status grid */}
+            <div className="lg:col-span-6">
+              <div
+                className="
+                  border-t
+                  border-neutral-200
+
+                  pt-8
+
+                  grid
+                  grid-cols-1
+                  sm:grid-cols-2
+
+                  gap-8
+                  sm:gap-10
+                "
+              >
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      uppercase
+                      tracking-[0.25em]
+                      text-neutral-400
+                    "
+                  >
+                    Status
+                  </p>
+
+                  <p className="mt-3 text-lg sm:text-xl">
+                    Available for Work
+                  </p>
+                </div>
+
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      uppercase
+                      tracking-[0.25em]
+                      text-neutral-400
+                    "
+                  >
+                    Focus
+                  </p>
+
+                  <p className="mt-3 text-lg sm:text-xl">
+                    React · Laravel · UI/UX
+                  </p>
+                </div>
+
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      uppercase
+                      tracking-[0.25em]
+                      text-neutral-400
+                    "
+                  >
+                    Location
+                  </p>
+
+                  <p className="mt-3 text-lg sm:text-xl">
+                    Philippines
+                  </p>
+                </div>
+
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      uppercase
+                      tracking-[0.25em]
+                      text-neutral-400
+                    "
+                  >
+                    Availability
+                  </p>
+
+                  <p className="mt-3 text-lg sm:text-xl">
+                    Immediate
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div
             data-reveal
             className="
-              mt-10
-              lg:mt-12
+              mt-12
+              lg:mt-16
 
               pt-8
 

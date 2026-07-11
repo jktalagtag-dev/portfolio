@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 import SectionContainer from "../components/ui/SectionContainer";
-import Reveal from "../components/motion/Reveal";
 
 import { getLenis } from "../utils/useSmoothScroll";
 import useLocalTime from "../utils/useLocalTime";
@@ -43,6 +42,12 @@ const connectLinks = [
  * The page's final "full stop" — black, matching the Project
  * Showcase's chapter-break treatment above, so the homepage closes
  * on the same deliberate contrast moment it opened one with.
+ *
+ * Rendered plainly, with no scroll-triggered reveal: footer content
+ * (nav, contact info) must always be visible the instant it's
+ * scrolled to, and a scroll-position-threshold animation can miss
+ * that when a page jumps straight to the bottom before its trigger
+ * position has settled — not a risk worth taking for utility content.
  */
 
 export default function Footer() {
@@ -80,11 +85,8 @@ export default function Footer() {
             lg:pb-24
           "
         >
-          {/* CTA — clip-wipe reveal (the footer's signature) */}
-          <Reveal
-            variant="clip"
-            className="md:col-span-7"
-          >
+          {/* CTA */}
+          <div className="md:col-span-7">
             <p
               className="
                 text-2xl
@@ -123,12 +125,10 @@ export default function Footer() {
             >
               talagtagjohnkarlo4@gmail.com
             </a>
-          </Reveal>
+          </div>
 
           {/* Link columns */}
-          <Reveal
-            variant="rise"
-            delay={0.1}
+          <div
             className="
               md:col-span-5
 
@@ -214,12 +214,11 @@ export default function Footer() {
                 ))}
               </ul>
             </div>
-          </Reveal>
+          </div>
         </div>
 
         {/* Baseline */}
-        <Reveal
-          variant="rise"
+        <div
           className="
             border-t
             border-white/15
@@ -273,7 +272,7 @@ export default function Footer() {
           >
             Back to Top ↑
           </button>
-        </Reveal>
+        </div>
 
       </SectionContainer>
     </footer>

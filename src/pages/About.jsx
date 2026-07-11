@@ -11,7 +11,6 @@ import Reveal from "../components/motion/Reveal";
 import About from "../sections/About/About";
 import Skills from "../sections/Skills/Skills";
 import Experience from "../sections/Experience/Experience";
-import Currently from "../sections/Currently/Currently";
 
 export default function AboutPage() {
   return (
@@ -82,7 +81,6 @@ export default function AboutPage() {
         <About />
         <Skills />
         <Experience />
-        <Currently />
 
         {/* Closing CTA */}
         <section
