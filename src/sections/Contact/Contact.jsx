@@ -55,7 +55,9 @@ export default function Contact() {
           <div className="lg:col-span-10">
             {/* Intro */}
             <Reveal variant="rise" stagger={0.1} className="max-w-3xl">
-              {/* Availability badge */}
+              {/* Availability — a plain tracked label like every
+                  other small caption on the site, not a status
+                  chip; the pulsing dot is the only accent. */}
               <span
                 data-reveal
                 className="
@@ -63,20 +65,10 @@ export default function Contact() {
                   items-center
                   gap-2.5
 
-                  rounded-full
-
-                  border
-                  border-neutral-200
-
-                  bg-white/60
-
-                  px-4
-                  py-2
-
-                  text-[10px]
+                  text-[11px]
                   uppercase
-                  tracking-[0.2em]
-                  text-neutral-600
+                  tracking-[0.25em]
+                  text-neutral-500
                 "
               >
                 <span className="relative flex h-1.5 w-1.5">

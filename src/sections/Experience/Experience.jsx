@@ -1,19 +1,50 @@
+import { useLayoutEffect, useRef, useState } from "react";
+
 import SectionContainer from "../../components/ui/SectionContainer";
-import VerticalLabel from "../../components/ui/VerticalLabel";
 import Reveal from "../../components/motion/Reveal";
+import DrawLine from "../../components/motion/DrawLine";
+import { gsap, ScrollTrigger, scheduleRefresh } from "../../utils/gsap";
 
 import { experience } from "../../data/experience";
 
 /*
- * Experience. Motion character: "slide" — the heading and each
- * timeline entry enter from the left, so the section reads as a
- * sequence advancing in time, distinct from the scale/rise/clip
- * of its neighbours.
+ * Experience. Two-column sticky layout with a real drawn spine (a
+ * vertical DrawLine that draws itself down as you scroll) and a live
+ * index in the left column: a ScrollTrigger per entry tracks which
+ * one is centered in view and updates the counter + highlighted
+ * title, so the pinned column stays true to where you actually are
+ * rather than showing static copy. Runs alongside Reveal's own
+ * one-shot entrance animation — separate concerns, no conflict.
+ * Motion character stays "slide". overflow-x-clip so the sticky
+ * column works.
  */
 
 export default function Experience() {
+  const rowRefs = useRef([]);
+  const [active, setActive] = useState(0);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      rowRefs.current.forEach((row, i) => {
+        if (!row) return;
+        ScrollTrigger.create({
+          trigger: row,
+          // Aligned with where the sticky column sits (lg:top-32),
+          // not dead-center — see Skills.jsx for why.
+          start: "top 35%",
+          end: "bottom 35%",
+          onToggle: (self) => self.isActive && setActive(i),
+        });
+      });
+    });
+
+    scheduleRefresh();
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="experience" className="overflow-hidden">
+    <section id="experience" className="overflow-x-clip">
       <SectionContainer>
         <div className="py-20 lg:py-40">
           <Reveal
@@ -23,200 +54,243 @@ export default function Experience() {
               grid
               grid-cols-1
               lg:grid-cols-12
-              gap-8
+              gap-12
+              lg:gap-10
             "
           >
-            <VerticalLabel label="EXPERIENCE · 2026" />
+            {/* Sticky title */}
+            <div
+              className="
+                lg:col-span-4
 
-            {/* Content */}
-            <div className="lg:col-span-10">
-              {/* Heading */}
-              <div data-reveal className="max-w-4xl">
-                <h2
-                  className="
-                    text-[2.5rem]
-                    sm:text-5xl
-                    xl:text-[6rem]
+                lg:sticky
+                lg:top-32
+                lg:self-start
+              "
+            >
+              <p
+                data-reveal
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.3em]
+                  text-neutral-400
+                "
+              >
+                Experience
+              </p>
 
-                    font-light
-                    leading-[0.9]
-                    tracking-[-0.08em]
-                  "
-                >
-                  Experience.
-                </h2>
+              <p
+                data-reveal
+                className="
+                  mt-2
 
-                <p
-                  className="
-                    mt-6
-                    max-w-lg
+                  text-xs
+                  tabular-nums
+                  text-neutral-400
+                "
+              >
+                {String(active + 1).padStart(2, "0")} /{" "}
+                {String(experience.length).padStart(2, "0")}
+              </p>
 
-                    text-base
-                    sm:text-lg
+              <div className="mt-10 space-y-4">
+                {experience.map((item, i) => (
+                  <p
+                    key={item.title}
+                    data-reveal
+                    className={`
+                      transition-all
+                      duration-500
 
-                    leading-relaxed
-                    text-neutral-500
-                  "
-                >
-                  Professional experience, academic achievements,
-                  and projects that shaped my development journey.
-                </p>
+                      ${
+                        i === active
+                          ? "text-2xl sm:text-3xl font-light text-neutral-900"
+                          : "text-base text-neutral-300"
+                      }
+                    `}
+                  >
+                    {item.title}
+                  </p>
+                ))}
               </div>
+            </div>
 
-              {/* Timeline */}
-              <div className="mt-16 lg:mt-24">
-                {experience.map((item, index) => {
-                  const isFeatured = item.featured;
+            {/* Timeline */}
+            <div className="lg:col-span-8">
+              <div className="relative">
+                {/* Drawn spine */}
+                <DrawLine
+                  axis="y"
+                  scrub
+                  className="
+                    absolute
+                    left-0
+                    top-0
 
-                  return (
-                    <article
-                      key={index}
-                      data-reveal
+                    h-full
+                    w-px
+
+                    bg-neutral-200
+                  "
+                />
+
+                {experience.map((item, index) => (
+                  <article
+                    key={index}
+                    ref={(el) => (rowRefs.current[index] = el)}
+                    data-reveal
+                    className="
+                      group
+
+                      relative
+
+                      pl-8
+                      lg:pl-12
+
+                      pb-14
+                      lg:pb-20
+
+                      last:pb-0
+                    "
+                  >
+                    {/* Node on the spine */}
+                    <span
                       className="
-                        group
+                        absolute
+                        left-0
+                        top-[0.55rem]
 
-                        border-t
-                        border-neutral-200
+                        h-[9px]
+                        w-[9px]
 
-                        py-12
-                        lg:py-20
+                        -translate-x-1/2
+
+                        rounded-full
+
+                        border
+                        border-neutral-900
+
+                        bg-[#F8F8F8]
+
+                        transition-colors
+                        duration-500
+
+                        group-hover:bg-neutral-900
+                      "
+                    />
+
+                    <p
+                      className="
+                        text-[11px]
+                        uppercase
+                        tracking-[0.25em]
+                        text-neutral-400
                       "
                     >
+                      {item.year}
+                    </p>
+
+                    {item.featured && (
                       <div
                         className="
-                          grid
-                          grid-cols-1
-                          xl:grid-cols-12
-                          gap-8
+                          mt-4
+
+                          inline-flex
+                          items-center
+
+                          px-3
+                          py-1
+
+                          border
+                          border-neutral-200
+
+                          text-[11px]
+                          uppercase
+                          tracking-[0.2em]
+
+                          text-neutral-500
                         "
                       >
-                        {/* Year */}
-                        <div className="xl:col-span-2">
-                          <span
-                            className="
-                              text-[4rem]
-                              sm:text-[5rem]
-                              xl:text-[7rem]
-
-                              leading-none
-                              font-extralight
-                              tracking-[-0.08em]
-
-                              text-neutral-200
-                            "
-                          >
-                            {item.year}
-                          </span>
-                        </div>
-
-                        {/* Content */}
-                        <div className="xl:col-span-10 max-w-4xl">
-                          {/* Featured Badge */}
-                          {isFeatured && (
-                            <div
-                              className="
-                                inline-flex
-                                items-center
-
-                                px-3
-                                py-1
-
-                                border
-                                border-neutral-200
-
-                                text-[11px]
-                                uppercase
-                                tracking-[0.2em]
-
-                                text-neutral-500
-
-                                mb-6
-                              "
-                            >
-                              Featured Capstone Project
-                            </div>
-                          )}
-
-                          {/* Title */}
-                          <h3
-                            className={`
-                              font-light
-                              tracking-tight
-                              leading-none
-
-                              ${
-                                isFeatured
-                                  ? "text-3xl sm:text-5xl"
-                                  : "text-3xl sm:text-4xl"
-                              }
-                            `}
-                          >
-                            {item.title}
-                          </h3>
-
-                          {/* Company */}
-                          <p
-                            className="
-                              mt-4
-
-                              text-[11px]
-                              uppercase
-                              tracking-[0.25em]
-
-                              text-neutral-400
-                            "
-                          >
-                            {item.company}
-                          </p>
-
-                          {/* Description */}
-                          <p
-                            className="
-                              mt-8
-
-                              max-w-3xl
-
-                              text-base
-                              sm:text-lg
-
-                              leading-relaxed
-                              text-neutral-600
-                            "
-                          >
-                            {item.description}
-                          </p>
-
-                          {/* Metadata */}
-                          <div
-                            className="
-                              mt-10
-
-                              flex
-                              flex-wrap
-                              gap-x-6
-                              gap-y-3
-                            "
-                          >
-                            {item.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="
-                                  text-[11px]
-                                  uppercase
-                                  tracking-[0.2em]
-
-                                  text-neutral-400
-                                "
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
+                        Featured Capstone Project
                       </div>
-                    </article>
-                  );
-                })}
+                    )}
+
+                    <h3
+                      className={`
+                        mt-4
+
+                        font-light
+                        tracking-tight
+                        leading-tight
+
+                        ${
+                          item.featured
+                            ? "text-2xl sm:text-4xl"
+                            : "text-2xl sm:text-3xl"
+                        }
+                      `}
+                    >
+                      {item.title}
+                    </h3>
+
+                    <p
+                      className="
+                        mt-3
+
+                        text-[11px]
+                        uppercase
+                        tracking-[0.25em]
+
+                        text-neutral-400
+                      "
+                    >
+                      {item.company}
+                    </p>
+
+                    <p
+                      className="
+                        mt-6
+
+                        max-w-2xl
+
+                        text-base
+                        sm:text-lg
+
+                        leading-relaxed
+                        text-neutral-600
+                      "
+                    >
+                      {item.description}
+                    </p>
+
+                    <div
+                      className="
+                        mt-8
+
+                        flex
+                        flex-wrap
+                        gap-x-6
+                        gap-y-3
+                      "
+                    >
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="
+                            text-[11px]
+                            uppercase
+                            tracking-[0.2em]
+
+                            text-neutral-400
+                          "
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </article>
+                ))}
               </div>
             </div>
           </Reveal>

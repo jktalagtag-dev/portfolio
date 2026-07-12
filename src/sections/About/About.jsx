@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 
 import SectionContainer from "../../components/ui/SectionContainer";
-import VerticalLabel from "../../components/ui/VerticalLabel";
 import Reveal from "../../components/motion/Reveal";
 
 /*
- * About preview. Motion character: a calm "rise" — heading and
- * paragraphs lift into place in sequence. (Skills scales,
- * Experience slides, Currently wipes — each section reads
- * distinctly so the page never feels like one repeated reveal.)
+ * About preview. Two-column sticky layout: the title pins left while
+ * the prose scrolls past on the right — the same rhythm as Skills and
+ * Experience, so the page reads as one system. Motion character "rise"
+ * (heading and paragraphs lift into place). overflow-x-clip so the
+ * sticky column works.
  */
 
 export default function About() {
   return (
-    <section id="about-preview" className="overflow-hidden">
+    <section id="about-preview" className="overflow-x-clip">
       <SectionContainer>
         <div className="py-20 lg:py-40">
           <Reveal
@@ -23,25 +23,44 @@ export default function About() {
               grid
               grid-cols-1
               lg:grid-cols-12
-              gap-10
+              gap-12
+              lg:gap-10
             "
           >
-            <VerticalLabel label="ABOUT · PREVIEW" />
+            {/* Sticky title */}
+            <div
+              className="
+                lg:col-span-4
 
-            {/* Heading */}
-            <div data-reveal className="lg:col-span-5">
-              <h2
+                lg:sticky
+                lg:top-32
+                lg:self-start
+              "
+            >
+              <p
+                data-reveal
                 className="
-                  max-w-[300px]
-                  sm:max-w-none
+                  text-[11px]
+                  uppercase
+                  tracking-[0.3em]
+                  text-neutral-400
+                "
+              >
+                01 &mdash; Profile
+              </p>
 
-                  text-[2.5rem]
-                  sm:text-5xl
-                  xl:text-[5rem]
+              <h2
+                data-reveal
+                className="
+                  mt-6
+
+                  text-3xl
+                  sm:text-4xl
+                  xl:text-5xl
 
                   font-light
-                  leading-[0.92]
-                  tracking-[-0.07em]
+                  leading-[0.95]
+                  tracking-[-0.04em]
                 "
               >
                 A little
@@ -50,18 +69,18 @@ export default function About() {
               </h2>
             </div>
 
-            {/* Content */}
-            <div className="lg:col-span-5 lg:pt-6">
-              <div className="max-w-xl">
+            {/* Prose */}
+            <div className="lg:col-span-8">
+              <div className="max-w-2xl">
                 <div
                   className="
                     space-y-6
 
-                    text-base
-                    sm:text-lg
+                    text-lg
+                    sm:text-xl
 
                     leading-relaxed
-                    text-neutral-600
+                    text-neutral-700
                   "
                 >
                   <p data-reveal>
@@ -78,7 +97,7 @@ export default function About() {
 
                   <p data-reveal>
                     I enjoy the intersection of design and
-                    development—where thoughtful user experiences
+                    development&mdash;where thoughtful user experiences
                     meet solid implementation.
                   </p>
                 </div>
@@ -113,7 +132,7 @@ export default function About() {
                       hover:text-black
                     "
                   >
-                    View My Work →
+                    View My Work &rarr;
                   </Link>
                 </div>
               </div>

@@ -75,10 +75,87 @@ export default function AboutPage() {
               motion, and the small interactions that make
               an interface feel considered.
             </p>
+
+            <div
+              data-reveal
+              className="
+                mt-12
+
+                flex
+                flex-wrap
+                items-center
+
+                gap-x-6
+                gap-y-3
+
+                text-[11px]
+                uppercase
+                tracking-[0.22em]
+                text-neutral-500
+              "
+            >
+              <span>Frontend Developer</span>
+              <span className="text-neutral-300">/</span>
+              <span>Philippines</span>
+              <span className="text-neutral-300">/</span>
+              <span>Available for Work</span>
+            </div>
           </Reveal>
         </HeroContainer>
 
         <About />
+
+        {/* Philosophy — About's black chapter break, mirroring
+            Home's ProjectShowcase bg-black beat so the page reads
+            with the same light → dark → light contrast rhythm
+            rather than one flat light scroll. */}
+        <section className="bg-black">
+          <HeroContainer>
+            <div
+              className="
+                py-24
+                sm:py-32
+                lg:py-48
+              "
+            >
+              <p
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.3em]
+                  text-neutral-500
+                "
+              >
+                Approach
+              </p>
+
+              <MaskText
+                as="p"
+                start="top 85%"
+                className="
+                  mt-8
+
+                  max-w-5xl
+
+                  text-[2rem]
+                  sm:text-[2.75rem]
+                  lg:text-[3.5rem]
+
+                  font-light
+                  leading-[1.15]
+                  tracking-[-0.03em]
+
+                  text-white
+                "
+              >
+                Good frontend is invisible — it just feels right. I
+                sweat the typography, the motion, and the small
+                interactions most people never notice.
+              </MaskText>
+            </div>
+          </HeroContainer>
+        </section>
+
         <Skills />
         <Experience />
 

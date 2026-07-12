@@ -31,8 +31,16 @@ function CarouselCard({ project, index, x, step, onOpen }) {
   const isCardTier = project.tier === "card";
   const s = step || 1;
   const range = [-(s * (index + 1)), -(s * index), -(s * (index - 1))];
-  const scale = useTransform(x, range, [0.92, 1, 0.92]);
-  const opacity = useTransform(x, range, [0.65, 1, 0.65]);
+  // The active (centered) card advances and goes full colour/opacity;
+  // neighbours recede, dim, and desaturate — so which card is "live"
+  // reads at a glance, all driven continuously off the drag position.
+  const scale = useTransform(x, range, [0.88, 1.04, 0.88]);
+  const opacity = useTransform(x, range, [0.5, 1, 0.5]);
+  const grayscale = useTransform(x, range, [
+    "grayscale(0.85)",
+    "grayscale(0)",
+    "grayscale(0.85)",
+  ]);
 
   return (
     <div
@@ -70,12 +78,13 @@ function CarouselCard({ project, index, x, step, onOpen }) {
               lg:aspect-[16/10]
             "
           >
-            <img
+            <motion.img
               src={project.image}
               alt={project.title}
               loading="lazy"
               decoding="async"
               draggable={false}
+              style={{ filter: grayscale }}
               className="
                 h-full
                 w-full
@@ -242,14 +251,25 @@ export default function WorkCarousel({ projects }) {
     );
     animate(x, target, {
       type: "spring",
-      stiffness: 300,
-      damping: 32,
+      stiffness: 260,
+      damping: 34,
     });
   };
 
-  const handleDragEnd = () => {
-    const raw = Math.round(-x.get() / (stepRef.current || 1));
-    goTo(raw);
+  // Snap by nearest card on a slow release, but let a fast flick
+  // carry to the next card even if it hasn't crossed the halfway
+  // point — otherwise a quick swipe springs back and reads as
+  // unresponsive.
+  const handleDragEnd = (_e, info) => {
+    const stepPx = stepRef.current || 1;
+    const raw = -x.get() / stepPx;
+    const FLICK_VELOCITY = 500;
+
+    let target = Math.round(raw);
+    if (Math.abs(info.velocity.x) > FLICK_VELOCITY) {
+      target = info.velocity.x < 0 ? Math.ceil(raw) : Math.floor(raw);
+    }
+    goTo(target);
   };
 
   // Continuous, driven straight off drag position — same source as

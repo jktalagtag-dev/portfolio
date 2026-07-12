@@ -1,18 +1,53 @@
+import { useLayoutEffect, useRef, useState } from "react";
+
 import SectionContainer from "../../components/ui/SectionContainer";
-import VerticalLabel from "../../components/ui/VerticalLabel";
 import Reveal from "../../components/motion/Reveal";
+import { gsap, ScrollTrigger, scheduleRefresh } from "../../utils/gsap";
 
 import skills from "../../data/skills";
 
 /*
- * Skills. Motion character: "scale" — the heading and each skill
- * row settle in from slightly larger, distinct from the About
- * rise above and the Experience slide below.
+ * Skills. Two-column sticky layout: a live index pins in the left
+ * column while the skill rows scroll past it on the right. The index
+ * isn't static copy — a ScrollTrigger per row tracks which one is
+ * centered in view and updates the counter + highlighted title, so
+ * the pinned column stays true to where you actually are (motion in
+ * service of orientation, not decoration). Runs alongside Reveal's
+ * own one-shot entrance animation on the same grid — separate
+ * concerns, no conflict. Motion character stays "scale" for the
+ * entrance (rows settle in from slightly larger). overflow-x-clip
+ * (not -hidden) so the sticky column isn't disabled by a scroll
+ * container.
  */
 
 export default function Skills() {
+  const rowRefs = useRef([]);
+  const [active, setActive] = useState(0);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      rowRefs.current.forEach((row, i) => {
+        if (!row) return;
+        ScrollTrigger.create({
+          trigger: row,
+          // Rows (~215-270px) are much shorter than the viewport, so
+          // tracking against dead-center runs ahead of what's
+          // actually being read — align instead with where the
+          // sticky column visually sits (lg:top-32).
+          start: "top 35%",
+          end: "bottom 35%",
+          onToggle: (self) => self.isActive && setActive(i),
+        });
+      });
+    });
+
+    scheduleRefresh();
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="skills" className="overflow-hidden">
+    <section id="skills" className="overflow-x-clip">
       <SectionContainer>
         <div className="py-20 lg:py-40">
           <Reveal
@@ -22,135 +57,166 @@ export default function Skills() {
               grid
               grid-cols-1
               lg:grid-cols-12
-              gap-10
+              gap-12
+              lg:gap-10
             "
           >
-            <VerticalLabel label="SKILLS · 2026" />
+            {/* Live index */}
+            <div
+              className="
+                lg:col-span-4
 
-            {/* Content */}
-            <div className="lg:col-span-10">
-              {/* Heading */}
-              <div data-reveal className="max-w-4xl">
-                <h2
-                  className="
-                    max-w-[300px]
-                    sm:max-w-none
+                lg:sticky
+                lg:top-32
+                lg:self-start
+              "
+            >
+              <p
+                data-reveal
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.3em]
+                  text-neutral-400
+                "
+              >
+                Skills
+              </p>
 
-                    text-[2.5rem]
-                    sm:text-5xl
-                    xl:text-[6rem]
+              <p
+                data-reveal
+                className="
+                  mt-2
 
-                    font-light
-                    leading-[0.9]
-                    tracking-[-0.08em]
-                  "
-                >
-                  What I bring
-                  <br />
-                  to the table.
-                </h2>
-              </div>
+                  text-xs
+                  tabular-nums
+                  text-neutral-400
+                "
+              >
+                {String(active + 1).padStart(2, "0")} /{" "}
+                {String(skills.length).padStart(2, "0")}
+              </p>
 
-              {/* Skills */}
-              <div className="mt-16 lg:mt-32">
-                {skills.map((skill) => (
-                  <div
+              <div className="mt-10 space-y-4">
+                {skills.map((skill, i) => (
+                  <p
                     key={skill.number}
                     data-reveal
-                    className="
-                      group
-                      border-t
-                      border-neutral-200
+                    className={`
+                      transition-all
+                      duration-500
 
-                      py-10
-                      lg:py-16
-                    "
+                      ${
+                        i === active
+                          ? "text-2xl sm:text-3xl font-light text-neutral-900"
+                          : "text-base text-neutral-300"
+                      }
+                    `}
                   >
-                    <div
-                      className="
-                        grid
-                        grid-cols-1
-                        md:grid-cols-12
-                        gap-6
-                        lg:gap-8
-                      "
-                    >
-                      {/* Number */}
-                      <div className="col-span-12 md:col-span-2">
-                        <span
-                          className="
-                            text-[3.5rem]
-                            sm:text-[4.5rem]
-                            xl:text-[8rem]
-
-                            leading-none
-                            font-extralight
-                            tracking-[-0.08em]
-
-                            text-neutral-200
-
-                            transition-all
-                            duration-500
-
-                            group-hover:text-neutral-700
-                          "
-                        >
-                          {skill.number}
-                        </span>
-                      </div>
-
-                      {/* Content */}
-                      <div className="col-span-12 md:col-span-10">
-                        <h3
-                          className="
-                            text-[1.75rem]
-                            sm:text-3xl
-                            xl:text-4xl
-
-                            font-light
-                            tracking-tight
-                          "
-                        >
-                          {skill.title}
-                        </h3>
-
-                        <p
-                          className="
-                            mt-5
-                            max-w-2xl
-
-                            text-base
-                            sm:text-lg
-
-                            leading-relaxed
-                            text-neutral-600
-                          "
-                        >
-                          {skill.description}
-                        </p>
-
-                        <p
-                          className="
-                            mt-6
-
-                            text-[11px]
-                            uppercase
-
-                            tracking-[0.18em]
-                            sm:tracking-[0.28em]
-
-                            text-neutral-400
-
-                            break-words
-                          "
-                        >
-                          {skill.tech}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    {skill.title}
+                  </p>
                 ))}
               </div>
+            </div>
+
+            {/* Rows */}
+            <div className="lg:col-span-8">
+              {skills.map((skill, i) => (
+                <div
+                  key={skill.number}
+                  ref={(el) => (rowRefs.current[i] = el)}
+                  data-reveal
+                  className="
+                    group
+
+                    border-t
+                    border-neutral-200
+
+                    py-10
+                    lg:py-14
+
+                    first:border-t-0
+                    first:pt-0
+                    lg:first:pt-0
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      items-baseline
+                      gap-6
+                      lg:gap-10
+                    "
+                  >
+                    <span
+                      className="
+                        text-2xl
+                        sm:text-3xl
+
+                        font-extralight
+                        tracking-[-0.04em]
+
+                        text-neutral-300
+
+                        transition-colors
+                        duration-500
+
+                        group-hover:text-neutral-900
+                      "
+                    >
+                      {skill.number}
+                    </span>
+
+                    <div>
+                      <h3
+                        className="
+                          text-[1.75rem]
+                          sm:text-3xl
+                          xl:text-4xl
+
+                          font-light
+                          tracking-tight
+                        "
+                      >
+                        {skill.title}
+                      </h3>
+
+                      <p
+                        className="
+                          mt-5
+                          max-w-2xl
+
+                          text-base
+                          sm:text-lg
+
+                          leading-relaxed
+                          text-neutral-600
+                        "
+                      >
+                        {skill.description}
+                      </p>
+
+                      <p
+                        className="
+                          mt-6
+
+                          text-[11px]
+                          uppercase
+
+                          tracking-[0.18em]
+                          sm:tracking-[0.28em]
+
+                          text-neutral-400
+
+                          break-words
+                        "
+                      >
+                        {skill.tech}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>
