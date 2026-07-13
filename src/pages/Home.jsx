@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
-
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
+
+import PageTransition from "../components/motion/PageTransition";
+import usePageMeta from "../utils/usePageMeta";
 
 import Hero from "../sections/Hero/Hero";
 import ProjectShowcase from "../sections/Projects/ProjectShowcase";
@@ -9,21 +10,13 @@ import AboutTeaser from "../sections/Home/AboutTeaser";
 import ContactCTA from "../sections/Home/ContactCTA";
 
 export default function Home() {
+  usePageMeta();
+
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.8,
-      }}
-    >
+    <PageTransition>
       <Navbar />
 
-      <main>
+      <main id="main-content">
         <Hero />
 
         {/*
@@ -47,6 +40,6 @@ export default function Home() {
           <Footer />
         </div>
       </main>
-    </motion.div>
+    </PageTransition>
   );
 }

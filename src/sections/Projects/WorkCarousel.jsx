@@ -81,6 +81,8 @@ function CarouselCard({ project, index, x, step, onOpen }) {
             <motion.img
               src={project.image}
               alt={project.title}
+              width="1920"
+              height="1080"
               loading="lazy"
               decoding="async"
               draggable={false}
@@ -226,8 +228,16 @@ export default function WorkCarousel({ projects }) {
       stepRef.current = computedStep;
       setStep(computedStep);
 
+      // Constraint must reach at least as far as the last card's own
+      // paged position — natural content overflow alone can fall
+      // short (few wide cards on a wide viewport), pinning the drag
+      // before the last card ever hits its "active" emphasis range.
       const overflow = track.scrollWidth - viewport.clientWidth;
-      setConstraints({ left: -Math.max(overflow, 0), right: 0 });
+      const pagedLeft = -computedStep * (projects.length - 1);
+      setConstraints({
+        left: Math.min(pagedLeft, -Math.max(overflow, 0)),
+        right: 0,
+      });
     };
 
     recalc();
@@ -241,7 +251,7 @@ export default function WorkCarousel({ projects }) {
     return () => ro.disconnect();
   }, [projects.length]);
 
-  const goTo = (i) => {
+  const goTo = (i, velocity = 0) => {
     const clamped = Math.max(0, Math.min(projects.length - 1, i));
     setIndex(clamped);
 
@@ -249,10 +259,15 @@ export default function WorkCarousel({ projects }) {
       constraints.left,
       -stepRef.current * clamped
     );
+    // Softer than a click-driven UI spring, and velocity-aware: a
+    // fast flick's momentum carries into the settle instead of being
+    // discarded, so release feels like a glide, not a snap.
     animate(x, target, {
       type: "spring",
-      stiffness: 260,
-      damping: 34,
+      stiffness: 130,
+      damping: 22,
+      mass: 0.8,
+      velocity,
     });
   };
 
@@ -269,7 +284,7 @@ export default function WorkCarousel({ projects }) {
     if (Math.abs(info.velocity.x) > FLICK_VELOCITY) {
       target = info.velocity.x < 0 ? Math.ceil(raw) : Math.floor(raw);
     }
-    goTo(target);
+    goTo(target, info.velocity.x);
   };
 
   // Continuous, driven straight off drag position — same source as

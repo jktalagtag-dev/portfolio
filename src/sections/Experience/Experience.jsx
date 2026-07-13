@@ -154,9 +154,12 @@ export default function Experience() {
                       last:pb-0
                     "
                   >
-                    {/* Node on the spine */}
+                    {/* Node on the spine — fills once the live
+                        index has reached this entry, so the drawn
+                        timeline visibly completes in step with the
+                        reader's position. */}
                     <span
-                      className="
+                      className={`
                         absolute
                         left-0
                         top-[0.55rem]
@@ -171,13 +174,17 @@ export default function Experience() {
                         border
                         border-neutral-900
 
-                        bg-[#F8F8F8]
-
                         transition-colors
                         duration-500
 
                         group-hover:bg-neutral-900
-                      "
+
+                        ${
+                          index <= active
+                            ? "bg-neutral-900"
+                            : "bg-[#F8F8F8]"
+                        }
+                      `}
                     />
 
                     <p

@@ -1,9 +1,10 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
+import PageTransition from "../components/motion/PageTransition";
+import usePageMeta from "../utils/usePageMeta";
 import HeroContainer from "../components/ui/HeroContainer";
 import MaskText from "../components/motion/MaskText";
 import WorkCarousel from "../sections/Projects/WorkCarousel";
@@ -11,16 +12,16 @@ import WorkCarousel from "../sections/Projects/WorkCarousel";
 import { projects } from "../data/projects";
 
 export default function Work() {
+  usePageMeta(
+    "Work",
+    "Selected work and case studies — every project by John Karlo Talagtag, from flagship builds to work in progress."
+  );
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="overflow-x-clip"
-    >
+    <PageTransition>
       <Navbar />
 
-      <main className="pt-32 lg:pt-40">
+      <main id="main-content" className="pt-32 lg:pt-40">
         <HeroContainer className="pb-20">
           <div className="max-w-5xl">
             <p
@@ -196,6 +197,6 @@ export default function Work() {
       </main>
 
       <Footer />
-    </motion.div>
+    </PageTransition>
   );
 }

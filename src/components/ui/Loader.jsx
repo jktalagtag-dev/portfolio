@@ -1,16 +1,25 @@
 import { motion } from "framer-motion";
 
+/*
+ * First-visit brand moment (session-gated in App.jsx). Dismissal is
+ * tied to real readiness there (document.fonts.ready + a minimum
+ * display time), so the hairline below is an honest progress rule:
+ * it tweens most of the way while waiting, then its exit completes
+ * it to 100% in the beat before the wipe. The exit is an upward
+ * wipe — the same curtain grammar every route transition uses
+ * (PageTransition), so first load and navigation share one motion
+ * identity.
+ */
+
 export default function Loader() {
   return (
     <motion.div
-      initial={{ opacity: 1 }}
-      exit={{
-        opacity: 0,
-        scale: 1.02,
-      }}
+      initial={{ y: 0 }}
+      exit={{ y: "-100%" }}
       transition={{
         duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.65, 0, 0.35, 1],
+        delay: 0.2,
       }}
       className="
         fixed
@@ -32,7 +41,7 @@ export default function Loader() {
           text-center
         "
       >
-        {/* JK */}
+        {/* Monogram */}
         <motion.span
           initial={{
             opacity: 0,
@@ -55,30 +64,42 @@ export default function Loader() {
             tracking-[-0.15em]
           "
         >
-          JK
+          JKT
         </motion.span>
 
-        {/* Divider */}
+        {/* Progress rule — track + fill */}
         <motion.div
-          initial={{
-            width: 0,
-            opacity: 0,
-          }}
-          animate={{
-            width: 140,
-            opacity: 1,
-          }}
-          transition={{
-            delay: 0.25,
-            duration: 1,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.25, duration: 0.5 }}
           className="
             mt-7
+
             h-px
-            bg-neutral-300
+            w-[140px]
+
+            bg-neutral-200
           "
-        />
+        >
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 0.72 }}
+            exit={{
+              scaleX: 1,
+              transition: { duration: 0.2, ease: "easeOut" },
+            }}
+            transition={{
+              delay: 0.25,
+              duration: 1.2,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            style={{ transformOrigin: "left center" }}
+            className="
+              h-px
+              bg-neutral-900
+            "
+          />
+        </motion.div>
 
         {/* Name */}
         <motion.p

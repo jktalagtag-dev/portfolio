@@ -1,7 +1,10 @@
 import Reveal from "../motion/Reveal";
 
 /*
- * Outcome highlights — feature labels wipe open (clip).
+ * Outcome highlights — compact cells that fill white and sharpen
+ * their frame on hover (a quiet lift off the #F8F8F8 ground),
+ * wiping open in sequence. Deliberately denser and plainer than
+ * Objectives' numbered cards — these are results, not goals.
  */
 
 export default function OutcomeGrid({ highlights }) {
@@ -29,11 +32,17 @@ export default function OutcomeGrid({ highlights }) {
             p-6
             sm:p-8
 
-            min-h-[120px]
-            sm:min-h-[150px]
+            min-h-[110px]
+            sm:min-h-[130px]
 
             flex
             items-end
+
+            transition-colors
+            duration-500
+
+            hover:border-neutral-400
+            hover:bg-white
           "
         >
           <h3

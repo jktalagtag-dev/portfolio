@@ -224,6 +224,8 @@ export default function ProjectModal({
                   <img
                     src={project.image}
                     alt={project.title}
+                    width="1920"
+                    height="1080"
                     className="
                       h-full
                       w-full

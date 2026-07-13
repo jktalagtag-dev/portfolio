@@ -16,9 +16,12 @@ export default function ProjectLinks({ live, github }) {
             text-sm
             uppercase
             tracking-[0.2em]
+            text-neutral-500
 
             transition-colors
-            hover:text-neutral-500
+            duration-300
+
+            hover:text-neutral-900
           "
         >
           Live Demo ↗
@@ -34,9 +37,12 @@ export default function ProjectLinks({ live, github }) {
             text-sm
             uppercase
             tracking-[0.2em]
+            text-neutral-500
 
             transition-colors
-            hover:text-neutral-500
+            duration-300
+
+            hover:text-neutral-900
           "
         >
           GitHub ↗

@@ -23,22 +23,36 @@ export default function DesignShowcase({ images }) {
         <figure
           key={image.src}
           data-reveal
-          className={index % 3 === 0 ? "md:col-span-2" : ""}
+          className={`group ${index % 3 === 0 ? "md:col-span-2" : ""}`}
         >
+          {/* Fixed frame ratio so the grid reserves space before the
+              image arrives (no layout shift on lazy load). */}
           <div
             className="
               overflow-hidden
               border
               border-neutral-200
+
+              aspect-[16/10]
             "
           >
             <img
               src={image.src}
               alt={image.caption}
               loading="lazy"
+              decoding="async"
               className="
+                h-full
                 w-full
                 object-cover
+
+                transition-transform
+                duration-700
+                ease-[cubic-bezier(0.16,1,0.3,1)]
+
+                will-change-transform
+
+                group-hover:scale-[1.02]
               "
             />
           </div>

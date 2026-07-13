@@ -1,11 +1,13 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
+import PageTransition from "../components/motion/PageTransition";
+import usePageMeta from "../utils/usePageMeta";
 import HeroContainer from "../components/ui/HeroContainer";
 import MaskText from "../components/motion/MaskText";
+import ScrubText from "../components/motion/ScrubText";
 import Reveal from "../components/motion/Reveal";
 
 import About from "../sections/About/About";
@@ -13,16 +15,16 @@ import Skills from "../sections/Skills/Skills";
 import Experience from "../sections/Experience/Experience";
 
 export default function AboutPage() {
+  usePageMeta(
+    "About",
+    "Design-minded frontend developer building thoughtful digital experiences — skills, experience, and approach."
+  );
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="overflow-x-clip"
-    >
+    <PageTransition>
       <Navbar />
 
-      <main className="pt-32 lg:pt-40">
+      <main id="main-content" className="pt-32 lg:pt-40">
         {/* Page header */}
         <HeroContainer className="pb-16 lg:pb-24">
           <Reveal variant="rise" stagger={0.1}>
@@ -129,9 +131,14 @@ export default function AboutPage() {
                 Approach
               </p>
 
-              <MaskText
+              {/* Scrubbed to scroll: the statement brightens
+                  word-by-word as the reader moves through the black
+                  chapter — the philosophy literally reads at the
+                  visitor's own pace. */}
+              <ScrubText
                 as="p"
-                start="top 85%"
+                start="top 70%"
+                end="top 25%"
                 className="
                   mt-8
 
@@ -151,7 +158,7 @@ export default function AboutPage() {
                 Good frontend is invisible — it just feels right. I
                 sweat the typography, the motion, and the small
                 interactions most people never notice.
-              </MaskText>
+              </ScrubText>
             </div>
           </HeroContainer>
         </section>
@@ -224,6 +231,6 @@ export default function AboutPage() {
       </main>
 
       <Footer />
-    </motion.div>
+    </PageTransition>
   );
 }

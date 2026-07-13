@@ -1,23 +1,23 @@
-import { motion } from "framer-motion";
-
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
+import PageTransition from "../components/motion/PageTransition";
+import usePageMeta from "../utils/usePageMeta";
 import HeroContainer from "../components/ui/HeroContainer";
 import MaskText from "../components/motion/MaskText";
 import ContactSection from "../sections/Contact/Contact";
 
 export default function Contact() {
+  usePageMeta(
+    "Contact",
+    "Open to frontend development roles, freelance projects, and collaborations — let's build something meaningful."
+  );
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="overflow-x-clip"
-    >
+    <PageTransition>
       <Navbar />
 
-      <main className="pt-32 lg:pt-40">
+      <main id="main-content" className="pt-32 lg:pt-40">
         <HeroContainer className="pb-20">
           <div className="max-w-5xl">
             <p
@@ -60,6 +60,6 @@ export default function Contact() {
       </main>
 
       <Footer />
-    </motion.div>
+    </PageTransition>
   );
 }

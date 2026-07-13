@@ -22,6 +22,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#F8F8F8" />
 
+    <!-- Geist is the only typeface and every layout measurement
+         depends on its metrics — fetch it before the CSS asks. -->
+    <link
+      rel="preload"
+      href="/fonts/Geist-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
     <title>John Karlo Talagtag — Frontend Developer & UI Implementer</title>
 
     <meta
@@ -29,8 +39,12 @@
       content="Portfolio of John Karlo Talagtag, a frontend developer and UI implementer focused on design-minded development, thoughtful interfaces, and modern digital experiences."
     />
 
+    <link rel="canonical" href="https://portfolio-juankt08.vercel.app/" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="John Karlo Talagtag" />
+    <meta property="og:url" content="https://portfolio-juankt08.vercel.app/" />
     <meta
       property="og:title"
       content="John Karlo Talagtag — Frontend Developer & UI Implementer"
@@ -38,6 +52,25 @@
     <meta
       property="og:description"
       content="Design-minded frontend development for modern digital experiences."
+    />
+    <meta
+      property="og:image"
+      content="https://portfolio-juankt08.vercel.app/projects/2.webp"
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="John Karlo Talagtag — Frontend Developer & UI Implementer"
+    />
+    <meta
+      name="twitter:description"
+      content="Design-minded frontend development for modern digital experiences."
+    />
+    <meta
+      name="twitter:image"
+      content="https://portfolio-juankt08.vercel.app/projects/2.webp"
     />
   </head>
   <body>

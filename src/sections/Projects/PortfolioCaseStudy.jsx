@@ -1,10 +1,12 @@
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
 
 import { projects } from "../../data/projects";
 
 import Navbar from "../../layout/Navbar";
 import Footer from "../../layout/Footer";
+
+import PageTransition from "../../components/motion/PageTransition";
+import usePageMeta from "../../utils/usePageMeta";
 
 import FlagshipCaseStudy from "./FlagshipCaseStudy";
 import ConciseCaseStudy from "./ConciseCaseStudy";
@@ -18,52 +20,101 @@ export default function ProjectCaseStudy() {
 
   const project = projects[projectIndex];
 
+  usePageMeta(
+    project ? project.title : "Project not found",
+    project?.description
+  );
+
+  // Unknown slug — same composition as the site 404, scoped to Work.
   if (!project) {
     return (
-      <main
-        className="
-          min-h-screen
+      <PageTransition>
+        <Navbar />
 
-          flex
-          flex-col
-          items-center
-          justify-center
-
-          gap-6
-
-          px-5
-          text-center
-        "
-      >
-        <h1
+        <main
+          id="main-content"
           className="
-            text-3xl
-            sm:text-4xl
+            flex
+            min-h-svh
 
-            font-light
-            tracking-[-0.04em]
+            flex-col
+            items-center
+            justify-center
+
+            px-5
+            text-center
           "
         >
-          Project not found.
-        </h1>
+          <p
+            className="
+              text-[11px]
+              uppercase
+              tracking-[0.3em]
+              text-neutral-400
+            "
+          >
+            404
+          </p>
 
-        <Link
-          to="/work"
-          className="
-            text-sm
-            uppercase
-            tracking-[0.2em]
-            text-neutral-500
+          <h1
+            className="
+              mt-6
 
-            transition-colors
-            duration-300
+              text-[3rem]
+              sm:text-[5rem]
+              lg:text-[6rem]
 
-            hover:text-black
-          "
-        >
-          ← Back to Work
-        </Link>
-      </main>
+              font-light
+              leading-[0.95]
+              tracking-[-0.06em]
+            "
+          >
+            Project not found.
+          </h1>
+
+          <p
+            className="
+              mt-8
+
+              max-w-md
+
+              text-base
+              sm:text-lg
+
+              leading-relaxed
+              text-neutral-500
+            "
+          >
+            The case study you're looking for doesn't exist
+            or has been moved.
+          </p>
+
+          <Link
+            to="/work"
+            className="
+              mt-12
+
+              inline-flex
+              items-center
+              gap-3
+
+              text-sm
+              uppercase
+              tracking-[0.18em]
+              text-neutral-500
+
+              transition-colors
+              duration-300
+
+              hover:text-black
+            "
+          >
+            ← Back to Work
+          </Link>
+        </main>
+
+        <Footer />
+      </PageTransition>
     );
   }
 
@@ -71,15 +122,10 @@ export default function ProjectCaseStudy() {
     projects[(projectIndex + 1) % projects.length];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="overflow-x-clip"
-    >
+    <PageTransition>
       <Navbar />
 
-      <main className="min-h-screen">
+      <main id="main-content" className="min-h-screen">
 
         {/* key by slug so navigating between case studies fully
             remounts the pipeline — otherwise the scroll-reveal
@@ -101,6 +147,6 @@ export default function ProjectCaseStudy() {
       </main>
 
       <Footer />
-    </motion.div>
+    </PageTransition>
   );
 }

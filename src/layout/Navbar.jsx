@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useSpring } from "framer-motion";
 
 import HeroContainer from "../components/ui/HeroContainer";
 import useDialogEffects from "../utils/useDialogEffects";
@@ -15,6 +15,80 @@ const navItems = [
 
 const easeOutExpo = [0.22, 1, 0.36, 1];
 
+/*
+ * One overlay link: the row indents on a spring motion value
+ * (trailing settle — the same lag family as the site's Lenis
+ * scroll and the hero's cursor spring) instead of a stepped CSS
+ * transition. The spring lives on an inner span so it never
+ * fights the parent's entrance/exit choreography.
+ */
+function OverlayLink({ item, index, onNavigate }) {
+  const x = useSpring(0, {
+    stiffness: 150,
+    damping: 22,
+    mass: 0.6,
+  });
+
+  return (
+    <NavLink
+      to={item.href}
+      onClick={onNavigate}
+      onMouseEnter={() => x.set(28)}
+      onMouseLeave={() => x.set(0)}
+      className={({ isActive }) => `
+        group
+
+        inline-block
+
+        text-[clamp(2.75rem,9vw,7rem)]
+
+        font-extralight
+        leading-[1]
+        tracking-[-0.05em]
+
+        transition-colors
+        duration-300
+
+        ${
+          isActive
+            ? "text-neutral-900"
+            : "text-neutral-400 hover:text-neutral-900"
+        }
+      `}
+    >
+      <motion.span
+        style={{ x }}
+        className="
+          inline-flex
+          items-baseline
+          gap-4
+        "
+      >
+        <span
+          className="
+            text-[11px]
+            font-normal
+            uppercase
+            tracking-[0.25em]
+            text-neutral-400
+
+            self-start
+            pt-3
+
+            transition-colors
+            duration-500
+
+            group-hover:text-neutral-900
+          "
+        >
+          0{index + 1}
+        </span>
+        {item.label}
+      </motion.span>
+    </NavLink>
+  );
+}
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,6 +98,32 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Keyboard users' first stop — invisible until focused,
+          outside the blended header so it renders true black. */}
+      <a
+        href="#main-content"
+        className="
+          sr-only
+
+          focus:not-sr-only
+          focus:fixed
+          focus:left-5
+          focus:top-5
+          focus:z-[100]
+
+          focus:bg-black
+          focus:px-5
+          focus:py-3
+
+          focus:text-[11px]
+          focus:uppercase
+          focus:tracking-[0.22em]
+          focus:text-white
+        "
+      >
+        Skip to content
+      </a>
+
       {/* mix-blend-mode lives on this element, not on the logo/
           hamburger individually: a blend-mode descendant only
           blends against other content painted within the SAME
@@ -212,48 +312,11 @@ export default function Navbar() {
                         ease: easeOutExpo,
                       }}
                     >
-                      <NavLink
-                        to={item.href}
-                        onClick={() => setIsOpen(false)}
-                        className={({ isActive }) => `
-                          group
-
-                          inline-flex
-                          items-baseline
-                          gap-4
-
-                          text-[clamp(2.75rem,9vw,7rem)]
-
-                          font-extralight
-                          leading-[1]
-                          tracking-[-0.05em]
-
-                          transition-colors
-                          duration-300
-
-                          ${
-                            isActive
-                              ? "text-neutral-900"
-                              : "text-neutral-400 hover:text-neutral-900"
-                          }
-                        `}
-                      >
-                        <span
-                          className="
-                            text-[11px]
-                            font-normal
-                            uppercase
-                            tracking-[0.25em]
-                            text-neutral-400
-
-                            self-start
-                            pt-3
-                          "
-                        >
-                          0{i + 1}
-                        </span>
-                        {item.label}
-                      </NavLink>
+                      <OverlayLink
+                        item={item}
+                        index={i}
+                        onNavigate={close}
+                      />
                     </motion.div>
                   ))}
                 </nav>

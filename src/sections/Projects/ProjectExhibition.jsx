@@ -239,6 +239,8 @@ export default function ProjectExhibition({ projects }) {
                         ref={(el) => (imgRefs.current[i] = el)}
                         src={project.image}
                         alt={project.title}
+                        width="1920"
+                        height="1080"
                         loading={i === 0 ? "eager" : "lazy"}
                         fetchPriority={i === 0 ? "high" : "auto"}
                         decoding="async"

@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
+/*
+ * Served from /public (not a Vite-hashed asset) so index.html can
+ * <link rel="preload"> it — every ScrollTrigger/fit-text measurement
+ * depends on Geist's metrics, so it should be in flight before the
+ * CSS is even parsed.
+ */
 @font-face {
   font-family: "Geist";
-  src: url("../assets/fonts/Geist-Variable.woff2") format("woff2");
+  src: url("/fonts/Geist-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -40,6 +46,27 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+}
+
+/* Selecting text inverts to the site's ink-on-paper palette. */
+::selection {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/*
+ * Keyboard focus gets a deliberate hairline ring in the site's ink
+ * color; pointer focus stays clean. offset keeps it off tight
+ * typography. currentColor so it reads on both the light base and
+ * the black chapter sections without per-context overrides.
+ */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
 }
 
 * {

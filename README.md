@@ -1,16 +1,50 @@
-# React + Vite
+# Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio for **John Karlo Talagtag** — Frontend Developer & UI Implementer.
 
-Currently, two official plugins are available:
+An editorial, motion-driven presentation of case studies, skills, and experience — built as a product, not a template.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- **React 19** + **Vite** — app shell and dev tooling
+- **React Router** — client-side routing
+- **Tailwind CSS v4** — styling
+- **Framer Motion** — component-level interaction and gesture motion
+- **GSAP** (`ScrollTrigger`) — scroll-driven reveals, scrubs, and draws
+- **Lenis** — smooth scrolling, synced to GSAP's ScrollTrigger
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting Started
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev       # start the dev server
+npm run build      # production build to dist/
+npm run preview    # preview the production build locally
+npm run lint       # run ESLint
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Project Structure
+
+```
+src/
+  pages/          # route-level pages (Home, Work, About, Contact, case studies)
+  sections/        # page sections, grouped by page/feature
+  components/
+    ui/            # layout primitives (Container, cards, modal, etc.)
+    motion/        # reusable motion primitives (Reveal, MaskText, DrawLine, CountUp)
+    case-study/     # shared case-study building blocks
+  layout/          # Navbar, Footer
+  data/            # project, skills, and experience content
+  utils/           # GSAP setup, smooth scroll, misc hooks
+  styles/          # global CSS (Tailwind entry, design tokens)
+```
+
+Routes are declared in `src/App.jsx`. Case studies are data-driven from `src/data/projects.js` and dispatch to a tier-specific template (flagship / concise / card) based on how much detail a given project warrants.
+
+## Design Principles
+
+Typography-first, whitespace-as-content, motion that explains rather than decorates. See `CLAUDE.md` and `PRODUCT.md` for the full brand and engineering handbook.
+
+## Deployment
+
+Deployed on [Vercel](https://vercel.com); `vercel.json` rewrites all routes to `index.html` for client-side routing.

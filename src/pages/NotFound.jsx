@@ -1,20 +1,20 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import Navbar from "../layout/Navbar";
 import Footer from "../layout/Footer";
 
+import PageTransition from "../components/motion/PageTransition";
+import usePageMeta from "../utils/usePageMeta";
+
 export default function NotFound() {
+  usePageMeta("Page not found");
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="overflow-x-clip"
-    >
+    <PageTransition>
       <Navbar />
 
       <main
+        id="main-content"
         className="
           flex
           min-h-svh
@@ -96,6 +96,6 @@ export default function NotFound() {
       </main>
 
       <Footer />
-    </motion.div>
+    </PageTransition>
   );
 }

@@ -217,6 +217,58 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Closing mark — the brand's secondary monogram (JKT/),
+            not a name marquee: a mark only this site owns, with a
+            colophon opposite. Static like the rest of the footer. */}
+        <div
+          className="
+            flex
+            flex-col
+            sm:flex-row
+            sm:items-end
+            sm:justify-between
+
+            gap-10
+
+            pb-10
+            sm:pb-12
+            lg:pb-16
+          "
+        >
+          <p
+            className="
+              text-[5rem]
+              sm:text-[7rem]
+              lg:text-[9rem]
+
+              font-extralight
+              leading-[0.8]
+              tracking-[-0.08em]
+
+              text-white
+            "
+          >
+            JKT/
+          </p>
+
+          {/* Colophon */}
+          <div
+            className="
+              sm:text-right
+
+              text-[11px]
+              uppercase
+              tracking-[0.22em]
+
+              leading-loose
+              text-neutral-500
+            "
+          >
+            <p>Designed &amp; built by John Karlo Talagtag</p>
+            <p>Philippines&ensp;·&ensp;{time}&ensp;PHT</p>
+          </div>
+        </div>
+
         {/* Baseline */}
         <div
           className="
@@ -241,15 +293,6 @@ export default function Footer() {
             "
           >
             © 2026 John Karlo Talagtag
-          </p>
-
-          <p
-            className="
-              text-xs
-              text-neutral-500
-            "
-          >
-            Philippines&ensp;·&ensp;{time}&ensp;PHT
           </p>
 
           <button
