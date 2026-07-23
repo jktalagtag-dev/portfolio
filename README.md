@@ -7,13 +7,11 @@
 A modern editorial portfolio showcasing my projects, technical skills, and development process through thoughtful design, meaningful motion, and clean engineering.
 
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)]()
-[![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)]()
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)]()
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)]()
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animation-0055FF?style=for-the-badge)]()
 [![GSAP](https://img.shields.io/badge/GSAP-Scroll_Animations-88CE02?style=for-the-badge)]()
 [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?style=for-the-badge&logo=vercel)]()
-
-**Live Website:** https://your-domain.com
 
 </div>
 
@@ -40,7 +38,7 @@ The project focuses on delivering an experience that feels polished while mainta
 - Performance-focused architecture
 - Reusable component system
 - SEO-friendly structure
-- Dark minimalist visual design
+- Editorial, typography-first light theme (see `PRODUCT.md`)
 
 ---
 
@@ -65,15 +63,13 @@ src
 ├── components
 │   ├── ui
 │   ├── motion
-│   ├── case-study
-│   └── shared
+│   └── case-study
 ├── data
-├── hooks
 ├── layout
 ├── pages
 ├── sections
 ├── styles
-├── utils
+├── utils        # includes shared hooks (useDialogEffects, usePageMeta, ...)
 ├── App.jsx
 └── main.jsx
 ```
@@ -87,7 +83,7 @@ Project data is managed through dedicated data files, making case studies and co
 Clone the repository.
 
 ```bash
-git clone https://github.com/yourusername/portfolio.git
+git clone https://github.com/jktalagtag-dev/portfolio.git
 ```
 
 Move into the project.
@@ -212,7 +208,6 @@ allowing React Router to handle navigation.
 Additional documentation is available inside the repository.
 
 ```
-CLAUDE.md
 PRODUCT.md
 README.md
 ```
@@ -225,13 +220,9 @@ README.md
 
 Frontend Developer • Software Engineer
 
-Portfolio: https://your-domain.com
+GitHub: https://github.com/jktalagtag-dev
 
-LinkedIn: https://linkedin.com/in/yourprofile
-
-GitHub: https://github.com/yourusername
-
-Email: your@email.com
+Email: talagtagjohnkarlo4@gmail.com
 
 ---
 

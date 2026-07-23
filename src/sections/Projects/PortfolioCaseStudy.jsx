@@ -11,6 +11,10 @@ import usePageMeta from "../../utils/usePageMeta";
 import FlagshipCaseStudy from "./FlagshipCaseStudy";
 import ConciseCaseStudy from "./ConciseCaseStudy";
 
+// Card-tier entries are archive placeholders with no case study of
+// their own — a direct visit gets the same 404 as an unknown slug.
+const hasCaseStudyPage = (project) => project.tier !== "card";
+
 export default function ProjectCaseStudy() {
   const { slug } = useParams();
 
@@ -18,11 +22,13 @@ export default function ProjectCaseStudy() {
     (project) => project.slug === slug
   );
 
-  const project = projects[projectIndex];
+  const match = projects[projectIndex];
+  const project = match && hasCaseStudyPage(match) ? match : undefined;
 
   usePageMeta(
     project ? project.title : "Project not found",
-    project?.description
+    project?.description,
+    project?.image
   );
 
   // Unknown slug — same composition as the site 404, scoped to Work.
@@ -118,8 +124,17 @@ export default function ProjectCaseStudy() {
     );
   }
 
-  const nextProject =
-    projects[(projectIndex + 1) % projects.length];
+  // Next case study that actually has a page — card placeholders
+  // are skipped so the closing CTA never links into the 404.
+  let nextProject = project;
+  for (let offset = 1; offset <= projects.length; offset++) {
+    const candidate =
+      projects[(projectIndex + offset) % projects.length];
+    if (hasCaseStudyPage(candidate)) {
+      nextProject = candidate;
+      break;
+    }
+  }
 
   return (
     <PageTransition>

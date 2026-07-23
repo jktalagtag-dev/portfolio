@@ -2,6 +2,8 @@ import SectionContainer from "../../components/ui/SectionContainer";
 import VerticalLabel from "../../components/ui/VerticalLabel";
 import Reveal from "../../components/motion/Reveal";
 
+// "#" marks a link whose real URL doesn't exist yet — those rows
+// are hidden until filled in, same convention as ProjectLinks.jsx.
 const links = [
   {
     label: "Email",
@@ -23,7 +25,7 @@ const links = [
     value: "Download Resume",
     href: "#",
   },
-];
+].filter((link) => link.href !== "#");
 
 // Only real external URLs should open a new tab —
 // mailto and placeholder links behave badly with _blank.

@@ -1,326 +1,300 @@
 import HeroContainer from "../../components/ui/HeroContainer";
 import Reveal from "../../components/motion/Reveal";
 
-import CaseStudySection from "../../components/case-study/CaseStudySection";
-import ProjectHero from "../../components/case-study/ProjectHero";
+import CaseStudyHero from "../../components/case-study/CaseStudyHero";
+import SpecStrip from "../../components/case-study/SpecStrip";
+import SectionHeader from "../../components/case-study/SectionHeader";
+import Statement from "../../components/case-study/Statement";
 import ChallengeGrid from "../../components/case-study/ChallengeGrid";
 import Objectives from "../../components/case-study/Objectives";
-import ProcessTimeline from "../../components/case-study/ProcessTimeline";
-import DesignShowcase from "../../components/case-study/DesignShowcase";
+import ProcessPinned from "../../components/case-study/ProcessPinned";
+import GalleryBleed from "../../components/case-study/GalleryBleed";
 import DevelopmentArchitecture from "../../components/case-study/DevelopmentArchitecture";
+import EngineeringNotes from "../../components/case-study/EngineeringNotes";
 import ChallengeSolution from "../../components/case-study/ChallengeSolution";
 import OutcomeGrid from "../../components/case-study/OutcomeGrid";
-import Reflection from "../../components/case-study/Reflection";
+import PullQuote from "../../components/case-study/PullQuote";
 import ProjectLinks from "../../components/case-study/ProjectLinks";
 import NextProject from "../../components/case-study/NextProject";
 
 /*
- * Full case-study pipeline — the site's flagship presentation.
- * Fixed story order per CLAUDE.md §7: Hero -> Overview ->
- * Challenge -> Objectives -> Role -> Process -> Design ->
- * Development -> Challenges & Solutions -> Outcome ->
- * Reflection -> Explore -> Next Project.
+ * Full case-study pipeline — presented as a product page, not a spec
+ * document, and composed differently per project instead of one fixed
+ * template: `project.sections` (an ordered list of the keys below)
+ * drives which beats appear and in what order, so each flagship case
+ * study can lead with its own strongest material (architecture,
+ * screenshots, an engineering story) while still drawing from ONE
+ * shared component library. Falls back to DEFAULT_SECTIONS — roughly
+ * CLAUDE.md §7's original fixed order — when a project doesn't
+ * specify its own. Every section gets a top hairline except the
+ * first one and whatever immediately follows "pullQuote" (a border
+ * right after the black chapter break reads worse than a clean cut).
  */
 
-export default function FlagshipCaseStudy({
-  project,
-  nextProject,
-}) {
-  const hasLinks =
-    project.live !== "#" || project.github !== "#";
+const DEFAULT_SECTIONS = [
+  "overview",
+  "pullQuote",
+  "challenge",
+  "objectives",
+  "role",
+  "process",
+  "gallery",
+  "development",
+  "deepDive",
+  "challengeSolutions",
+  "outcome",
+  "reflection",
+  "links",
+];
+
+const border = (bordered) => (bordered ? "border-t border-neutral-200" : "");
+
+const SECTION_RENDERERS = {
+  overview: (project, bordered, key) => (
+    <Statement
+      key={key}
+      className={border(bordered)}
+      label="Overview"
+      headline={project.overviewHeadline}
+      body={project.overview}
+    />
+  ),
+
+  pullQuote: (project, _bordered, key) =>
+    project.pullQuote ? (
+      <PullQuote key={key}>{project.pullQuote}</PullQuote>
+    ) : null,
+
+  challenge: (project, bordered, key) => (
+    <section
+      key={key}
+      className={`py-24 sm:py-32 lg:py-44 ${border(bordered)}`}
+    >
+      <HeroContainer>
+        <SectionHeader label="The Challenge" />
+        <div className="mt-16">
+          <ChallengeGrid challenges={project.challengeList} />
+        </div>
+      </HeroContainer>
+    </section>
+  ),
+
+  objectives: (project, bordered, key) => (
+    <section
+      key={key}
+      className={`py-24 sm:py-32 lg:py-44 ${border(bordered)}`}
+    >
+      <HeroContainer>
+        <SectionHeader label="Objectives" />
+        <div className="mt-16">
+          <Objectives objectives={project.objectives} />
+        </div>
+      </HeroContainer>
+    </section>
+  ),
+
+  role: (project, bordered, key) => (
+    <Statement
+      key={key}
+      className={border(bordered)}
+      label="My Role"
+      headline={project.roleHeadline}
+      body={project.roleDescription}
+    >
+      <Reveal
+        variant="rise"
+        className="
+          mx-auto
+          mt-12
+
+          flex
+          max-w-3xl
+          flex-wrap
+          justify-center
+          gap-3
+          sm:gap-4
+        "
+      >
+        {project.responsibilities.map((item) => (
+          <span
+            key={item}
+            data-reveal
+            className="
+              border
+              border-neutral-200
+
+              px-4
+              py-2.5
+              sm:px-5
+              sm:py-3
+
+              text-sm
+            "
+          >
+            {item}
+          </span>
+        ))}
+      </Reveal>
+    </Statement>
+  ),
+
+  process: (project, bordered, key) =>
+    project.processSteps?.length > 0 ? (
+      <section
+        key={key}
+        className={`py-24 sm:py-32 lg:py-44 ${border(bordered)}`}
+      >
+        <HeroContainer>
+          <SectionHeader
+            label="Process"
+            headline="From research to deployment."
+          />
+          <div className="mt-16 lg:mt-24">
+            <ProcessPinned steps={project.processSteps} />
+          </div>
+        </HeroContainer>
+      </section>
+    ) : null,
+
+  gallery: (project, bordered, key) =>
+    project.gallery?.length > 0 ? (
+      <section
+        key={key}
+        className={`py-24 sm:py-32 lg:py-44 ${border(bordered)}`}
+      >
+        <SectionHeader label="Design" />
+        <div className="mt-16">
+          <GalleryBleed images={project.gallery} />
+        </div>
+      </section>
+    ) : null,
+
+  development: (project, bordered, key) => (
+    <section
+      key={key}
+      className={`py-24 sm:py-32 lg:py-44 ${border(bordered)}`}
+    >
+      <HeroContainer>
+        <SectionHeader
+          label="Development"
+          headline={project.developmentHeadline}
+        />
+        <div className="mt-16 lg:mt-24">
+          <DevelopmentArchitecture layers={project.architecture} />
+        </div>
+      </HeroContainer>
+    </section>
+  ),
+
+  deepDive: (project, bordered, key) =>
+    project.deepDives?.length > 0 ? (
+      <section
+        key={key}
+        className={`py-24 sm:py-32 lg:py-44 ${border(bordered)}`}
+      >
+        <HeroContainer>
+          <SectionHeader label="Engineering Notes" />
+          <div className="mt-16">
+            <EngineeringNotes notes={project.deepDives} />
+          </div>
+        </HeroContainer>
+      </section>
+    ) : null,
+
+  challengeSolutions: (project, bordered, key) => (
+    <section
+      key={key}
+      className={`py-24 sm:py-32 lg:py-44 ${border(bordered)}`}
+    >
+      <HeroContainer>
+        <SectionHeader label="Challenges" />
+        <div className="mt-16">
+          <ChallengeSolution items={project.challengeSolutions} />
+        </div>
+      </HeroContainer>
+    </section>
+  ),
+
+  outcome: (project, bordered, key) => (
+    <Statement
+      key={key}
+      className={border(bordered)}
+      label="Outcome"
+      headline={project.outcomeHeadline}
+      body={project.outcome}
+    >
+      <div className="mt-16">
+        <OutcomeGrid highlights={project.outcomeHighlights} />
+      </div>
+    </Statement>
+  ),
+
+  reflection: (project, bordered, key) => (
+    <Statement
+      key={key}
+      className={border(bordered)}
+      label="Reflection"
+      headline={project.reflectionHeadline}
+      body={project.learnings}
+    >
+      {project.reflectionNote && (
+        <Reveal variant="rise">
+          <p
+            className="
+              mx-auto
+              mt-6
+
+              max-w-2xl
+
+              text-center
+              text-base
+              sm:text-lg
+
+              leading-relaxed
+              text-neutral-500
+            "
+          >
+            {project.reflectionNote}
+          </p>
+        </Reveal>
+      )}
+    </Statement>
+  ),
+
+  links: (project, bordered, key) => {
+    const hasLinks = project.live !== "#" || project.github !== "#";
+    if (!hasLinks) return null;
+
+    return (
+      <section key={key} className={`py-20 lg:py-28 ${border(bordered)}`}>
+        <HeroContainer>
+          <Reveal variant="rise" className="flex justify-center">
+            <ProjectLinks live={project.live} github={project.github} />
+          </Reveal>
+        </HeroContainer>
+      </section>
+    );
+  },
+};
+
+export default function FlagshipCaseStudy({ project, nextProject }) {
+  const sections = project.sections || DEFAULT_SECTIONS;
 
   return (
     <>
-      <ProjectHero project={project} />
+      <CaseStudyHero project={project} />
 
-      {/* ====================================================== */}
-      {/* CONTENT */}
-      {/* ====================================================== */}
+      <SpecStrip project={project} />
 
-      <HeroContainer>
+      {sections.map((key, index) => {
+        const render = SECTION_RENDERERS[key];
+        if (!render) return null;
 
-        {/* ================================================== */}
-        {/* OVERVIEW */}
-        {/* ================================================== */}
+        const bordered =
+          index > 0 && sections[index - 1] !== "pullQuote";
 
-        <CaseStudySection label="Overview" reveal="rise">
-
-          <div className="max-w-3xl">
-
-            <h2
-              className="
-                text-3xl
-                sm:text-4xl
-                lg:text-5xl
-
-                font-light
-                leading-[1.05]
-                tracking-[-0.05em]
-              "
-            >
-              {project.overviewHeadline}
-            </h2>
-
-            <p
-              className="
-                mt-10
-
-                text-lg
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              {project.overview}
-            </p>
-
-          </div>
-
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* CHALLENGE */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="The Challenge">
-          <ChallengeGrid challenges={project.challengeList} />
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* OBJECTIVES */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Objectives">
-          <Objectives objectives={project.objectives} />
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* MY ROLE */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="My Role" reveal="slide">
-
-          <div className="max-w-4xl">
-
-            <h2
-              className="
-                text-3xl
-                sm:text-4xl
-                lg:text-5xl
-
-                font-light
-                leading-[1.05]
-                tracking-[-0.05em]
-              "
-            >
-              {project.roleHeadline}
-            </h2>
-
-            <p
-              className="
-                mt-10
-
-                text-lg
-                leading-relaxed
-                text-neutral-600
-              "
-            >
-              {project.roleDescription}
-            </p>
-
-            <div
-              className="
-                mt-12
-
-                flex
-                flex-wrap
-                gap-3
-                sm:gap-4
-              "
-            >
-              {project.responsibilities.map((item) => (
-
-                <span
-                  key={item}
-                  className="
-                    border
-                    border-neutral-200
-
-                    px-4
-                    py-2.5
-                    sm:px-5
-                    sm:py-3
-
-                    text-sm
-                  "
-                >
-                  {item}
-                </span>
-
-              ))}
-            </div>
-
-          </div>
-
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* PROCESS */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Process">
-          <div className="max-w-4xl">
-            <Reveal variant="rise">
-              <h2
-                className="
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-5xl
-
-                  font-light
-                  leading-[1.05]
-                  tracking-[-0.05em]
-                "
-              >
-                From research to deployment.
-              </h2>
-            </Reveal>
-
-            <div className="mt-16">
-              <ProcessTimeline steps={project.processSteps} />
-            </div>
-          </div>
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* DESIGN */}
-        {/* ================================================== */}
-
-        {project.gallery?.length > 0 && (
-          <CaseStudySection label="Design">
-            <DesignShowcase images={project.gallery} />
-          </CaseStudySection>
-        )}
-
-        {/* ================================================== */}
-        {/* DEVELOPMENT */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Development">
-          <div>
-            <Reveal variant="rise">
-              <h2
-                className="
-                  max-w-4xl
-
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-5xl
-
-                  font-light
-                  leading-[1.05]
-                  tracking-[-0.05em]
-                "
-              >
-                {project.developmentHeadline}
-              </h2>
-            </Reveal>
-
-            <div className="mt-16">
-              <DevelopmentArchitecture
-                layers={project.architecture}
-              />
-            </div>
-          </div>
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* CHALLENGES & SOLUTIONS */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Challenges">
-          <ChallengeSolution
-            items={project.challengeSolutions}
-          />
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* OUTCOME */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Outcome">
-          <div>
-            <Reveal variant="rise" stagger={0.1}>
-              <h2
-                data-reveal
-                className="
-                  max-w-4xl
-
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-5xl
-
-                  font-light
-                  leading-[1.05]
-                  tracking-[-0.05em]
-                "
-              >
-                {project.outcomeHeadline}
-              </h2>
-
-              <p
-                data-reveal
-                className="
-                  mt-10
-
-                  max-w-3xl
-
-                  text-lg
-                  leading-relaxed
-                  text-neutral-600
-                "
-              >
-                {project.outcome}
-              </p>
-            </Reveal>
-
-            <div className="mt-16">
-              <OutcomeGrid
-                highlights={project.outcomeHighlights}
-              />
-            </div>
-          </div>
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* REFLECTION */}
-        {/* ================================================== */}
-
-        <CaseStudySection label="Reflection">
-          <Reflection
-            headline={project.reflectionHeadline}
-            learnings={project.learnings}
-            note={project.reflectionNote}
-          />
-        </CaseStudySection>
-
-        {/* ================================================== */}
-        {/* LINKS */}
-        {/* ================================================== */}
-
-        {hasLinks && (
-          <CaseStudySection label="Explore" reveal="rise">
-            <ProjectLinks
-              live={project.live}
-              github={project.github}
-            />
-          </CaseStudySection>
-        )}
-
-      </HeroContainer>
-
-      {/* ====================================================== */}
-      {/* NEXT PROJECT */}
-      {/* ====================================================== */}
+        return render(project, bordered, key);
+      })}
 
       <NextProject project={nextProject} />
     </>

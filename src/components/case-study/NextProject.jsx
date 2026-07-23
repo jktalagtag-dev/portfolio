@@ -4,9 +4,9 @@ import HeroContainer from "../ui/HeroContainer";
 import MaskText from "../motion/MaskText";
 
 /*
- * Next project — the title wipes up as the closing beat of the
- * case study, matching the "All Projects" / page-CTA treatment
- * used elsewhere so the site's big links share one gesture.
+ * Next project — the case study's closing beat, centered to match
+ * the page's new mid-page statement rhythm: the title wipes up as
+ * one last big typographic moment before the visitor moves on.
  */
 
 export default function NextProject({ project }) {
@@ -20,7 +20,7 @@ export default function NextProject({ project }) {
       <HeroContainer>
         <Link
           to={`/work/${project.slug}`}
-          className="group block py-20 lg:py-32"
+          className="group block py-24 sm:py-32 lg:py-44 text-center"
         >
           <p
             className="
@@ -37,6 +37,7 @@ export default function NextProject({ project }) {
             as="h2"
             start="top 88%"
             className="
+              mx-auto
               mt-6
 
               text-[2.75rem]
@@ -63,6 +64,7 @@ export default function NextProject({ project }) {
 
               inline-flex
               items-center
+              justify-center
               gap-3
 
               text-sm

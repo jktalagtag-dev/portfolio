@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 
 import {
   gsap,
-  ScrollTrigger,
   prefersReducedMotion,
+  scheduleRefresh,
 } from "../../utils/gsap";
 
 import ExhibitionFallback from "./ExhibitionFallback";
@@ -47,12 +47,15 @@ export default function ProjectExhibition({ projects }) {
   // Decide the mode after mount so we never mismatch the
   // pinned/fallback markup, and rebuild on breakpoint change.
   useEffect(() => {
-    // Pin only on lg+ with motion allowed; narrow screens and
-    // reduced-motion visitors get the calm stacked fallback.
+    // Pin only on lg+ with a fine pointer and motion allowed; narrow
+    // screens, touch-only tablets (an iPad Pro landscape is 1024px
+    // wide but scroll-scrubbing against touch momentum feels broken),
+    // and reduced-motion visitors get the calm stacked fallback.
     const decide = () =>
       setPinned(
-        window.matchMedia("(min-width: 1024px)").matches &&
-          !prefersReducedMotion()
+        window.matchMedia(
+          "(min-width: 1024px) and (hover: hover) and (pointer: fine)"
+        ).matches && !prefersReducedMotion()
       );
 
     decide();
@@ -129,8 +132,12 @@ export default function ProjectExhibition({ projects }) {
         );
       }
 
-      ScrollTrigger.refresh();
     }, wrapperRef);
+
+    // Debounced + font-gated, same as every other primitive — avoids
+    // stacking a second, redundant full-page refresh pass on top of
+    // whatever the rest of the page's mount already scheduled.
+    scheduleRefresh();
 
     return () => ctx.revert();
   }, [pinned, projects]);

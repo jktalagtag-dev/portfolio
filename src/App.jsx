@@ -1,6 +1,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, MotionConfig } from "framer-motion";
 import { lazy, Suspense, useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import Loader from "./components/ui/Loader";
 import useSmoothScroll from "./utils/useSmoothScroll";
@@ -91,6 +93,12 @@ export default function App() {
     // motion for every visitor, matching prefersReducedMotion()
     // in utils/gsap.js — see that file for how to revert both.
     <MotionConfig reducedMotion="never">
+      {/* Deployed on Vercel (see vercel.json) — these are the
+          zero-config traffic + Core Web Vitals dashboards, not
+          visible UI. */}
+      <Analytics />
+      <SpeedInsights />
+
       {/* The loader overlays the app (z-[9999]) and wipes upward on
           exit, revealing the already-rendered page beneath — its own
           AnimatePresence so the app doesn't wait to mount. */}

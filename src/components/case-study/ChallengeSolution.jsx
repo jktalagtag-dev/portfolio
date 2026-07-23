@@ -1,10 +1,12 @@
 import Reveal from "../motion/Reveal";
 
 /*
- * Challenges & Solutions — the pairing IS the layout: challenge and
- * solution sit either side of an arrow that nudges forward on hover
- * (the site's arrow gesture), making the problem → answer reading
- * direction literal. Cards settle in (scale).
+ * Challenges & Solutions — borderless paired rows, challenge and
+ * solution either side of an arrow that nudges forward on hover,
+ * making the problem -> answer reading direction literal. Breakpoint
+ * aligned to lg (the site-wide fault line) rather than the old
+ * md-only split, so this no longer flips layout at a different width
+ * than every surrounding section.
  */
 
 export default function ChallengeSolution({ items }) {
@@ -12,7 +14,7 @@ export default function ChallengeSolution({ items }) {
     <Reveal
       variant="scale"
       stagger={0.1}
-      className="space-y-6 lg:space-y-10"
+      className="divide-y divide-neutral-200 border-t border-neutral-200"
     >
       {items.map((item) => (
         <div
@@ -21,22 +23,14 @@ export default function ChallengeSolution({ items }) {
           className="
             group
 
-            border
-            border-neutral-200
-
-            p-6
-            sm:p-10
+            py-10
+            lg:py-14
 
             grid
-            md:grid-cols-[1fr_auto_1fr]
+            lg:grid-cols-[1fr_auto_1fr]
 
-            gap-8
-            md:gap-10
-
-            transition-colors
-            duration-500
-
-            hover:border-neutral-400
+            gap-6
+            lg:gap-10
           "
         >
           <div>
@@ -55,8 +49,8 @@ export default function ChallengeSolution({ items }) {
               className="
                 mt-4
 
-                text-xl
-                sm:text-2xl
+                text-2xl
+                sm:text-3xl
 
                 font-light
                 leading-snug
@@ -72,7 +66,7 @@ export default function ChallengeSolution({ items }) {
             aria-hidden="true"
             className="
               hidden
-              md:flex
+              lg:flex
 
               items-center
 
@@ -106,8 +100,9 @@ export default function ChallengeSolution({ items }) {
               className="
                 mt-4
 
-                text-neutral-600
+                text-lg
                 leading-relaxed
+                text-neutral-600
               "
             >
               {item.solution}

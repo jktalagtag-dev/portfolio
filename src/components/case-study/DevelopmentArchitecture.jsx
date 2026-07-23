@@ -1,88 +1,75 @@
-import DrawLine from "../motion/DrawLine";
 import Reveal from "../motion/Reveal";
 
 /*
- * Development architecture — layered cards slide in while the
- * connectors between them draw down, so the stack reads as
- * assembling itself.
+ * Development architecture — alternating feature rows, the Apple
+ * grammar: each layer is a big borderless typographic block that
+ * takes the opposite side from the one before it, so the stack
+ * reads as a paced left-right-left walk down the page instead of
+ * a boxed diagram. Below lg everything settles back to a single
+ * left-aligned column.
  */
 
 export default function DevelopmentArchitecture({ layers }) {
   return (
-    <Reveal
-      variant="slide"
-      stagger={0.12}
-      className="max-w-3xl"
-    >
-      {layers.map((layer, index) => (
-        <div key={layer.title}>
-          <div
-            data-reveal
-            className="
-              border
-              border-neutral-200
+    <div className="space-y-20 lg:space-y-32">
+      {layers.map((layer, index) => {
+        const flip = index % 2 === 1;
 
-              p-6
-              sm:p-10
+        return (
+          <Reveal key={layer.title} variant="rise">
+            <div
+              className={`
+                lg:max-w-3xl
 
-              grid
-              sm:grid-cols-12
-
-              gap-4
-              sm:gap-8
-
-              items-baseline
-            "
-          >
-            <p
-              className="
-                sm:col-span-4
-
-                text-[11px]
-                uppercase
-                tracking-[0.25em]
-                text-neutral-400
-              "
+                ${flip ? "lg:ml-auto lg:text-right" : ""}
+              `}
             >
-              {layer.label}
-            </p>
+              <p
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.25em]
+                  text-neutral-400
+                "
+              >
+                {layer.label}
+              </p>
 
-            <div className="sm:col-span-8">
               <h3
                 className="
-                  text-2xl
-                  sm:text-3xl
+                  mt-4
+
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
 
                   font-light
-                  tracking-[-0.03em]
+                  leading-[1.05]
+                  tracking-[-0.04em]
                 "
               >
                 {layer.title}
               </h3>
 
               <p
-                className="
-                  mt-3
+                className={`
+                  mt-5
 
-                  text-neutral-600
+                  max-w-xl
+
+                  text-lg
                   leading-relaxed
-                "
+                  text-neutral-600
+
+                  ${flip ? "lg:ml-auto" : ""}
+                `}
               >
                 {layer.description}
               </p>
             </div>
-          </div>
-
-          {index !== layers.length - 1 && (
-            <div className="flex justify-center">
-              <DrawLine
-                axis="y"
-                className="h-10 w-px bg-neutral-300"
-              />
-            </div>
-          )}
-        </div>
-      ))}
-    </Reveal>
+          </Reveal>
+        );
+      })}
+    </div>
   );
 }

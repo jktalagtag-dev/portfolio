@@ -43,7 +43,8 @@ export default function AboutTeaser() {
               lg:grid-cols-12
 
               gap-12
-              lg:gap-8
+              lg:gap-16
+              xl:gap-20
             "
           >
             {/* Quiet gutter — reserved space, no label text */}

@@ -33,12 +33,11 @@ export default function ProjectModal({
   onNext,
 }) {
   const panelRef = useRef(null);
-  const previousFocusRef = useRef(null);
   const titleId = "project-modal-title";
 
   const isOpen = !!project;
 
-  useDialogEffects(isOpen, onClose);
+  useDialogEffects(isOpen, onClose, panelRef);
 
   // Gallery-style keyboard nav — scoped here (not in the shared
   // dialog hook, which the Navbar overlay also uses and has no
@@ -54,15 +53,6 @@ export default function ProjectModal({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isOpen, onPrev, onNext]);
-
-  useEffect(() => {
-    if (isOpen) {
-      previousFocusRef.current = document.activeElement;
-      panelRef.current?.focus();
-    } else {
-      previousFocusRef.current?.focus?.();
-    }
-  }, [isOpen]);
 
   return (
     <AnimatePresence>

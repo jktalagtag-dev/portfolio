@@ -20,6 +20,8 @@ const menuLinks = [
   },
 ];
 
+// "#" marks a link whose real URL doesn't exist yet — those rows
+// are hidden until filled in, same convention as ProjectLinks.jsx.
 const connectLinks = [
   {
     label: "GitHub",
@@ -36,7 +38,7 @@ const connectLinks = [
     href: "#",
     external: false,
   },
-];
+].filter((link) => link.href !== "#");
 
 /*
  * The page's final "full stop" — black, matching the Project

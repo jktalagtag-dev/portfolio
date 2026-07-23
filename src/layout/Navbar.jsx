@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion, useSpring } from "framer-motion";
 
@@ -91,10 +91,11 @@ function OverlayLink({ item, index, onNavigate }) {
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const overlayRef = useRef(null);
 
   const close = useCallback(() => setIsOpen(false), []);
 
-  useDialogEffects(isOpen, close);
+  useDialogEffects(isOpen, close, overlayRef);
 
   return (
     <>
@@ -262,6 +263,11 @@ export default function Navbar() {
         {isOpen && (
           <motion.div
             id="menu-overlay"
+            ref={overlayRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+            tabIndex={-1}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -273,6 +279,8 @@ export default function Navbar() {
               z-40
 
               bg-[#F8F8F8]
+
+              outline-none
             "
           >
             <HeroContainer className="h-full">
@@ -335,13 +343,6 @@ export default function Navbar() {
                     mt-16
                     lg:mt-20
 
-                    flex
-                    flex-wrap
-                    items-center
-                    justify-between
-
-                    gap-6
-
                     border-t
                     border-neutral-200
 
@@ -362,17 +363,6 @@ export default function Navbar() {
                     "
                   >
                     talagtagjohnkarlo4@gmail.com
-                  </a>
-
-                  <a
-                    href="#"
-                    className="
-                      transition-colors
-                      duration-300
-                      hover:text-neutral-900
-                    "
-                  >
-                    Resume ↗
                   </a>
                 </motion.div>
               </div>

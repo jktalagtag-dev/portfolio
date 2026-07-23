@@ -1,15 +1,322 @@
 // Tier guide (see /work/:slug dispatch in PortfolioCaseStudy.jsx):
-// "flagship" -> full case study (FlagshipCaseStudy.jsx). Reads all fields.
+// "flagship" -> full case study (FlagshipCaseStudy.jsx). Reads all fields,
+//               including pullQuote (optional black chapter break after
+//               Overview), gallery (optional, [{src, caption}] — full-
+//               bleed/two-up media rows; src may be omitted for a
+//               placeholder frame until a real screenshot exists), and
+//               deepDives (optional, [{title, description}] — narrative
+//               "engineering story" content, e.g. a debugging writeup).
+//               `sections` (optional array of section keys) controls
+//               which beats appear and in what order — see the
+//               SECTION_RENDERERS keys in FlagshipCaseStudy.jsx. Falls
+//               back to that file's DEFAULT_SECTIONS when omitted.
 // "concise"  -> short dedicated page (ConciseCaseStudy.jsx). Reads: title,
 //               description, role, timeline, year, tech, image, objectives
-//               (shown as "Key Features"), gallery (optional, "Screenshots"),
-//               live, github. Does NOT read process/architecture/reflection
-//               fields.
-// "card"     -> no dedicated page (ProjectCard only, Home + archive).
+//               (shown as "Key Features"), gallery (optional, "Screenshots",
+//               same rules as above), live, github. Does NOT read
+//               process/architecture/reflection fields.
+// "card"     -> no dedicated page (archive/exhibition card only —
+//               frontend-only projects live here, not as a case study).
 //               Reads: title, description, tech, image, live, github.
 export const projects = [
     {
         number: "01",
+        slug: "ai-business-platform",
+        year: "2025",
+        tier: "flagship",
+        title: "AI Business Platform",
+        description:
+        "A multi-tenant SaaS platform that unifies ticketing, HR, inventory, document search, workflow automation, and an AI assistant under one architecture — built around AI from day one, not bolted on after.",
+
+        overview:
+        "Most internal business software is fragmented — companies buy separate systems for HR, inventory, support tickets, and AI assistants that duplicate user management and permissions while making integration harder. This platform explores how enterprise software can stay scalable while supporting multiple organizations, strict security boundaries, and AI-powered workflows on one shared foundation.",
+        overviewHeadline:
+        "Enterprise software, unified around AI from day one.",
+        pullQuote:
+        "Most business software is fragmented — separate systems for HR, inventory, tickets, and AI that duplicate data and permissions instead of sharing one foundation.",
+
+        challengeList: [
+        "Multi-tenancy without data leaking between organizations",
+        "Role-based authorization across every module",
+        "AI tool calling and retrieval-augmented generation",
+        "Workflow automation and audit logging",
+        "Shared APIs across HR, inventory, and support",
+        ],
+        objectives: [
+        "Ticket Management",
+        "HR",
+        "Inventory",
+        "Document Search",
+        "Workflow Automation",
+        "AI Assistant",
+        ],
+        roleHeadline:
+        "Full-stack ownership, from database to AI layer.",
+        roleDescription:
+        "As the Full-Stack Software Engineer, I owned system architecture, backend and frontend development, AI integration, database design, and DevOps — designing a platform where every module shares the same architectural foundation instead of being stitched together through plugins and middleware.",
+        developmentHeadline:
+        "Clean Architecture, from the HTTP layer down to the domain.",
+        architecture: [
+        {
+            label: "Backend",
+            title: "Laravel 12 + PostgreSQL",
+            description:
+            "Follows Clean Architecture — HTTP, application, domain, and infrastructure layers stay separate, so controllers hold no business logic and domain models remain framework-independent.",
+        },
+        {
+            label: "Frontend",
+            title: "React 18 + TypeScript",
+            description:
+            "Strictly separates server state, UI state, authentication, and local preferences — no duplicated server state inside client stores, cutting down on synchronization bugs and unnecessary re-renders.",
+        },
+        {
+            label: "Multi-Tenancy",
+            title: "Tenant-scoped repositories",
+            description:
+            "Every request executes inside a tenant context, with repositories automatically scoping queries so organizations can never access each other's data. A later architectural audit found duplicated tenant-filtering logic across several repositories — an opportunity to centralize through shared abstractions.",
+        },
+        ],
+        challengeSolutions: [
+        {
+            challenge:
+            "Coupling the AI assistant to one provider would make switching models expensive and risky.",
+            solution:
+            "Built a provider-agnostic AI layer behind one shared interface, validated against OpenAI, OpenRouter, Ollama, and Gemini — changing providers is now a configuration change, not a code change.",
+        },
+        {
+            challenge:
+            "A Radix Dialog race condition could have required patching every modal in the app individually.",
+            solution:
+            "Traced the bug to the shared dialog component and fixed it once, preventing the same failure across every create/edit workflow in the platform.",
+        },
+        ],
+        deepDives: [
+        {
+            title: "Debugging Gemini Tool Calling",
+            description:
+            "Multi-turn tool-calling conversations against Gemini's OpenAI-compatible endpoint failed after the first function call, with an undocumented error: “Function call is missing a thought_signature.” Rather than relying on community discussion, I inspected raw API responses directly — comparing streamed and non-streamed payloads, reproducing the issue outside the application, and replaying requests manually. That surfaced an undocumented field, tool_calls[].extra_content.google.thought_signature, which the platform now persists alongside conversation history so Gemini tool-calling conversations continue correctly across multiple requests. The workflow — reproduce, isolate, verify, generalize — is one I apply consistently since.",
+        },
+        ],
+        outcome:
+        "The AI layer has been validated end-to-end against OpenAI, OpenRouter, Ollama, and Gemini, and the Clean Architecture split means infrastructure can be replaced without touching application logic — a foundation built to scale in both directions, more tenants and more AI providers, without a rewrite.",
+        outcomeHeadline:
+        "A platform proven against four different AI providers.",
+        outcomeHighlights: [
+        "Multi-Tenant SaaS",
+        "Provider-Agnostic AI",
+        "RAG Document Search",
+        "Role-Based Access",
+        "Audit Logging",
+        "Clean Architecture",
+        ],
+        learnings:
+        "This project deepened my understanding of enterprise application architecture, scalable backend design, AI infrastructure and provider abstraction, debugging undocumented APIs, multi-tenant SaaS development, and the trade-offs behind real software architecture decisions.",
+        reflectionHeadline:
+        "Enterprise architecture is a series of trade-offs.",
+        reflectionNote:
+        "An architectural audit later surfaced duplicated tenant-filtering logic spread across several repositories — centralizing it behind a shared abstraction is next, a reminder that even a deliberately layered system accumulates debt worth revisiting.",
+        role: "Full-Stack Software Engineer",
+        timeline: "October 2025 – Present",
+        responsibilities: [
+        "System Architecture",
+        "Backend Development",
+        "Frontend Development",
+        "AI Integration",
+        "Database Design",
+        "DevOps",
+        ],
+        tech: [
+        "React",
+        "TypeScript",
+        "Laravel",
+        "PostgreSQL",
+        "TanStack Query",
+        "Zustand",
+        ],
+        // No real screenshot yet — shared on-brand placeholder until
+        // one is supplied; swap this path for a real image later, no
+        // component changes needed.
+        image: "/projects/coming-soon.svg",
+        gallery: [
+        { caption: "Ticket Management" },
+        { caption: "HR Module" },
+        { caption: "Inventory Module" },
+        { caption: "Document Search (RAG)" },
+        { caption: "AI Assistant" },
+        ],
+        github: "#",
+        live: "#",
+        // Leads with its strongest material — architecture and the
+        // Gemini debugging story — before features/role. Deliberately
+        // different rhythm from the other two flagship case studies.
+        sections: [
+        "overview",
+        "challenge",
+        "development",
+        "deepDive",
+        "objectives",
+        "role",
+        "challengeSolutions",
+        "outcome",
+        "gallery",
+        "reflection",
+        "links",
+        ],
+    },
+
+    {
+        number: "02",
+        slug: "predictive-inventory-system",
+        // No year or project duration was given in the source
+        // material — using 2025 / "Client Project" as honest
+        // placeholders rather than a fabricated date range. Correct
+        // if wrong.
+        year: "2025",
+        tier: "flagship",
+        title: "Predictive Inventory System",
+        description:
+        "A full-stack inventory and sales platform built for Steven Hydrotech Exponent Water Treatment and Supply Services — managing purchasing, sales, demand forecasting, and automatic replenishment, with data integrity and offline resilience built in from the start.",
+
+        overview:
+        "The system manages the complete operational workflow, from purchasing inventory to sales, forecasting future demand, and recommending replenishment quantities. Rather than focusing only on CRUD operations, it emphasizes data integrity, auditability, and resilience in environments with unreliable internet connectivity.",
+        overviewHeadline:
+        "Inventory software built to survive bad connections and worse assumptions.",
+        pullQuote:
+        "Traditional inventory systems fail quietly — inaccurate balances, duplicated transactions, misleading forecasts. This one was designed around preventing those failures instead of patching them after the fact.",
+
+        challengeList: [
+        "Inaccurate stock balances",
+        "Duplicated transactions",
+        "Poor audit trails",
+        "Unreliable offline behavior",
+        "Misleading demand forecasts",
+        ],
+        objectives: [
+        "Purchase Orders",
+        "Point of Sale",
+        "Stock Monitoring",
+        "Demand Forecasting",
+        "EOQ Reorder Recommendations",
+        "Offline Synchronization",
+        ],
+        roleHeadline:
+        "Full-stack ownership of a system a real business depends on.",
+        roleDescription:
+        "As the Full-Stack Software Engineer, I owned system design, backend and frontend development, database architecture, and UX improvements — building the system around preventing failure modes instead of treating them as exceptions to handle later.",
+        developmentHeadline:
+        "Two independent applications, one shared source of truth.",
+        architecture: [
+        {
+            label: "Backend",
+            title: "Laravel 12 + MySQL",
+            description:
+            "Owns the inventory ledger, forecasting, and authorization logic behind a REST API.",
+        },
+        {
+            label: "Frontend",
+            title: "React 19 + TypeScript",
+            description:
+            "Maintained as a separate application from the backend, allowing independent deployment and testing.",
+        },
+        {
+            label: "Offline Layer",
+            title: "IndexedDB + Dexie",
+            description:
+            "Pending operations are stored locally when connectivity drops and synchronized once it returns, with conflict detection on the server rather than silent overwrites.",
+        },
+        ],
+        challengeSolutions: [
+        {
+            challenge:
+            "Inventory quantities are prone to silent, unauditable edits.",
+            solution:
+            "Quantities are never edited directly — every stock change generates an immutable movement record, and current inventory is calculated from that history rather than stored as a mutable value.",
+        },
+        {
+            challenge:
+            "Field staff lose internet connectivity mid-transaction.",
+            solution:
+            "The app stores pending operations locally in IndexedDB and synchronizes them once connectivity returns, with conflicts detected on the server instead of silently overwritten.",
+        },
+        {
+            challenge:
+            "Retried requests — POS checkout, receiving, sync — could duplicate inventory movements.",
+            solution:
+            "Critical endpoints use idempotency keys, so a repeated request never creates a duplicate movement.",
+        },
+        ],
+        deepDives: [
+        {
+            title: "Forecasting Without False Confidence",
+            description:
+            "Demand forecasting uses a Simple Moving Average. Rather than producing a misleading prediction when there isn't enough sales history yet, the system explicitly reports that more data is required — trading a confident-looking number for an honest one, and staying transparent about the limits of what it actually knows.",
+        },
+        ],
+        outcome:
+        "Permissions are enforced through policy classes instead of scattered role checks, centralizing authorization logic and making it easier to test and maintain — one piece of a system designed for auditability end to end, from the inventory ledger to every synced offline transaction.",
+        outcomeHeadline:
+        "A system built to survive audits, not just transactions.",
+        outcomeHighlights: [
+        "Inventory Ledger",
+        "Offline-First",
+        "Idempotent APIs",
+        "Demand Forecasting",
+        "Role-Based Access",
+        "Audit Trail",
+        ],
+        learnings:
+        "This project gave me practical experience with inventory domain modeling, offline-first architecture, synchronization strategies, forecasting algorithms, idempotent API design, audit logging, and enterprise-grade role-based access control.",
+        reflectionHeadline:
+        "Reliability is a design decision, not a bug fix.",
+        reflectionNote:
+        "Preferring an honest “not enough data yet” over a confident wrong answer is a principle I now apply beyond forecasting — to any feature where the system might be tempted to guess.",
+        role: "Full-Stack Software Engineer",
+        timeline: "Client Project",
+        responsibilities: [
+        "System Design",
+        "Backend Development",
+        "Frontend Development",
+        "Database Architecture",
+        "UX Improvements",
+        ],
+        tech: [
+        "React",
+        "TypeScript",
+        "Laravel",
+        "MySQL",
+        "Dexie",
+        "IndexedDB",
+        ],
+        image: "/projects/coming-soon.svg",
+        gallery: [
+        { caption: "Point of Sale" },
+        { caption: "Purchase Orders" },
+        { caption: "Stock Monitoring" },
+        { caption: "Demand Forecasting" },
+        { caption: "Reporting" },
+        ],
+        github: "#",
+        live: "#",
+        // Leads with features (Objectives) before the problem framing —
+        // a feature-first read, distinct from both other case studies.
+        sections: [
+        "overview",
+        "pullQuote",
+        "objectives",
+        "challenge",
+        "role",
+        "challengeSolutions",
+        "deepDive",
+        "development",
+        "gallery",
+        "outcome",
+        "reflection",
+        "links",
+        ],
+    },
+
+    {
+        number: "03",
         slug: "guidance-management-system",
         year: "2025",
         tier: "flagship",
@@ -20,6 +327,8 @@ export const projects = [
         "Developed as our BSIT capstone project, the system was created to modernize guidance office operations and provide students with easier access to support services through a centralized digital platform.",
         overviewHeadline:
         "Building a better digital experience for students and guidance counselors.",
+        pullQuote:
+        "From a semester of research to a defended capstone — a centralized platform built to make guidance services easier to reach for every student who needed them.",
         process:
         "The project started with identifying common challenges faced by students and guidance staff. After gathering requirements, wireframes and user flows were created before developing the interface and integrating backend functionality using React and Laravel.",
         processSteps: [
@@ -141,15 +450,48 @@ export const projects = [
         "MySQL",
         ],
         image: "/projects/3.webp",
+        // Real screenshots to follow — placeholders name the actual
+        // modules so drop-in later is just adding `src` per item.
+        gallery: [
+        { caption: "Student Records Dashboard" },
+        { caption: "Appointment Scheduling" },
+        { caption: "Safe-Response Chatbot" },
+        { caption: "Guidance Reports" },
+        { caption: "Role-Based Access Control" },
+        ],
         github: "#",
-        live: "https://portfolio-eohibl4gy-juankt08.vercel.app",
+        // Previous value pointed at a stale Vercel preview deployment
+        // that now 404s — hidden (ProjectLinks skips "#") until a
+        // real, stable URL is supplied.
+        live: "#",
+        // Gallery moved right after the pull-quote to spotlight the
+        // system's screenshots early — distinct from both other
+        // case studies, which place theirs later.
+        sections: [
+        "overview",
+        "pullQuote",
+        "gallery",
+        "challenge",
+        "objectives",
+        "role",
+        "process",
+        "development",
+        "challengeSolutions",
+        "outcome",
+        "reflection",
+        "links",
+        ],
     },
 
     {
-        number: "02",
+        number: "04",
         slug: "portfolio-website",
         year: "2026",
-        tier: "flagship",
+        // Frontend-only — no dedicated case study; still shown as an
+        // archive/exhibition card with real links. The flagship-only
+        // fields below are kept but unused, ready if this project
+        // ever grows a backend and flips tier back to "flagship".
+        tier: "card",
         title: "Portfolio Website",
         description:
         "A personal portfolio focused on editorial layouts, thoughtful interactions, and showcasing frontend development and interface implementation skills.",
@@ -158,6 +500,8 @@ export const projects = [
         "Created to present projects, experience, and technical capabilities through a clean, modern, and intentional user experience inspired by editorial and Swiss design principles.",
         overviewHeadline:
         "An editorial portfolio designed and built as a product.",
+        pullQuote:
+        "Every detail here — the type, the motion, the pacing — is a decision I made and can defend. Designing for yourself turned out to be the hardest brief of all.",
 
         process:
         "The project began with defining a personal brand direction focused on frontend development and UI implementation. Layout exploration, typography systems, motion design, and responsive behavior were refined through multiple iterations before development.",
@@ -284,12 +628,12 @@ export const projects = [
         "Framer Motion",
         ],
         image: "/projects/2.webp",
-        github: "#",
-        live: "#",
+        github: "https://github.com/jktalagtag-dev/portfolio",
+        live: "https://portfolio-juankt08.vercel.app",
     },
 
     {
-        number: "03",
+        number: "05",
         slug: "coming-soon",
         year: "2026",
         tier: "card",

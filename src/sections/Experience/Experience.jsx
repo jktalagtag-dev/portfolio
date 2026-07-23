@@ -137,7 +137,7 @@ export default function Experience() {
 
                 {experience.map((item, index) => (
                   <article
-                    key={index}
+                    key={item.title}
                     ref={(el) => (rowRefs.current[index] = el)}
                     data-reveal
                     className="
