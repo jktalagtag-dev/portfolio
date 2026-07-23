@@ -24,6 +24,14 @@ const easeOutExpo = [0.22, 1, 0.36, 1];
  * padding. On desktop the image is align-stretched to match the
  * detail column's natural height (object-cover fills whatever that
  * resolves to), so it always fills its full 70% × full-height area.
+ *
+ * `data-lenis-prevent` on the panel is load-bearing, not decorative:
+ * Lenis's own wheel/touch handler calls preventDefault() on every
+ * scroll gesture whenever it's "stopped" (see useDialogEffects — Lenis
+ * is stopped while any dialog is open), which would otherwise block
+ * this panel from scrolling at all, not just the page behind it. The
+ * attribute makes Lenis skip its interception for this element's
+ * event path entirely, so native scroll reaches the panel untouched.
  */
 
 export default function ProjectModal({
@@ -88,6 +96,7 @@ export default function ProjectModal({
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
+            data-lenis-prevent
             onClick={(e) => e.stopPropagation()}
             initial={{ opacity: 0, scale: 0.97, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -107,6 +116,7 @@ export default function ProjectModal({
               overflow-y-auto
               lg:overflow-hidden
               overscroll-contain
+              touch-pan-y
 
               scrollbar-thin-black
 
@@ -217,6 +227,7 @@ export default function ProjectModal({
                     alt={project.title}
                     width="1920"
                     height="1080"
+                    draggable={false}
                     className="
                       h-full
                       w-full
@@ -244,6 +255,7 @@ export default function ProjectModal({
                     lg:h-full
                     lg:overflow-y-auto
                     lg:overscroll-contain
+                    touch-pan-y
 
                     scrollbar-thin-black
 
