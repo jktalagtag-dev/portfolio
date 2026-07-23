@@ -106,6 +106,7 @@ export default function ProjectModal({
 
               overflow-y-auto
               lg:overflow-hidden
+              overscroll-contain
 
               scrollbar-thin-black
 
@@ -242,6 +243,7 @@ export default function ProjectModal({
 
                     lg:h-full
                     lg:overflow-y-auto
+                    lg:overscroll-contain
 
                     scrollbar-thin-black
 
