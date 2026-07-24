@@ -90,7 +90,14 @@ export default function ProjectExhibition({ projects }) {
           trigger: wrapperRef.current,
           start: "top top",
           end: "bottom bottom",
-          scrub: 0.8,
+          // true, not a numeric smoothing value — every other scrub
+          // on the site (Hero, ParallaxImage, ExhibitionFallback,
+          // ScrubText, DrawLine) tracks scroll immediately. A number
+          // here adds its own lag on top of Lenis's own smoothing,
+          // so this carousel felt laggy/disconnected relative to the
+          // rest of the page instead of "tied directly to scroll" as
+          // intended above.
+          scrub: true,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const idx = Math.round(self.progress * (n - 1));
@@ -240,17 +247,21 @@ export default function ProjectExhibition({ projects }) {
 
                         h-full
                         w-full
+
+                        overflow-hidden
                       "
                     >
-                      <img
+                      {/* GSAP owns this element's transform every
+                          scrub tick — it must carry no CSS
+                          `transition` on transform, or the browser
+                          fights GSAP's per-frame updates with a
+                          700ms ease toward each new value, reading
+                          as laggy/stuttery scroll. The hover-scale
+                          nudge lives on the inner <img> instead,
+                          which GSAP never touches (same frame/image
+                          split as ParallaxImage.jsx). */}
+                      <div
                         ref={(el) => (imgRefs.current[i] = el)}
-                        src={project.image}
-                        alt={project.title}
-                        width="1920"
-                        height="1080"
-                        loading={i === 0 ? "eager" : "lazy"}
-                        fetchPriority={i === 0 ? "high" : "auto"}
-                        decoding="async"
                         className="
                           absolute
                           inset-x-0
@@ -258,18 +269,32 @@ export default function ProjectExhibition({ projects }) {
                           h-[120%]
                           w-full
 
-                          object-cover
-
-                          transition-transform
-                          duration-700
-                          ease-[cubic-bezier(0.16,1,0.3,1)]
-
                           will-change-transform
-
-                          group-hover/img:scale-[1.03]
                         "
                         style={{ top: "-10%" }}
-                      />
+                      >
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          width="1920"
+                          height="1080"
+                          loading={i === 0 ? "eager" : "lazy"}
+                          fetchPriority={i === 0 ? "high" : "auto"}
+                          decoding="async"
+                          className="
+                            h-full
+                            w-full
+
+                            object-cover
+
+                            transition-transform
+                            duration-700
+                            ease-[cubic-bezier(0.16,1,0.3,1)]
+
+                            group-hover/img:scale-[1.03]
+                          "
+                        />
+                      </div>
                     </button>
                   </div>
                 ))}
