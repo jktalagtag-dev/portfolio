@@ -23,10 +23,25 @@ const FOCUSABLE_SELECTOR =
  * classic "modal won't scroll on my phone" bug). Lenis is also
  * stopped, since it keeps its own rAF/wheel loop running otherwise,
  * which can rubber-band the page under the open dialog.
+ *
+ * `onClose` is read through a ref, not closed over directly, and is
+ * deliberately NOT a dependency of the lock effect below. Every
+ * caller passes an inline `onClose={() => ...}`, a fresh function
+ * identity on every render of the parent — if the effect depended
+ * on it, any unrelated state change in the parent (e.g. a carousel's
+ * arrow-click) would re-run the lock/unlock logic even though
+ * `isOpen` never changed, hitting the "closing" branch and
+ * scrollTo-ing the page back to a stale (usually 0) position on
+ * every click. The effect must only react to `isOpen` itself.
  */
 export default function useDialogEffects(isOpen, onClose, containerRef) {
   const previousFocusRef = useRef(null);
   const scrollYRef = useRef(0);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     const lenis = getLenis();
@@ -56,7 +71,7 @@ export default function useDialogEffects(isOpen, onClose, containerRef) {
 
     const onKeyDown = (e) => {
       if (e.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -97,7 +112,7 @@ export default function useDialogEffects(isOpen, onClose, containerRef) {
       getLenis()?.start();
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [isOpen, onClose, containerRef]);
+  }, [isOpen, containerRef]);
 
   // Initial focus into the dialog + restore to the trigger on close —
   // only when a container is provided (both current callers pass one).
