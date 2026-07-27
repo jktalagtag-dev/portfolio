@@ -65,7 +65,7 @@ export default function HeroMeta() {
         variants={itemVariants}
         className="text-neutral-500"
       >
-        Frontend Developer & UI Implementer
+        Full-Stack Developer & UI Designer
       </motion.p>
     </motion.div>
   );

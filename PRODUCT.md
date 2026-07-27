@@ -6,20 +6,20 @@ brand
 
 ## Users
 
-Recruiters, hiring managers, and potential freelance clients evaluating John Karlo Talagtag for frontend roles. They arrive from a resume link, LinkedIn, or GitHub, skim quickly on desktop or mobile, and decide within a minute whether the work merits a closer look. Secondary: fellow developers reviewing the case studies.
+Recruiters, hiring managers, and potential freelance clients evaluating John Karlo Talagtag for full-stack developer roles. They arrive from a resume link, LinkedIn, or GitHub, skim quickly on desktop or mobile, and decide within a minute whether the work merits a closer look. Secondary: fellow developers reviewing the case studies.
 
 ## Product Purpose
 
-A personal portfolio that communicates John Karlo's professional identity as a Frontend Developer & UI Implementer. Every page answers "why should someone hire John Karlo?" Success = the visitor opens a case study, then reaches out via the contact page. It is a product presentation, not a React showcase.
+A personal portfolio that communicates John Karlo's professional identity as a Full-Stack Developer & UI Designer. Every page answers "why should someone hire John Karlo?" Success = the visitor opens a case study, then reaches out via the contact page. It is a product presentation, not a React showcase.
 
 ## Brand Personality
 
-Editorial, minimal, intentional. Premium restraint — Swiss-inspired, typography-first, whitespace as content. Design-minded frontend development with full-stack understanding. Feels like a magazine masthead, not a template.
+Editorial, minimal, intentional. Premium restraint — Swiss-inspired, typography-first, whitespace as content. Full-stack development with a product designer's eye for detail. Feels like a magazine masthead, not a template.
 
 ## Anti-references
 
 - Generic React portfolio templates (card grids, gradient blobs, emoji headers).
-- Positioning as a generic "full-stack developer" — the brand is frontend-first.
+- Positioning as a generic backend engineer with no design sensibility, or overstating seniority ("Software Engineer," years of experience) — the brand is full-stack with a product-design edge, backed by real work, not a résumé claim.
 - Decorative imagery, strong brand colors, dark mode (single light theme only).
 - Loud SaaS landing-page tropes: gradient text, glassmorphism as default, hero metrics.
 

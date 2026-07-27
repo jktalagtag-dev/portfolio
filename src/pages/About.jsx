@@ -17,7 +17,7 @@ import Experience from "../sections/Experience/Experience";
 export default function AboutPage() {
   usePageMeta(
     "About",
-    "Design-minded frontend developer building thoughtful digital experiences — skills, experience, and approach."
+    "Full-stack developer and UI designer building complete web applications — skills, experience, and approach."
   );
 
   return (
@@ -55,8 +55,8 @@ export default function AboutPage() {
                 tracking-[-0.06em]
               "
             >
-              Design-minded frontend developer building
-              thoughtful digital experiences.
+              Full-stack developer building complete,
+              considered web applications.
             </MaskText>
 
             <p
@@ -73,9 +73,10 @@ export default function AboutPage() {
                 text-neutral-500
               "
             >
-              I care about the details — typography,
-              motion, and the small interactions that make
-              an interface feel considered.
+              I care about the details on both sides of the
+              stack — interface polish and backend
+              architecture — the parts that make a product
+              feel considered.
             </p>
 
             <div
@@ -96,7 +97,7 @@ export default function AboutPage() {
                 text-neutral-500
               "
             >
-              <span>Frontend Developer</span>
+              <span>Full-Stack Developer</span>
               <span className="text-neutral-300">/</span>
               <span>Philippines</span>
               <span className="text-neutral-300">/</span>
@@ -155,7 +156,7 @@ export default function AboutPage() {
                   text-white
                 "
               >
-                Good frontend is invisible — it just feels right. I
+                Good software is invisible — it just feels right. I
                 sweat the typography, the motion, and the small
                 interactions most people never notice.
               </ScrubText>

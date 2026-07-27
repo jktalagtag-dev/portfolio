@@ -10,7 +10,7 @@ import ContactSection from "../sections/Contact/Contact";
 export default function Contact() {
   usePageMeta(
     "Contact",
-    "Open to frontend development roles, freelance projects, and collaborations — let's build something meaningful."
+    "Open to full-stack development roles, freelance projects, and collaborations — let's build something meaningful."
   );
 
   return (

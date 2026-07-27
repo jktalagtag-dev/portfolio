@@ -2,7 +2,7 @@
 
 # ✦ John Karlo Talagtag Portfolio
 
-### Frontend Developer • Software Engineer • UI Implementer
+### Full-Stack Developer • UI Designer
 
 A modern editorial portfolio showcasing my projects, technical skills, and development process through thoughtful design, meaningful motion, and clean engineering.
 
@@ -218,7 +218,7 @@ README.md
 
 **John Karlo Talagtag**
 
-Frontend Developer • Software Engineer
+Full-Stack Developer • UI Designer
 
 GitHub: https://github.com/jktalagtag-dev
 

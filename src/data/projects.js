@@ -53,7 +53,7 @@ export const projects = [
         roleHeadline:
         "Full-stack ownership, from database to AI layer.",
         roleDescription:
-        "As the Full-Stack Software Engineer, I owned system architecture, backend and frontend development, AI integration, database design, and DevOps — designing a platform where every module shares the same architectural foundation instead of being stitched together through plugins and middleware.",
+        "As the Full-Stack Developer, I owned system architecture, backend and frontend development, AI integration, database design, and DevOps — designing a platform where every module shares the same architectural foundation instead of being stitched together through plugins and middleware.",
         developmentHeadline:
         "Clean Architecture, from the HTTP layer down to the domain.",
         architecture: [
@@ -115,7 +115,7 @@ export const projects = [
         "Enterprise architecture is a series of trade-offs.",
         reflectionNote:
         "An architectural audit later surfaced duplicated tenant-filtering logic spread across several repositories — centralizing it behind a shared abstraction is next, a reminder that even a deliberately layered system accumulates debt worth revisiting.",
-        role: "Full-Stack Software Engineer",
+        role: "Full-Stack Developer",
         timeline: "October 2025 – Present",
         responsibilities: [
         "System Architecture",
@@ -202,7 +202,7 @@ export const projects = [
         roleHeadline:
         "Full-stack ownership of a system a real business depends on.",
         roleDescription:
-        "As the Full-Stack Software Engineer, I owned system design, backend and frontend development, database architecture, and UX improvements — building the system around preventing failure modes instead of treating them as exceptions to handle later.",
+        "As the Full-Stack Developer, I owned system design, backend and frontend development, database architecture, and UX improvements — building the system around preventing failure modes instead of treating them as exceptions to handle later.",
         developmentHeadline:
         "Two independent applications, one shared source of truth.",
         architecture: [
@@ -270,7 +270,7 @@ export const projects = [
         "Reliability is a design decision, not a bug fix.",
         reflectionNote:
         "Preferring an honest “not enough data yet” over a confident wrong answer is a principle I now apply beyond forecasting — to any feature where the system might be tempted to guess.",
-        role: "Full-Stack Software Engineer",
+        role: "Full-Stack Developer",
         timeline: "Client Project",
         responsibilities: [
         "System Design",
@@ -380,7 +380,7 @@ export const projects = [
         roleHeadline:
         "Turning requirements into thoughtful interfaces.",
         roleDescription:
-        "As the Frontend Developer and UI Implementer, I translated project requirements into responsive interfaces, collaborated with the team to integrate frontend and backend functionality, and helped create a consistent user experience throughout the system.",
+        "As the Full-Stack Developer and UI Designer, I translated project requirements into responsive interfaces, worked across the frontend and backend to bring them together, and helped shape a consistent user experience throughout the system.",
         developmentHeadline:
         "A modern web application powered by React and Laravel.",
         architecture: [
@@ -434,8 +434,8 @@ export const projects = [
         reflectionHeadline:
         "Every project is an opportunity to become a better developer.",
         reflectionNote:
-        "Looking back, I would improve this project by introducing a more scalable component architecture, strengthening accessibility, and refining state management. Revisiting and rebuilding this system is one of my goals as I continue growing as a frontend developer.",
-        role: "Frontend Developer & UI Implementer",
+        "Looking back, I would improve this project by introducing a more scalable component architecture, strengthening accessibility, and refining state management. Revisiting and rebuilding this system is one of my goals as I continue growing as a full-stack developer.",
+        role: "Full-Stack Developer & UI Designer",
         timeline: "3 Months",
         responsibilities: [
         "UI Design",
@@ -613,7 +613,7 @@ export const projects = [
         reflectionNote:
         "The portfolio is never finished — each iteration sharpens the typography, the motion, and the story. Next steps include richer case study imagery, accessibility passes, and performance refinements.",
 
-        role: "Frontend Developer & UI Implementer",
+        role: "Full-Stack Developer & UI Designer",
         timeline: "Ongoing",
         responsibilities: [
         "UI Design",
@@ -735,11 +735,11 @@ export const projects = [
         ],
 
         learnings:
-        "This project will be an opportunity to further strengthen frontend development, UI implementation, and product-thinking skills.",
+        "This project will be an opportunity to further strengthen full-stack development, interface design, and product-thinking skills.",
         reflectionHeadline:
         "The best projects start with a clear question.",
         reflectionNote: "",
-        role: "Frontend Developer & UI Implementer",
+        role: "Full-Stack Developer & UI Designer",
         timeline: "In Progress",
         responsibilities: [
         "Research",

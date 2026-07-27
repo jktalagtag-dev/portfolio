@@ -84,21 +84,21 @@ export default function About() {
                   "
                 >
                   <p data-reveal>
-                    I&rsquo;m John Karlo, a Frontend Developer who
-                    enjoys turning ideas into clean and intuitive
-                    digital experiences.
+                    I&rsquo;m John Karlo, a full-stack developer and
+                    UI designer who builds complete web applications
+                    from interface to backend.
                   </p>
 
                   <p data-reveal>
-                    My focus is building responsive interfaces with
-                    React while bringing a full-stack understanding
-                    from working with Laravel, PHP, and databases.
+                    I build responsive interfaces with React, backed
+                    by APIs and databases in Laravel and PHP&mdash;
+                    full-stack from the ground up.
                   </p>
 
                   <p data-reveal>
-                    I enjoy the intersection of design and
-                    development&mdash;where thoughtful user experiences
-                    meet solid implementation.
+                    I work at the intersection of design and
+                    engineering, where thoughtful interfaces meet
+                    solid architecture underneath.
                   </p>
                 </div>
 

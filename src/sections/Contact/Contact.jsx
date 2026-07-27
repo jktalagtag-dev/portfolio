@@ -121,7 +121,7 @@ export default function Contact() {
                   text-neutral-900
                 "
               >
-                Open to frontend development roles, freelance
+                Open to full-stack development roles, freelance
                 projects, and collaborations.
               </p>
 

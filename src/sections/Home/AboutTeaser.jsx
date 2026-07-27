@@ -63,9 +63,9 @@ export default function AboutTeaser() {
                   tracking-[-0.02em]
                 "
               >
-                Frontend developer with a full-stack eye
+                Full-stack developer with a designer's eye
                 for detail — I build the interface, and
-                understand what it takes to run behind it.
+                the system behind it.
               </p>
             </div>
 

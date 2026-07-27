@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
 const NAME = "John Karlo Talagtag";
-const BASE_TITLE = `${NAME} — Frontend Developer & UI Implementer`;
+const BASE_TITLE = `${NAME} — Full-Stack Developer & UI Designer`;
 const BASE_DESCRIPTION =
-  "Portfolio of John Karlo Talagtag, a frontend developer and UI " +
-  "implementer crafting thoughtful digital experiences with React.";
+  "Portfolio of John Karlo Talagtag, a full-stack developer and UI " +
+  "designer building complete web applications from interface to backend.";
 const DEFAULT_IMAGE = "/projects/2.webp";
 
 // Matches index.html's canonical/og:url origin — every meta tag this
