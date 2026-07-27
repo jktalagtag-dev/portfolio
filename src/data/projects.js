@@ -750,7 +750,7 @@ export const projects = [
         "React",
         "UI Design",
         ],
-        image: "/projects/1.webp",
+        image: "/projects/coming-soon.svg",
         github: "#",
         live: "#",
     },
